@@ -22,6 +22,7 @@ keymap.set("n", "<C-m>", "<C-i>", opts)
 
 -- New tab
 keymap.set("n", "te", ":tabedit<Return>")
+keymap.set("n", "tc", ":tabclose<Return>")
 keymap.set("n", "<tab>", ":tabnext<Return>", opts)
 keymap.set("n", "<s-tab>", ":tablprev<Return>", opts)
 
