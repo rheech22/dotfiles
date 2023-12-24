@@ -2,9 +2,9 @@ export ZSH="/Users/demian/.oh-my-zsh"
 export TERM="tmux-256color"
 export EDITOR="/usr/local/bin/nvim"
 
-source $ZSH/oh-my-zsh.sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+ZSH_THEME="spaceship"
 DEFAULT_USER prompt_context(){}
 plugins=(git)
 
@@ -18,3 +18,6 @@ alias vimdiff="nvim -d"
 # NVM
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
+
+# must be here below!
+source $ZSH/oh-my-zsh.sh
