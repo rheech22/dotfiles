@@ -8,7 +8,6 @@
 [core]
 	editor = TERM=xterm-256color vim -c 'norm! ggA ' -c 'startinsert'
 	autocrlf = input
-	excludesfile = /Users/demian/.gitignore_global
 
 [alias]
 	a = "add ."
