@@ -1,6 +1,7 @@
 [user]
 	name = Aiden
 	email = rheech22@gmail.com
+
 [init]
 	templatedir = ~/.git_template
 
@@ -8,17 +9,6 @@
 	editor = TERM=xterm-256color vim -c 'norm! ggA ' -c 'startinsert'
 	autocrlf = input
 	excludesfile = /Users/demian/.gitignore_global
-
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree 2.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-
-[commit]
-	template = /Users/demian/.stCommitMsg
 
 [alias]
 	a = "add ."
