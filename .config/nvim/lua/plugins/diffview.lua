@@ -1,10 +1,16 @@
 return {
   {
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
     keys = {
-      { "<leader>go", "<cmd>DiffviewOpen<cr>", desc = "git diff view open" },
-      { "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "git diff view close" },
+      { "<leader>do", "<cmd>DiffviewOpen<cr>", desc = "DiffView Open" },
+      { "<leader>dc", "<cmd>DiffviewClose<cr>", desc = "DiffView Close" },
+    },
+    config = {
+      view = {
+        merge_tool = {
+          layout = "diff3_mixed",
+        },
+      },
     },
   },
 }
