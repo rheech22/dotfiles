@@ -1,5 +1,5 @@
-export ZSH="/Users/demian/.oh-my-zsh"
-export TERM="tmux-256color"
+export ZSH="$HOME/.oh-my-zsh"
+export TERM="xterm-256color"
 export EDITOR="/usr/local/bin/nvim"
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -19,5 +19,4 @@ alias vimdiff="nvim -d"
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
-# must be here below!
 source $ZSH/oh-my-zsh.sh
