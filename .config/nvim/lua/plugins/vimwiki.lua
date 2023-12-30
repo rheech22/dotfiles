@@ -12,6 +12,7 @@ return {
     keys = function()
       return {
         { "\\ww", "<Plug>VimwikiIndex", desc = "Go to WikiIndex" },
+        { "\\]", "<Plug>VimwikiToggleListItem" },
       }
     end,
   },

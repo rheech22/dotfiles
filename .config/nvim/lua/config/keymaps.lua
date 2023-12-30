@@ -23,18 +23,24 @@ keymap.set("n", "<C-m>", "<C-i>", opts)
 -- New tab
 keymap.set("n", "te", ":tabedit<Return>")
 keymap.set("n", "tc", ":tabclose<Return>")
-keymap.set("n", "<tab>", ":tabnext<Return>", opts)
-keymap.set("n", "<s-tab>", ":tablprev<Return>", opts)
+keymap.set("n", "tn", ":tabnext<Return>", opts)
+keymap.set("n", "tp", ":tablprev<Return>", opts)
 
 -- Split window
 keymap.set("n", "ss", ":split<Return>", opts)
 keymap.set("n", "sv", ":vsplit<Return>", opts)
 
 -- Move window
-keymap.set("n", "sh", "<C-w>h")
-keymap.set("n", "sk", "<C-w>k")
-keymap.set("n", "sj", "<C-w>j")
-keymap.set("n", "sl", "<C-w>l")
+keymap.set("n", "<C-h>", "<C-w>h")
+keymap.set("n", "<C-k>", "<C-w>k")
+keymap.set("n", "<C-j>", "<C-w>j")
+keymap.set("n", "<C-l>", "<C-w>l")
+
+-- Switch window
+keymap.set("n", "sw", "<C-w>w")
+
+-- Quit window
+keymap.set("n", "sq", "<C-w>q")
 
 -- Resize window
 keymap.set("n", "<C-w><left>", "<C-w><")
@@ -43,6 +49,6 @@ keymap.set("n", "<C-w><up>", "<C-w>+")
 keymap.set("n", "<C-w><down>", "<C-w>-")
 
 -- Diagnostics
-keymap.set("n", "<C-j>", function()
-  vim.diagnostics.goto_next()
+keymap.set("n", "<leader>j", function()
+  vim.diagnostic.goto_next()
 end)
