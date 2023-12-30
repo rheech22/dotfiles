@@ -14,6 +14,7 @@ export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl/lib
 alias brew='arch -x86_64 /usr/local/bin/brew'
 alias git="LANG=en_GB.UTF-8 git"
 alias vimdiff="nvim -d"
+# if u are not using lolcat, delete it below !
 alias lla="ls -al | lolcat"
 
 # NVM
