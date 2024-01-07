@@ -205,4 +205,84 @@ return {
       require("telescope").load_extension("file_browser")
     end,
   },
+
+  {
+    "theprimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("harpoon"):setup()
+    end,
+    keys = {
+      {
+        "<leader>A",
+        function()
+          require("harpoon"):list():append()
+        end,
+        desc = "harpoon file",
+      },
+      {
+        "<leader>a",
+        function()
+          local conf = require("telescope.config").values
+          local function toggle_telescope(harpoon_files)
+            local file_paths = {}
+            for _, item in ipairs(harpoon_files.items) do
+              table.insert(file_paths, item.value)
+            end
+
+            require("telescope.pickers")
+              .new({}, {
+                prompt_title = "Harpoon",
+                finder = require("telescope.finders").new_table({
+                  results = file_paths,
+                }),
+                previewer = conf.file_previewer({}),
+                sorter = conf.generic_sorter({}),
+                initial_mode = "normal",
+              })
+              :find()
+          end
+
+          toggle_telescope(require("harpoon"):list())
+        end,
+        desc = "Open harpoon window",
+      },
+      {
+        "<M-1>",
+        function()
+          require("harpoon"):list():select(1)
+        end,
+        desc = "harpoon to file 1",
+      },
+      {
+        "<M-2>",
+        function()
+          require("harpoon"):list():select(2)
+        end,
+        desc = "harpoon to file 2",
+      },
+      {
+        "<M-3>",
+        function()
+          require("harpoon"):list():select(3)
+        end,
+        desc = "harpoon to file 3",
+      },
+      {
+        "<M-4>",
+        function()
+          require("harpoon"):list():select(4)
+        end,
+        desc = "harpoon to file 4",
+      },
+      {
+        "<M-5>",
+        function()
+          require("harpoon"):list():select(5)
+        end,
+        desc = "harpoon to file 5",
+      },
+    },
+  },
 }
