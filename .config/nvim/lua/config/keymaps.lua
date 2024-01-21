@@ -7,6 +7,10 @@ discipline.cowboy()
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
+-- Make Code Block
+keymap.set("n", "<leader>z", '<Cmd>exe "norm! i\\`\\`\\`"| exe "norm! O\\`\\`\\`" | startinsert! <CR>')
+
+-- Paste repeatedly
 keymap.set("x", "<leader>p", '"_dP')
 
 -- Move and Align

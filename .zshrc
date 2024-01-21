@@ -9,7 +9,9 @@ ZSH_THEME="spaceship"
 DEFAULT_USER prompt_context(){}
 plugins=(git)
 
-export PATH="/usr/local/opt/libpq/bin:$PATH"
+# postgresql
+export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
+
 export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl/lib
 
 alias brew='arch -x86_64 /usr/local/bin/brew'
@@ -24,3 +26,4 @@ export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
 source $ZSH/oh-my-zsh.sh
+
