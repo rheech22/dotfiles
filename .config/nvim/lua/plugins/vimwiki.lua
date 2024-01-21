@@ -16,4 +16,15 @@ return {
       }
     end,
   },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+    config = function()
+      vim.g.mkdp_markdown_css = "~/.config/nvim/markdown-style.css"
+    end,
+  },
 }
