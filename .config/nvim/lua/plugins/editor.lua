@@ -250,39 +250,103 @@ return {
         desc = "Open harpoon window",
       },
       {
-        "<M-1>",
+        "<C-n>",
+        function()
+          require("harpoon"):list():next()
+        end,
+        desc = "next file",
+      },
+      {
+
+        "<C-p>",
+        function()
+          require("harpoon"):list():prev()
+        end,
+        desc = "prev file",
+      },
+      {
+        "<leader>1",
         function()
           require("harpoon"):list():select(1)
         end,
         desc = "harpoon to file 1",
       },
       {
-        "<M-2>",
+        "<leader>2",
         function()
           require("harpoon"):list():select(2)
         end,
         desc = "harpoon to file 2",
       },
       {
-        "<M-3>",
+        "<leader>3",
         function()
           require("harpoon"):list():select(3)
         end,
         desc = "harpoon to file 3",
       },
       {
-        "<M-4>",
+        "<leader>4",
         function()
           require("harpoon"):list():select(4)
         end,
         desc = "harpoon to file 4",
       },
       {
-        "<M-5>",
+        "<leader>5",
         function()
           require("harpoon"):list():select(5)
         end,
         desc = "harpoon to file 5",
+      },
+      {
+        "<leader>rr",
+        function()
+          require("harpoon"):list():remove()
+        end,
+        desc = "remove this file from harpoon list",
+      },
+      {
+        "<leader>rc",
+        function()
+          require("harpoon"):list():clear()
+        end,
+        desc = "clear harpoon list",
+      },
+      {
+        "<leader>r1",
+        function()
+          require("harpoon"):list():removeAt(1)
+        end,
+        desc = "remove file 1 from harpoon list",
+      },
+      {
+        "<leader>r2",
+        function()
+          require("harpoon"):list():removeAt(2)
+        end,
+        desc = "remove file 2 from harpoon list",
+      },
+      {
+        "<leader>r3",
+        function()
+          require("harpoon"):list():removeAt(3)
+        end,
+        desc = "remove file 3 from harpoon list",
+      },
+      {
+        "<leader>r4",
+        function()
+          require("harpoon"):list():removeAt(4)
+        end,
+        desc = "remove file 4 from harpoon list",
+      },
+      {
+        "<leader>r5",
+        function()
+          require("harpoon"):list():removeAt(5)
+        end,
+        desc = "remove file 5 from harpoon list",
       },
     },
   },
