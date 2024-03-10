@@ -14,8 +14,8 @@ keymap.set("n", "<leader>z", '<Cmd>exe "norm! i\\`\\`\\`"| exe "norm! O\\`\\`\\`
 keymap.set("x", "<leader>p", '"_dP')
 
 -- Move and Align
-keymap.set("n", "<C-u>", "<C-u>zz")
-keymap.set("n", "<C-d>", "<C-d>zz")
+keymap.set("n", "<C-k>", "<C-u>zz")
+keymap.set("n", "<C-j>", "<C-d>zz")
 
 -- Search and Align
 keymap.set("n", "n", "nzzzv")
@@ -45,10 +45,10 @@ keymap.set("n", "ss", ":split<Return>", opts)
 keymap.set("n", "sv", ":vsplit<Return>", opts)
 
 -- Move window
-keymap.set("n", "<C-h>", "<C-w>h")
-keymap.set("n", "<C-k>", "<C-w>k")
-keymap.set("n", "<C-j>", "<C-w>j")
-keymap.set("n", "<C-l>", "<C-w>l")
+--keymap.set("n", "<C-h>", "<C-w>h")
+--keymap.set("n", "<C-k>", "<C-w>k")
+--keymap.set("n", "<C-j>", "<C-w>j")
+--keymap.set("n", "<C-l>", "<C-w>l")
 
 -- Switch window
 keymap.set("n", "sw", "<C-w>w")
