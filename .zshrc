@@ -20,6 +20,8 @@ alias vimdiff="nvim -d"
 # if u are not using lolcat, delete it below !
 alias lla="ls -al | lolcat"
 alias hs="history | tail -n 10 | lolcat"
+alias t3="docker exec -i daphne ./manage.py"
+alias dkr="docker compose down && docker compose up --build -d"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"

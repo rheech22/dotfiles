@@ -87,6 +87,10 @@ return {
         show_close_icon = false,
       },
     },
+    config = function()
+      local highlights = require("rose-pine.plugins.bufferline")
+      require("bufferline").setup({ highlights = highlights })
+    end,
   },
 
   -- statusline
@@ -96,7 +100,7 @@ return {
     opts = {
       options = {
         -- globalstatus = false,
-        theme = "nord",
+        theme = "rose-pine-alt",
       },
     },
   },
