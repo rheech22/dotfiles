@@ -60,37 +60,56 @@ return {
     },
   },
 
-  -- animations
+  -- cursor animation
   {
-    "echasnovski/mini.animate",
-    event = "VeryLazy",
-    opts = function(_, opts)
-      opts.scroll = {
-        enable = false,
-      }
+    "sphamba/smear-cursor.nvim",
+    opts = {},
+  },
+
+  -- chunk
+  {
+    "echasnovski/mini.indentscope",
+    event = { "BufRead", "BufNewFile" },
+    config = function()
+      require("mini.indentscope").setup({
+        options = {
+          try_as_border = true,
+          indent_at_cursor = true,
+        },
+        draw = {
+          delay = 100,
+        },
+        mappings = {
+          object_scope = "ii",
+          object_scope_with_border = "ai",
+          goto_top = "[i",
+          goto_bottom = "]i",
+        },
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "help",
+          "alpha",
+          "Trouble",
+          "lazy",
+          "mason",
+          "notify",
+          "toggleterm",
+          "lazyterm",
+          "NvimTree",
+        },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
     end,
   },
 
-  -- buffer line
+  -- disable tab
   {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
-    keys = {
-      { "<Tab>", "<Cmd>BufferLineCycleNext<CR>", desc = "Next tab" },
-      { "<S-Tab>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Prev tab" },
-    },
-    opts = {
-      options = {
-        mode = "tabs",
-        -- separator_style = "slant",
-        show_buffer_close_icons = false,
-        show_close_icon = false,
-      },
-    },
-    config = function()
-      local highlights = require("rose-pine.plugins.bufferline")
-      require("bufferline").setup({ highlights = highlights })
-    end,
+    enabled = false,
   },
 
   -- statusline
@@ -99,44 +118,12 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-        -- globalstatus = false,
-        theme = "rose-pine-alt",
+        theme = "auto",
       },
     },
   },
 
   -- filename
-  --  {
-  --    "b0o/incline.nvim",
-  --    dependencies = { "craftzdog/solarized-osaka.nvim" },
-  --    event = "BufReadPre",
-  --    priority = 1200,
-  --    config = function()
-  --      local colors = require("solarized-osaka.colors").setup()
-  --      require("incline").setup({
-  --        highlight = {
-  --          groups = {
-  --            InclineNormal = { guibg = colors.magenta500, guifg = colors.base04 },
-  --            InclineNormalNC = { guifg = colors.violet500, guibg = colors.base03 },
-  --          },
-  --        },
-  --        window = { margin = { vertical = 0, horizontal = 1 } },
-  --        hide = {
-  --          cursorline = true,
-  --        },
-  --        render = function(props)
-  --          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-  --          if vim.bo[props.buf].modified then
-  --            filename = "[+] " .. filename
-  --          end
-  --
-  --          local icon, color = require("nvim-web-devicons").get_icon_color(filename, _, { default = true })
-  --          return { { icon, guifg = color }, { " " }, { filename } }
-  --        end,
-  --      })
-  --    end,
-  --  },
-
   {
     "b0o/incline.nvim",
     event = "BufReadPre",
@@ -196,22 +183,59 @@ return {
       })
     end,
   },
-  {
-    "nvimdev/dashboard-nvim",
-    event = "VimEnter",
-    opts = function(_, opts)
-      -- https://patorjk.com/software/taag/#p=display&f=Speed&t=stretch%20!!
-      local logo = [[
-       _____            _____      ______       ___________
-_________  /______________  /_________  /_      ___  /__  /
-__  ___/  __/_  ___/  _ \  __/  ___/_  __ \     __  /__  / 
-_(__  )/ /_ _  /   /  __/ /_ / /__ _  / / /      /_/  /_/  
-/____/ \__/ /_/    \___/\__/ \___/ /_/ /_/      (_)  (_)   
-     ]]
 
-      logo = string.rep("\n", 8) .. logo .. "\n\n"
-      opts.config.header = vim.split(logo, "\n")
+  -- https://github.com/shortcuts/no-neck-pain.nvim
+  {
+    "shortcuts/no-neck-pain.nvim",
+    version = "*",
+    config = function()
+      require("no-neck-pain").setup({
+        width = 125,
+      })
     end,
-    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+  },
+
+  -- dashboard
+  {
+    "folke/snacks.nvim",
+    ---@type snacks.Config
+    opts = {
+
+      indent = {
+        enable = false,
+      },
+
+      dashboard = {
+        preset = {
+          header = [[
+          _____            _____      ______       ___________
+   _________  /______________  /_________  /_      ___  /__  /
+   __  ___/  __/_  ___/  _ \  __/  ___/_  __ \     __  /__  /
+   _(__  )/ /_ _  /   /  __/ /_ / /__ _  / / /      /_/  /_/
+   /____/ \__/ /_/    \___/\__/ \___/ /_/ /_/      (_)  (_)
+
+        ]],
+
+          keys = {
+            { icon = "", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = "", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            {
+              icon = "",
+              key = "c",
+              desc = "Config",
+              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+            },
+            { icon = "", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+            { icon = "", key = "q", desc = "Quit", action = ":qa" },
+          },
+        },
+      },
+    },
+  },
+  -- comments hihglight
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
   },
 }

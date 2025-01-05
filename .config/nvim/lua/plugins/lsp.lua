@@ -12,6 +12,7 @@ return {
         "typescript-language-server",
         "css-lsp",
         "cssmodules-language-server",
+        "astro-language-server",
       })
     end,
   },

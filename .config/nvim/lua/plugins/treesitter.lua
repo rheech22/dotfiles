@@ -15,6 +15,7 @@ return {
         "svelte",
         "markdown",
         "markdown_inline",
+        "dart",
       },
 
       -- https://github.com/nvim-treesitter/playground#query-linter
@@ -46,12 +47,20 @@ return {
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
 
-      -- MDX
-      vim.filetype.add({
-        extension = {
-          mdx = "mdx",
-        },
-      })
+      -- to show the backticks for code blocks in markdown
+      require("vim.treesitter.query").set(
+        "markdown",
+        "highlights",
+        [[
+;From MDeiml/tree-sitter-markdown
+[
+  (fenced_code_block_delimiter)
+] @punctuation.delimiter
+]]
+      )
+
+      vim.filetype.add({ extension = { mdx = "mdx" } })
+
       vim.treesitter.language.register("markdown", "mdx")
       vim.treesitter.language.register("markdown", "vimwiki") -- register vimwiki for highlighting in vimwiki
     end,
