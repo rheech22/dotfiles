@@ -60,6 +60,7 @@ return {
           overrides = function(colors) -- NOTE: This function nullifies the `highlights` option
             -- Example:
             return {
+              Visual = { bg = colors.grey, fg = colors.magenta },
               Comment = { fg = "#b48ead", bold = false },
               -- ["@type"] = { fg = colors.pink, bold = false },
               ["@variable"] = { fg = "#d8dee9", bold = false },
