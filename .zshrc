@@ -1,4 +1,9 @@
+# colortheme
 eval "$(starship init zsh)"
+
+# auto completion
+# TODO: read this article https://thevaluable.dev/zsh-completion-guide-examples/
+autoload -U compinit; compinit
 
 # nvim
 export EDITOR="/usr/local/bin/nvim"
