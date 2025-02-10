@@ -40,6 +40,8 @@ require('lazy').setup({
     { import = 'plugins.editor.overseer' },
     { import = 'plugins.editor.snacks' },
     { import = 'plugins.editor.which-key' },
+    { import = 'plugins.editor.img-clip' },
+    { import = 'plugins.editor.image_preview' },
     { import = 'plugins.formatting.conform' },
     { import = 'plugins.formatting.prettier' },
     { import = 'plugins.languages.astro' },
