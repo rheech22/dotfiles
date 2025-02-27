@@ -3,17 +3,18 @@ local prefix = '<leader>a'
 return {
   {
     'olimorris/codecompanion.nvim',
-    enabled = false,
+    enabled = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
+      { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
     },
     cmd = {
       'CodeCompanion',
-      'CodeCompanionActions',
-      'CodeCompanionToggle',
-      'CodeCompanionAdd',
       'CodeCompanionChat',
+      'CodeCompanionCmd',
+      'CodeCompanionActions',
+      'CodeCompanionChat Toggle',
+      'CodeCompanionChat Add',
     },
     keys = {
       {
@@ -29,35 +30,58 @@ return {
         desc = 'New Chat',
       },
       {
-        prefix .. 'A',
-        '<cmd>CodeCompanionAdd<cr>',
-        mode = 'v',
-        desc = 'Add Code',
+        prefix .. 'C',
+        '<cmd>CodeCompanionCmd<cr>',
+        mode = { 'n', 'v' },
+        desc = 'Generate a command in CLI',
       },
       {
         prefix .. 'i',
         '<cmd>CodeCompanion<cr>',
-        mode = 'n',
+        mode = { 'n', 'v' },
         desc = 'Inline Prompt',
       },
       {
-        prefix .. 'C',
-        '<cmd>CodeCompanionToggle<cr>',
-        mode = 'n',
+        prefix .. 'A',
+        '<cmd>CodeCompanionChat Add<cr>',
+        mode = 'v',
+        desc = 'Add Code',
+      },
+      {
+        prefix .. 't',
+        '<cmd>CodeCompanionChat Toggle<cr>',
+        mode = { 'n', 'v' },
         desc = 'Toggle Chat',
       },
     },
     opts = {
       -- https://codecompanion.olimorris.dev/configuration/adapters.html
       adapters = {
-        openai = function()
-          return require('codecompanion.adapters').extend('openai', {
+        chat = function()
+          return require('codecompanion.adapters').extend('anthropic', {
             env = {
-              api_key = os.getenv 'OPENAI_API_KEY',
+              api_key = os.getenv 'ANTHROPIC_API_KEY',
             },
             schema = {
               model = {
-                default = 'gpt-4o-mini',
+                default = 'claude-3-7-sonnet-20250219',
+              },
+            },
+          })
+        end,
+        inline = function()
+          return require('codecompanion.adapters').extend('anthropic', {
+            env = {
+              api_key = os.getenv 'ANTHROPIC_API_KEY',
+            },
+            schema = {
+              model = {
+                default = 'claude-3-7-sonnet-20250219',
+                choices = {
+                  ['claude-3-7-sonnet-20250219'] = {
+                    opts = { can_reason = false },
+                  },
+                },
               },
             },
           })
@@ -65,13 +89,15 @@ return {
       },
       strategies = {
         chat = {
-          adapter = 'openai',
+          adapter = 'chat',
         },
         inline = {
-          adapter = 'openai',
+          adapter = 'inline',
         },
       },
-      log_level = 'DEBUG',
+      opts = {
+        log_level = 'TRACE',
+      },
     },
   },
 }
