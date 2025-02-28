@@ -57,6 +57,7 @@ require('lazy').setup({
     { import = 'plugins.test.core' },
     { import = 'plugins.ui.colorscheme' },
     { import = 'plugins.ui.dressing' },
+    { import = 'plugins.ui.fidget' },
     { import = 'plugins.ui.treesitter-context' },
     { import = 'plugins.util.mini-hipatterns' },
   },
