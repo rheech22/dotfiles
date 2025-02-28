@@ -60,7 +60,15 @@ return {
         enabled = false,
       },
     },
-    ft = { 'markdown', 'norg', 'rmd', 'org', 'markdown.mdx', 'mdx' },
+    ft = {
+      'markdown',
+      'norg',
+      'rmd',
+      'org',
+      'markdown.mdx',
+      'mdx',
+      'codecompanion',
+    },
     config = function(_, opts)
       require('render-markdown').setup(opts)
       Snacks.toggle({

@@ -7,6 +7,7 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+      'j-hui/fidget.nvim',
     },
     cmd = {
       'CodeCompanion',
@@ -55,6 +56,7 @@ return {
       },
     },
     opts = {
+      language = 'Korean',
       -- https://codecompanion.olimorris.dev/configuration/adapters.html
       adapters = {
         chat = function()
@@ -95,9 +97,17 @@ return {
           adapter = 'inline',
         },
       },
+      display = {
+        diff = {
+          provider = 'mini_diff',
+        },
+      },
       opts = {
-        log_level = 'TRACE',
+        log_level = 'DEBUG',
       },
     },
+    init = function()
+      require('plugins.ai.codecompanion-spinner'):init()
+    end,
   },
 }
