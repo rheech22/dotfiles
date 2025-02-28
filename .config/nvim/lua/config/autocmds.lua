@@ -1,10 +1,5 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 
--- vim.api.nvim_create_autocmd('InsertLeave', {
---   pattern = '*',
---   command = 'set nopaste',
--- })
-
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'json', 'jsonc', 'md', 'markdown' },
   callback = function()

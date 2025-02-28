@@ -22,4 +22,39 @@ return {
       vim.api.nvim_set_hl(0, 'MiniStatuslineModeInsert', { bg = '#788a0b' })
     end,
   },
+  {
+    'alexxGmZ/e-ink.nvim',
+    priority = 2000,
+    config = function()
+      require('e-ink').setup()
+      vim.opt.background = 'light'
+    end,
+  },
+  {
+    'zaldih/themery.nvim',
+    lazy = false,
+    config = function()
+      require('themery').setup {
+        themes = {
+          {
+            name = 'Coding',
+            colorscheme = 'cyberdream',
+          },
+          {
+            name = 'Reading',
+            colorscheme = 'e-ink',
+          },
+        },
+        vim.keymap.set('n', '<leader>uu', function()
+          local themery = require 'themery'
+          local currentTheme = themery.getCurrentTheme()
+          if currentTheme and currentTheme.name == 'Coding' then
+            themery.setThemeByName('Reading', true)
+          else
+            themery.setThemeByName('Coding', true)
+          end
+        end, { noremap = true }),
+      }
+    end,
+  },
 }
