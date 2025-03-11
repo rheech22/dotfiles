@@ -28,6 +28,8 @@ return {
         ['markdown'] = { 'prettier', 'markdownlint-cli2', 'markdown-toc' },
         ['markdown.mdx'] = { 'prettier', 'markdownlint-cli2', 'markdown-toc' },
         ['mdx'] = { 'prettier', 'markdownlint-cli2', 'markdown-toc' },
+        ['vimwiki'] = { 'markdown-toc' },
+        ['codecompanion'] = { 'prettier', 'markdownlint-cli2', 'markdown-toc' },
       },
     },
   },
@@ -46,7 +48,13 @@ return {
   {
     'MeanderingProgrammer/render-markdown.nvim',
     opts = {
-      file_types = { 'markdown', 'markdown.mdx', 'vimwiki', 'mdx' },
+      file_types = {
+        'markdown',
+        'markdown.mdx',
+        'vimwiki',
+        'mdx',
+        'codecompanion',
+      },
       code = {
         sign = false,
         width = 'block',
@@ -58,6 +66,15 @@ return {
       },
       checkbox = {
         enabled = false,
+      },
+      latex = {
+        enabled = true,
+        render_modes = true,
+        converter = 'latex2text',
+        highlight = 'RenderMarkdownMath',
+        position = 'top',
+        top_pad = 1,
+        bottom_pad = 1,
       },
     },
     ft = {
