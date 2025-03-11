@@ -27,7 +27,8 @@ return {
     priority = 2000,
     config = function()
       require('e-ink').setup()
-      vim.opt.background = 'light'
+      -- vim.opt.background = 'light'
+      vim.opt.background = 'dark'
     end,
   },
   {

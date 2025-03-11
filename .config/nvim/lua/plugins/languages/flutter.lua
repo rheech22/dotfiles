@@ -18,6 +18,17 @@ return {
       'nvim-lua/plenary.nvim',
     },
     config = function()
+      require('flutter-tools').setup_project {
+        {
+          name = 'Web',
+          device = 'chrome',
+          web_port = '4000',
+          additional_args = {
+            '--web-browser-flag=--disable-web-security',
+          },
+        },
+      }
+
       require('flutter-tools').setup {
         -- flutter_path = "dirname $(which flutter)",
 
@@ -49,14 +60,14 @@ return {
         },
 
         dev_log = {
-          enabled = false,
+          enabled = true,
           notify_errors = false, -- if there is an error whilst running then notify the user
-          open_cmd = '15split', -- command to us
+          open_cmd = '10split', -- command to us
         },
 
         dev_tools = {
-          autostart = false, -- autostart devtools server if not detected
-          auto_open_browser = false, -- Automatically opens devtools in the browser
+          autostart = true, -- autostart devtools server if not detected
+          auto_open_browser = true, -- Automatically opens devtools in the browser
         },
 
         outline = {
@@ -71,10 +82,10 @@ return {
 
         lsp = {
           color = { -- show the derived colours for dart variables
-            enabled = false, -- whether or not to highlight color variables at all, only supported on flutter >= 2.10
-            background = false, -- highlight the background
-            background_color = nil, -- required, when background is transparent (i.e. background_color = { r = 19, g = 17, b = 24},)
-            foreground = false, -- highlight the foreground
+            enabled = true, -- whether or not to highlight color variables at all, only supported on flutter >= 2.10
+            background = true, -- highlight the background
+            -- background_color = nil, -- required, when background is transparent (i.e. background_color = { r = 19, g = 17, b = 24},)
+            foreground = true, -- highlight the foreground
             virtual_text = true, -- show the highlight using virtual text
             virtual_text_str = '■', -- the virtual text character to highlight
           },
@@ -134,6 +145,9 @@ return {
                 cwd = '${workspaceFolder}',
               },
             }
+            dap.listeners.after.event_initialized['dapui_config'] = function()
+              -- do not open daui initially
+            end
           end,
         },
       }
