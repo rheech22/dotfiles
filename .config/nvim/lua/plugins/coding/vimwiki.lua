@@ -15,7 +15,7 @@ return {
       vim.g.vimwiki_list = {
         {
           path = '~/Library/Mobile Documents/com~apple~CloudDocs/Notes',
-          ext = '.mdx',
+          ext = '.md',
           diary_rel_path = 'retrospectives',
         },
       }
@@ -33,9 +33,9 @@ return {
       vim.api.nvim_create_autocmd('BufNewFile', {
         group = group,
         pattern = {
-          '*/fleeting-notes/*.mdx',
-          '*/reference-notes/*.mdx',
-          '*/blog/*.mdx',
+          '*/fleeting-notes/*.md',
+          '*/reference-notes/*.md',
+          '*/blog/*.md',
         },
         callback = function()
           -- -- vimwiki 파일인지 확인
@@ -71,9 +71,9 @@ return {
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = group,
         pattern = {
-          '*/fleeting-notes/*.mdx',
-          '*/reference-notes/*.mdx',
-          '*/blog/*.mdx',
+          '*/fleeting-notes/*.md',
+          '*/reference-notes/*.md',
+          '*/blog/*.md',
         },
         callback = function()
           -- vimwiki 파일인지 확인
