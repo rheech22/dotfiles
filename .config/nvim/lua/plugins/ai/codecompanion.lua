@@ -72,22 +72,34 @@ return {
           })
         end,
         inline = function()
-          return require('codecompanion.adapters').extend('anthropic', {
+          return require('codecompanion.adapters').extend('gemini', {
             env = {
-              api_key = os.getenv 'ANTHROPIC_API_KEY',
+              api_key = os.getenv 'GEMINI_API_KEY',
             },
             schema = {
               model = {
-                default = 'claude-3-7-sonnet-20250219',
-                choices = {
-                  ['claude-3-7-sonnet-20250219'] = {
-                    opts = { can_reason = false },
-                  },
-                },
+                default = 'gemini-2.0-flash-exp',
               },
             },
           })
         end,
+        -- inline = function()
+        --   return require('codecompanion.adapters').extend('gemini', {
+        --     env = {
+        --       api_key = os.getenv 'ANTHROPIC_API_KEY',
+        --     },
+        --     schema = {
+        --       model = {
+        --         default = 'claude-3-7-sonnet-20250219',
+        --         choices = {
+        --           ['claude-3-7-sonnet-20250219'] = {
+        --             opts = { can_reason = false },
+        --           },
+        --         },
+        --       },
+        --     },
+        --   })
+        -- end,
       },
       strategies = {
         chat = {
@@ -108,6 +120,33 @@ return {
     },
     init = function()
       require('plugins.ai.codecompanion-spinner'):init()
+    end,
+  },
+  {
+    -- Helper module to store and pass visual selection
+    module = 'plugins.ai.codecompanion_utils',
+    config = function()
+      local api = vim.api
+
+      local M = {}
+
+      -- Function to get the visually selected text
+      local function get_visual_selection()
+        local start_pos = vim.fn.getpos "'<"
+        local end_pos = vim.fn.getpos "'>"
+        local lines =
+          api.nvim_buf_get_lines(0, start_pos[2] - 1, end_pos[2], false)
+        lines[1] = string.sub(lines[1], start_pos[3])
+        lines[#lines] = string.sub(lines[#lines], 1, end_pos[3] - 1)
+        return table.concat(lines, '\n')
+      end
+
+      function M.inline_prompt()
+        local selected_text = get_visual_selection()
+        vim.cmd('CodeCompanion ' .. selected_text)
+      end
+
+      return M
     end,
   },
 }
