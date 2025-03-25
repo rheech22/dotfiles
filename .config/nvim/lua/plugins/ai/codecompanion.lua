@@ -122,31 +122,4 @@ return {
       require('plugins.ai.codecompanion-spinner'):init()
     end,
   },
-  {
-    -- Helper module to store and pass visual selection
-    module = 'plugins.ai.codecompanion_utils',
-    config = function()
-      local api = vim.api
-
-      local M = {}
-
-      -- Function to get the visually selected text
-      local function get_visual_selection()
-        local start_pos = vim.fn.getpos "'<"
-        local end_pos = vim.fn.getpos "'>"
-        local lines =
-          api.nvim_buf_get_lines(0, start_pos[2] - 1, end_pos[2], false)
-        lines[1] = string.sub(lines[1], start_pos[3])
-        lines[#lines] = string.sub(lines[#lines], 1, end_pos[3] - 1)
-        return table.concat(lines, '\n')
-      end
-
-      function M.inline_prompt()
-        local selected_text = get_visual_selection()
-        vim.cmd('CodeCompanion ' .. selected_text)
-      end
-
-      return M
-    end,
-  },
 }
