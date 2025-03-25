@@ -33,4 +33,5 @@ alias git="LANG=en_GB.UTF-8 git"
 alias ll="ls | lolcat -F 1 -p 88"
 alias lla="ls -al | lolcat -F 1 -p 88"
 alias lg="lazygit"
+alias fl="flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0 --web-browser-flag=--disable-web-security"
 

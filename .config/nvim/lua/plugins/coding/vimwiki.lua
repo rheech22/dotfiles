@@ -33,9 +33,8 @@ return {
       vim.api.nvim_create_autocmd('BufNewFile', {
         group = group,
         pattern = {
-          '*/fleeting-notes/*.md',
-          '*/reference-notes/*.md',
           '*/blog/*.md',
+          '*/note/*.md',
         },
         callback = function()
           -- -- vimwiki 파일인지 확인
@@ -53,6 +52,7 @@ return {
             '---',
             'created: ' .. os.date '%Y-%m-%d %H:%M:%S +0900',
             'updated: ' .. os.date '%Y-%m-%d %H:%M:%S +0900',
+            'title: ',
             'tags: []',
             '---',
             '',
@@ -71,9 +71,8 @@ return {
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = group,
         pattern = {
-          '*/fleeting-notes/*.md',
-          '*/reference-notes/*.md',
           '*/blog/*.md',
+          '*/note/*.md',
         },
         callback = function()
           -- vimwiki 파일인지 확인

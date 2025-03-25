@@ -27,6 +27,16 @@ return {
             '--web-browser-flag=--disable-web-security',
           },
         },
+        -- TODO: 이런 식으로 할 때 웹서버 왜 안되는지 확인
+        -- {
+        --   name = 'Web Server',
+        --   additional_args = {
+        --     'web-server',
+        --     '--web-port 8080',
+        --     '--web-hostname 0.0.0.0',
+        --     '--web-browser-flag=--disable-web-security',
+        --   },
+        -- },
       }
 
       require('flutter-tools').setup {
@@ -87,7 +97,7 @@ return {
             background_color = { r = 19, g = 17, b = 24 },
             foreground = false, -- highlight the foreground
             virtual_text = true, -- show the highlight using virtual text
-            virtual_text_str = '■■■■', -- the virtual text character to highlight
+            virtual_text_str = '✪', -- the virtual text character to highlight
           },
           --- OR you can specify a function to deactivate or change or control how the config is created
           capabilities = function(config)
