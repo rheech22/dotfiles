@@ -24,6 +24,7 @@ return {
           device = 'chrome',
           web_port = '4000',
           additional_args = {
+            '--web-experimental-hot-reload',
             '--web-browser-flag=--disable-web-security',
           },
         },

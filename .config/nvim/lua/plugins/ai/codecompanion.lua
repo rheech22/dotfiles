@@ -60,17 +60,29 @@ return {
       -- https://codecompanion.olimorris.dev/configuration/adapters.html
       adapters = {
         chat = function()
-          return require('codecompanion.adapters').extend('anthropic', {
+          return require('codecompanion.adapters').extend('gemini', {
             env = {
-              api_key = os.getenv 'ANTHROPIC_API_KEY',
+              api_key = os.getenv 'GEMINI_API_KEY',
             },
             schema = {
               model = {
-                default = 'claude-3-7-sonnet-20250219',
+                default = 'gemini-2.5-pro-exp-03-25',
               },
             },
           })
         end,
+        -- chat = function()
+        --   return require('codecompanion.adapters').extend('anthropic', {
+        --     env = {
+        --       api_key = os.getenv 'ANTHROPIC_API_KEY',
+        --     },
+        --     schema = {
+        --       model = {
+        --         default = 'claude-3-7-sonnet-20250219',
+        --       },
+        --     },
+        --   })
+        -- end,
         inline = function()
           return require('codecompanion.adapters').extend('gemini', {
             env = {
@@ -78,7 +90,7 @@ return {
             },
             schema = {
               model = {
-                default = 'gemini-2.0-flash-exp',
+                default = 'gemini-2.0-flash',
               },
             },
           })
