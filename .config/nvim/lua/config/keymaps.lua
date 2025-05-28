@@ -40,6 +40,9 @@ keymap.set(
 -- Split
 keymap.set('n', 'ss', ':split<Return>', opts)
 keymap.set('n', 'sv', ':vsplit<Return>', opts)
+-- Split Terminal
+keymap.set('n', 'st', ':sp | term<CR>', { silent = true })
+keymap.set('n', 'stv', ':vsp | term<CR>', { silent = true })
 -- Move
 keymap.set('n', 'sk', '<C-w>k')
 keymap.set('n', 'sh', '<C-w>h')

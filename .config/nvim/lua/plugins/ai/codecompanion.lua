@@ -56,7 +56,6 @@ return {
       },
     },
     opts = {
-      language = 'Korean',
       -- https://codecompanion.olimorris.dev/configuration/adapters.html
       adapters = {
         chat = function()
@@ -67,6 +66,7 @@ return {
             schema = {
               model = {
                 default = 'gemini-2.5-pro-exp-03-25',
+                -- default = 'gemini-2.0-flash',
               },
             },
           })
@@ -115,19 +115,29 @@ return {
       },
       strategies = {
         chat = {
-          adapter = 'chat',
+          adapter = 'copilot',
+          -- adapter = 'chat',
         },
         inline = {
           adapter = 'inline',
         },
       },
       display = {
+        chat = {
+          show_settings = false,
+        },
+        action_palette = {
+          width = 95,
+          height = 10,
+          prompt = 'Prompt ',
+          provider = 'default',
+        },
         diff = {
           provider = 'mini_diff',
         },
       },
       opts = {
-        log_level = 'DEBUG',
+        log_level = 'TRACE',
       },
     },
     init = function()
