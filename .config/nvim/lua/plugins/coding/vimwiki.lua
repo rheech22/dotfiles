@@ -14,9 +14,9 @@ return {
     init = function()
       vim.g.vimwiki_list = {
         {
-          path = '~/Library/Mobile Documents/com~apple~CloudDocs/Notes',
+          path = '~/Documents/wiki',
           ext = '.md',
-          diary_rel_path = 'retrospectives',
+          diary_rel_path = 'diary',
         },
       }
       vim.g.vimwiki_ext2syntax = {
@@ -28,6 +28,30 @@ return {
       -- vimwiki에서 frontmatter를 관리하는 autocmds 추가
       local group =
         vim.api.nvim_create_augroup('VimwikiFrontmatter', { clear = true })
+
+      -- diary 파일을 만들 때 title 추가
+      vim.api.nvim_create_autocmd('BufNewFile', {
+        group = group,
+        pattern = {
+          '*/diary/*.md',
+        },
+        callback = function()
+          if vim.fn.line '$' > 1 then
+            return
+          end
+
+          local template = {
+            '# ' .. os.date '%Y-%m-%d',
+          }
+
+          vim.api.nvim_buf_set_lines(0, 0, 0, false, template)
+
+          vim.fn.execute 'normal! G'
+          vim.fn.execute 'normal! $'
+
+          print 'title added.'
+        end,
+      })
 
       -- 새 위키 파일을 만들 때 frontmatter 추가
       vim.api.nvim_create_autocmd('BufNewFile', {

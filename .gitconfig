@@ -1,12 +1,12 @@
 [user]
-	name = Aiden
-	email = rheech22@gmail.com
+	name = 이창혁
+	email = changhyuk.lee@riiid.co
 
 [init]
 	templatedir = ~/.git_template
 
 [core]
-	editor = TERM=xterm-256color vim -c 'norm! ggA ' -c 'startinsert'
+	editor = vim -c 'norm! ggA ' -c 'startinsert'
 	autocrlf = input
 
 [alias]

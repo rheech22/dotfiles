@@ -65,8 +65,7 @@ return {
             },
             schema = {
               model = {
-                default = 'gemini-2.5-pro-exp-03-25',
-                -- default = 'gemini-2.0-flash',
+                default = 'gemini-2.5-flash-preview-05-20',
               },
             },
           })
@@ -115,8 +114,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = 'copilot',
-          -- adapter = 'chat',
+          adapter = 'chat',
         },
         inline = {
           adapter = 'inline',
