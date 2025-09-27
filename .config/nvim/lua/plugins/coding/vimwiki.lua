@@ -18,6 +18,11 @@ return {
           ext = '.md',
           diary_rel_path = 'retrospectives',
         },
+        {
+          path = '~/Dropbox/wiki',
+          ext = '.md',
+          diary_rel_path = 'diary',
+        },
       }
       vim.g.vimwiki_ext2syntax = {
         ['.md'] = 'markdown',

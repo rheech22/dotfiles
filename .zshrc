@@ -35,11 +35,12 @@ alias lla="ls -al | lolcat -F 1 -p 88"
 alias lg="lazygit"
 alias fl="flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0 --web-browser-flag=--disable-web-security"
 
-
 # pnpm
 export PNPM_HOME="/Users/demian/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
 # pnpm end
+export PATH="$HOME/.local/bin:$PATH"
