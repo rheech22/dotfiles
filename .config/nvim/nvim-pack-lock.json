@@ -1,0 +1,138 @@
+{
+  "plugins": {
+    "better-escape": {
+      "rev": "19a38aa",
+      "src": "https://github.com/max397574/better-escape.nvim"
+    },
+    "better-escape.nvim": {
+      "rev": "19a38aa",
+      "src": "https://github.com/max397574/better-escape.nvim"
+    },
+    "flutter-tools": {
+      "rev": "65b7399",
+      "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
+    },
+    "flutter-tools.nvim": {
+      "rev": "65b7399",
+      "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
+    },
+    "gitsigns": {
+      "rev": "1ee5c1f",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
+    "gitsigns.nvim": {
+      "rev": "1ee5c1f",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
+    "img-clip": {
+      "rev": "e7e29f0",
+      "src": "https://github.com/hakonharnes/img-clip.nvim"
+    },
+    "img-clip.nvim": {
+      "rev": "f33f3af",
+      "src": "https://github.com/hakonharnes/img-clip.nvim"
+    },
+    "lazygit": {
+      "rev": "2305dee",
+      "src": "https://github.com/kdheepak/lazygit.nvim"
+    },
+    "lazygit.nvim": {
+      "rev": "2305dee",
+      "src": "https://github.com/kdheepak/lazygit.nvim"
+    },
+    "lspkind": {
+      "rev": "3ddd1b4",
+      "src": "https://github.com/onsails/lspkind.nvim"
+    },
+    "lspkind.nvim": {
+      "rev": "3ddd1b4",
+      "src": "https://github.com/onsails/lspkind.nvim"
+    },
+    "markdown-preview": {
+      "rev": "a923f5f",
+      "src": "https://github.com/iamcco/markdown-preview.nvim"
+    },
+    "markdown-preview.nvim": {
+      "rev": "a923f5f",
+      "src": "https://github.com/iamcco/markdown-preview.nvim"
+    },
+    "mason": {
+      "rev": "ad7146a",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mason.nvim": {
+      "rev": "ad7146a",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.icons": {
+      "rev": "2847986",
+      "src": "https://github.com/nvim-mini/mini.icons"
+    },
+    "mini.pairs": {
+      "rev": "b9aada8",
+      "src": "https://github.com/nvim-mini/mini.pairs"
+    },
+    "mini.pick": {
+      "rev": "96ee37d",
+      "src": "https://github.com/echasnovski/mini.pick"
+    },
+    "nvim-eslint": {
+      "rev": "c51802b",
+      "src": "https://github.com/esmuellert/nvim-eslint"
+    },
+    "nvim-lspconfig": {
+      "rev": "ac98db2",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "42fc28ba",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
+      "version": "'main'"
+    },
+    "oil": {
+      "rev": "919e155",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "oil.nvim": {
+      "rev": "919e155",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "plenary": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "todo-comments": {
+      "rev": "19d461d",
+      "src": "https://github.com/folke/todo-comments.nvim"
+    },
+    "todo-comments.nvim": {
+      "rev": "19d461d",
+      "src": "https://github.com/folke/todo-comments.nvim"
+    },
+    "typescript-tools": {
+      "rev": "bf11d98",
+      "src": "https://github.com/pmizio/typescript-tools.nvim"
+    },
+    "typescript-tools.nvim": {
+      "rev": "bf11d98",
+      "src": "https://github.com/pmizio/typescript-tools.nvim"
+    },
+    "vague": {
+      "rev": "27a19ff",
+      "src": "https://github.com/vague2k/vague.nvim"
+    },
+    "vague.nvim": {
+      "rev": "27a19ff",
+      "src": "https://github.com/vague2k/vague.nvim"
+    },
+    "vimwiki": {
+      "rev": "7279261",
+      "src": "https://github.com/vimwiki/vimwiki",
+      "version": "'dev'"
+    }
+  }
+}

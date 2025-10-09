@@ -2,11 +2,8 @@
 	name = Aiden
 	email = rheech22@gmail.com
 
-[init]
-	templatedir = ~/.git_template
-
 [core]
-	editor = TERM=xterm-256color vim -c 'norm! ggA ' -c 'startinsert'
+	editor = vim -c 'norm! ggA ' -c 'startinsert'
 	autocrlf = input
 
 [alias]
@@ -18,6 +15,7 @@
 	bs = "switch"
 	c = "commit"
 	l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+	fo = "!git fetch origin"
 	pl = "!git pull --set-upstream origin \"$(git rev-parse --abbrev-ref HEAD)\""
 	pr = "!gh pr view -w"
 	prc = "!gh pr create -w"

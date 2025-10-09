@@ -2,11 +2,11 @@
 eval "$(starship init zsh)"
 
 # auto completion
-# TODO: read this article https://thevaluable.dev/zsh-completion-guide-examples/
 autoload -U compinit; compinit
 
 # nvim
-export EDITOR="/usr/local/bin/nvim"
+export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
+export EDITOR="nvim"
 
 # node version manager
 export NVM_DIR="$HOME/.nvm"
@@ -16,31 +16,29 @@ export NVM_DIR="$HOME/.nvm"
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.local/bin/env
-# Check if .zshrc.local exists and source it
-if [ -f "$HOME/.zshrc.local" ]; then
-  source "$HOME/.zshrc.local"
-fi
 
 # flutter 
 export PATH="$HOME/flutter/bin:$PATH"
-export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl/lib
 export PATH=~/Library/Android/sdk/tools:$PATH
 export PATH=~/Library/Android/sdk/platform-tools:$PATH
 
-# alias
-alias brew='arch -x86_64 /usr/local/bin/brew'
-alias git="LANG=en_GB.UTF-8 git"
-alias ll="ls | lolcat -F 1 -p 88"
-alias lla="ls -al | lolcat -F 1 -p 88"
-alias lg="lazygit"
-alias fl="flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0 --web-browser-flag=--disable-web-security"
-
 # pnpm
-export PNPM_HOME="/Users/demian/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-# pnpm end
-export PATH="$HOME/.local/bin:$PATH"
+# alias
+alias vim=nvim
+alias git="LANG=en_GB.UTF-8 git"
+alias git:sw="gh auth switch && gh auth setup-git"
+alias ll="ls -al --color"
+alias lg="lazygit"
+
+# Check if .zshrc.local exists and source it
+DOTFILES_PATH="$HOME/dotfiles"
+if [ -f "$DOTFILES_PATH/.zshrc.local" ]; then
+  source "$DOTFILES_PATH/.zshrc.local"
+fi
+
