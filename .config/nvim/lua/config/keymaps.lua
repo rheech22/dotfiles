@@ -1,88 +1,64 @@
-local keymap = vim.keymap
-local opts = { noremap = true, silent = true }
+local map = vim.keymap.set
 
--- Move And Align Center
-keymap.set('n', '<C-k>', '<C-u>zz')
-keymap.set('n', '<C-j>', '<C-d>zz')
-
--- Search And Align Center
-keymap.set('n', 'n', 'nzzzv')
-keymap.set('n', 'N', 'Nzzzv')
-
--- Select All
-keymap.set('n', '<C-a>', 'gg<S-v>G')
-
--- Control Tabs
-keymap.set('n', 'te', ':tabedit<Return>')
-keymap.set('n', 'tc', ':tabclose<Return>')
-keymap.set('n', 'tn', ':tabnext<Return>', opts)
-keymap.set('n', 'tp', ':tablprev<Return>', opts)
-
--- Control Buffers
-keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
-keymap.set('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
-keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
-keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
-keymap.set('n', '<leader>bd', function()
-  Snacks.bufdelete()
-end, { desc = 'Delete Buffer' })
-keymap.set('n', '<leader>bo', function()
-  Snacks.bufdelete.other()
-end, { desc = 'Delete Other Buffers' })
-keymap.set(
-  'n',
-  '<leader>bD',
-  '<cmd>:bd<cr>',
-  { desc = 'Delete Buffer and Window' }
+map('n', '<leader>w', ':write<CR>')
+map('n', '<leader>q', ':quit<CR>')
+map('n', '<leader>Q', ':wqa<CR>')
+map('n', '<leader>g', ':Pick grep_live<CR>')
+map('n', '<leader>f', ':Pick files<CR>')
+map('n', '<leader>r', ':Pick buffers<CR>')
+map('n', '<leader>h', ':Pick help<CR>')
+map('n', '<leader>e', ':Oil<CR>')
+map('n', '<leader>E', require('oil').open_float)
+map('n', '<leader>lf', vim.lsp.buf.format)
+map('n', '<leader>cr', vim.lsp.buf.rename)
+map('n', '<leader>ca', vim.lsp.buf.code_action)
+map('n', 'gd', vim.lsp.buf.definition)
+map('n', 'gl', vim.diagnostic.open_float)
+map('n', 'dn', function()
+	vim.diagnostic.jump({ count = 1, float = true })
+end)
+map('n', 'dp', function()
+	vim.diagnostic.jump({ count = -1, float = true })
+end)
+map('n', '<leader>ip', ':PasteImage<CR>')
+map(
+	'n',
+	'<leader>zz',
+	'<Cmd>exe "norm! i\\`\\`\\`"| exe "norm! O\\`\\`\\`" | startinsert! <CR>',
+	{ desc = 'Generate Code Block' }
 )
 
--- Control Panes
--- Split
-keymap.set('n', 'ss', ':split<Return>', opts)
-keymap.set('n', 'sv', ':vsplit<Return>', opts)
--- Move
-keymap.set('n', 'sk', '<C-w>k')
-keymap.set('n', 'sh', '<C-w>h')
-keymap.set('n', 'sj', '<C-w>j')
-keymap.set('n', 'sl', '<C-w>l')
--- Switch
-keymap.set('n', 'sw', '<C-w>w')
--- Quit
-keymap.set('n', 'sq', '<C-w>q')
--- Resize
-keymap.set('n', '<C-w><left>', '<C-w><')
-keymap.set('n', '<C-w><right>', '<C-w>>')
-keymap.set('n', '<C-w><up>', '<C-w>+')
-keymap.set('n', '<C-w><down>', '<C-w>-')
+map('n', '<C-k>', '<C-u>zz')
+map('n', '<C-j>', '<C-d>zz')
+map('n', 'n', 'nzzzv')
+map('n', 'N', 'Nzzzv')
 
--- Paste Repeatedly
-keymap.set('x', '<leader>p', '"_dP')
+map({ "n", "v", "x" }, '<leader>v', ':e $MYVIMRC<CR>')
+map({ "n", "v", "x" }, '<leader>z', ':e ~/.zshrc<CR>')
+map({ "n", "v", "x" }, '<leader>wz', ':e ~/.config/wezterm/wezterm.lua<CR>')
+map({ "n", "v", "x" }, "<leader>o", ":source $MYVIMRC<CR>", { desc = "Source " .. vim.fn.expand("$MYVIMRC") })
+map({ "n", "v", "x" }, "<leader>O", ":restart<CR>", { desc = "Restart vim." })
+map({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
+map({ 'n', 'v', 'x' }, '<leader>s', ':e #<CR>')
+map({ 'n', 'v', 'x' }, '<leader>S', ':bot sf #<CR>')
+map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
 
--- Highlight When Yanking text
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup(
-    'kickstart-highlight-yank',
-    { clear = true }
-  ),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
+-- control panes
+map('n', 'ss', ':split<Return>', { noremap = true, silent = true })
+map('n', 'sv', ':vsplit<Return>', { noremap = true, silent = true })
+map('n', 'sk', '<C-w>k')
+map('n', 'sh', '<C-w>h')
+map('n', 'sj', '<C-w>j')
+map('n', 'sl', '<C-w>l')
+map('n', 'sq', '<C-w>q')
+map('n', '<C-w><left>', '<C-w><')
+map('n', '<C-w><right>', '<C-w>>')
+map('n', '<C-w><up>', '<C-w>+')
+map('n', '<C-w><down>', '<C-w>-')
 
--- Generate Code Block
-keymap.set(
-  'n',
-  '<leader>z',
-  '<Cmd>exe "norm! i\\`\\`\\`"| exe "norm! O\\`\\`\\`" | startinsert! <CR>',
-  { desc = 'Generate Code Block' }
-)
-
--- Better indenting
-keymap.set('v', '<', '<gv')
-keymap.set('v', '>', '>gv')
-
--- Jump To Diagnostics
-keymap.set('n', '<leader>j', function()
-  vim.diagnostic.goto_next()
-end, { desc = 'Jump To Diagnostics' })
+-- plugin:vimwiki
+map("n", "\\ww", "<Plug>VimwikiIndex", { desc = "Go to WikiIndex" })
+map("n", "\\wi", "<Plug>VimwikiDiaryIndex", { desc = "Go to DiaryIndex" })
+map("n", "\\w\\w", "<Plug>VimwikiMakeDiaryNote", { desc = "Create a Diary Note" })
+map("n", "\\w\\g", "<Plug>VimwikiDiaryGenerateLinks", { desc = "Generate Links for Diary Notes" })
+map("n", "\\]", "<Plug>VimwikiToggleListItem", { desc = "Toggle List Item" })

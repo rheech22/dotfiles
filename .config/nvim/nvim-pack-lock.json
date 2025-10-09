@@ -1,0 +1,64 @@
+{
+  "plugins": {
+    "better-escape.nvim": {
+      "rev": "19a38aa",
+      "src": "https://github.com/max397574/better-escape.nvim"
+    },
+    "flutter-tools.nvim": {
+      "rev": "65b7399",
+      "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
+    },
+    "gitsigns.nvim": {
+      "rev": "1ee5c1f",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
+    "img-clip.nvim": {
+      "rev": "f33f3af",
+      "src": "https://github.com/hakonharnes/img-clip.nvim"
+    },
+    "markdown-preview.nvim": {
+      "rev": "a923f5f",
+      "src": "https://github.com/iamcco/markdown-preview.nvim"
+    },
+    "mason.nvim": {
+      "rev": "ad7146a",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.pairs": {
+      "rev": "b9aada8",
+      "src": "https://github.com/nvim-mini/mini.pairs"
+    },
+    "mini.pick": {
+      "rev": "96ee37d",
+      "src": "https://github.com/echasnovski/mini.pick"
+    },
+    "nvim-eslint": {
+      "rev": "bcab40e",
+      "src": "https://github.com/esmuellert/nvim-eslint"
+    },
+    "nvim-treesitter": {
+      "rev": "01ced749",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "oil.nvim": {
+      "rev": "919e155",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "plenary.nvim": {
+      "rev": "b9fd522",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "todo-comments.nvim": {
+      "rev": "304a8d2",
+      "src": "https://github.com/folke/todo-comments.nvim"
+    },
+    "vague.nvim": {
+      "rev": "25107de",
+      "src": "https://github.com/vague2k/vague.nvim"
+    },
+    "vimwiki": {
+      "rev": "7279261",
+      "src": "https://github.com/vimwiki/vimwiki"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'json', 'jsonc', 'md', 'markdown', 'mdx' },
+--   callback = function()
+--     vim.opt.spell = false
+--     vim.opt.conceallevel = 0
+--   end,
+-- })

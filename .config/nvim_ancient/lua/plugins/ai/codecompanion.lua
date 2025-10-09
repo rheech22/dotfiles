@@ -56,45 +56,13 @@ return {
       },
     },
     opts = {
-      language = 'Korean',
       -- https://codecompanion.olimorris.dev/configuration/adapters.html
-      adapters = {
-        chat = function()
-          return require('codecompanion.adapters').extend('anthropic', {
-            env = {
-              api_key = os.getenv 'ANTHROPIC_API_KEY',
-            },
-            schema = {
-              model = {
-                default = 'claude-3-7-sonnet-20250219',
-              },
-            },
-          })
-        end,
-        inline = function()
-          return require('codecompanion.adapters').extend('anthropic', {
-            env = {
-              api_key = os.getenv 'ANTHROPIC_API_KEY',
-            },
-            schema = {
-              model = {
-                default = 'claude-3-7-sonnet-20250219',
-                choices = {
-                  ['claude-3-7-sonnet-20250219'] = {
-                    opts = { can_reason = false },
-                  },
-                },
-              },
-            },
-          })
-        end,
-      },
       strategies = {
         chat = {
-          adapter = 'chat',
+          adapter = 'gemini_cli',
         },
         inline = {
-          adapter = 'inline',
+          adapter = 'copilot',
         },
       },
       display = {

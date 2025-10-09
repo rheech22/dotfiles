@@ -7,7 +7,6 @@ local act = wezterm.action
 
 -- Font settings
 config.font_size = 16
-config.line_height = 1.2
 config.font = wezterm.font("DankMono Nerd Font")
 
 -- Colors
@@ -25,7 +24,8 @@ config.window_padding = {
 	top = 0,
 	bottom = 0,
 }
-config.window_background_image = constants.bg_image
+config.window_background_image = constants.bg_blurred
+config.window_background_opacity = constants.opacity
 config.macos_window_background_blur = 40
 config.command_palette_font_size = 16
 config.command_palette_bg_color = "#5E4090"
