@@ -207,7 +207,6 @@ return {
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -242,7 +241,6 @@ return {
         'astro-language-server',
         'css-lsp',
         'debugpy',
-        'delve',
         'docker-compose-language-service',
         'dockerfile-language-server',
         'eslint-lsp',
@@ -276,6 +274,17 @@ return {
             )
             require('lspconfig')[server_name].setup(server)
           end,
+        },
+      }
+
+      -- configure Swift serve here since it is not installed via Mason
+      require('lspconfig').sourcekit.setup {
+        capabilities = {
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
+            },
+          },
         },
       }
     end,

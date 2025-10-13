@@ -1,6 +1,6 @@
 [user]
 	name = 이창혁
-	email = changhyuk.lee@riiid.co
+	email = changhyuk.lee@socra.ai
 
 [init]
 	templatedir = ~/.git_template
@@ -17,6 +17,7 @@
 	bd = "!git branch -D $(git b | fzf -m)"
 	bs = "switch"
 	c = "commit"
+	fo = "fetch origin"
 	l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
 	pl = "!git pull --set-upstream origin \"$(git rev-parse --abbrev-ref HEAD)\""
 	pr = "!gh pr view -w"
@@ -32,3 +33,9 @@
 	ts = "!tsc --watch"
 	w = "!gh browse"
 	ws = "!gh status"
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential

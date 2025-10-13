@@ -14,7 +14,7 @@ return {
     init = function()
       vim.g.vimwiki_list = {
         {
-          path = '~/Documents/wiki',
+          path = '~/Dropbox/wiki',
           ext = '.md',
           diary_rel_path = 'diary',
         },

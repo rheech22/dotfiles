@@ -18,28 +18,6 @@ return {
       'nvim-lua/plenary.nvim',
     },
     config = function()
-      require('flutter-tools').setup_project {
-        {
-          name = 'Web',
-          device = 'chrome',
-          web_port = '4000',
-          additional_args = {
-            '--web-experimental-hot-reload',
-            '--web-browser-flag=--disable-web-security',
-          },
-        },
-        -- TODO: 이런 식으로 할 때 웹서버 왜 안되는지 확인
-        -- {
-        --   name = 'Web Server',
-        --   additional_args = {
-        --     'web-server',
-        --     '--web-port 8080',
-        --     '--web-hostname 0.0.0.0',
-        --     '--web-browser-flag=--disable-web-security',
-        --   },
-        -- },
-      }
-
       require('flutter-tools').setup {
         -- flutter_path = "dirname $(which flutter)",
 
@@ -137,26 +115,86 @@ return {
             }
 
             dap.configurations.dart = {
-              -- {
-              --   type = "dart",
-              --   request = "launch",
-              --   name = "Launch dart",
-              --   dartSdkPath = "/Users/demian/flutter/bin/cache/dart-sdk/bin/dart",
-              --   flutterSdkPath = "/Users/demian/flutter/bin/flutter",
-              --   program = "${workspaceFolder}/lib/main.dart",
-              --   cwd = "${workspaceFolder}",
-              -- },
               {
                 type = 'flutter',
                 request = 'launch',
-                name = 'Launch flutter',
+                name = 'Local build',
                 dartSdkPath = '/Users/demian/flutter/bin/cache/dart-sdk/bin/dart',
                 flutterSdkPath = '/Users/demian/flutter/bin/flutter',
                 program = '${workspaceFolder}/lib/main.dart',
                 cwd = '${workspaceFolder}',
+                args = {
+                  '--flavor=local',
+                  '--web-browser-flag',
+                  '--disable-web-security',
+                  '--no-enable-impeller',
+                  '--dart-define-from-file=.config/local/dart-define.json',
+                },
+              },
+              {
+                type = 'flutter',
+                request = 'launch',
+                name = 'Local build (Release)',
+                dartSdkPath = '/Users/demian/flutter/bin/cache/dart-sdk/bin/dart',
+                flutterSdkPath = '/Users/demian/flutter/bin/flutter',
+                program = '${workspaceFolder}/lib/main.dart',
+                cwd = '${workspaceFolder}',
+                args = {
+                  '--release',
+                  '--flavor=local',
+                  '--web-browser-flag',
+                  '--disable-web-security',
+                  '--disable-site-isolation-trials',
+                  '--dart-define-from-file=.config/local/dart-define.json',
+                },
+              },
+              {
+                type = 'flutter',
+                request = 'launch',
+                name = 'Dev build',
+                dartSdkPath = '/Users/demian/flutter/bin/cache/dart-sdk/bin/dart',
+                flutterSdkPath = '/Users/demian/flutter/bin/flutter',
+                program = '${workspaceFolder}/lib/main.dart',
+                cwd = '${workspaceFolder}',
+                args = {
+                  '--flavor=dev',
+                  '--web-browser-flag',
+                  '--disable-web-security',
+                  '--web-browser-flag',
+                  '--disable-site-isolation-trials',
+                  '--dart-define-from-file=.config/dev/dart-define.json',
+                },
+              },
+              {
+                type = 'flutter',
+                request = 'launch',
+                name = 'Stage build',
+                dartSdkPath = '/Users/demian/flutter/bin/cache/dart-sdk/bin/dart',
+                flutterSdkPath = '/Users/demian/flutter/bin/flutter',
+                program = '${workspaceFolder}/lib/main.dart',
+                cwd = '${workspaceFolder}',
+                args = {
+                  '--flavor=stage',
+                  '--dart-define-from-file=.config/stage/dart-define.json',
+                },
+              },
+              {
+                type = 'flutter',
+                request = 'launch',
+                name = 'Live build',
+                dartSdkPath = '/Users/demian/flutter/bin/cache/dart-sdk/bin/dart',
+                flutterSdkPath = '/Users/demian/flutter/bin/flutter',
+                program = '${workspaceFolder}/lib/main.dart',
+                cwd = '${workspaceFolder}',
+                args = {
+                  '--flavor=live',
+                  '--dart-define-from-file=.config/live/dart-define.json',
+                },
               },
             }
+
             dap.listeners.after.event_initialized['dapui_config'] = function()
+
               -- do not open daui initially
             end
           end,

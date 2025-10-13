@@ -56,65 +56,49 @@ return {
       },
     },
     opts = {
-      -- https://codecompanion.olimorris.dev/configuration/adapters.html
       adapters = {
-        chat = function()
-          return require('codecompanion.adapters').extend('gemini', {
-            env = {
-              api_key = os.getenv 'GEMINI_API_KEY',
-            },
-            schema = {
-              model = {
-                default = 'gemini-2.5-flash-preview-05-20',
+        acp = {
+          gemini_cli = function()
+            return require('codecompanion.adapters').extend('gemini_cli', {
+              defaults = {
+                auth_method = 'gemini-api-key', -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
               },
-            },
-          })
-        end,
-        -- chat = function()
-        --   return require('codecompanion.adapters').extend('anthropic', {
-        --     env = {
-        --       api_key = os.getenv 'ANTHROPIC_API_KEY',
-        --     },
-        --     schema = {
-        --       model = {
-        --         default = 'claude-3-7-sonnet-20250219',
-        --       },
-        --     },
-        --   })
-        -- end,
-        inline = function()
-          return require('codecompanion.adapters').extend('gemini', {
-            env = {
-              api_key = os.getenv 'GEMINI_API_KEY',
-            },
-            schema = {
-              model = {
-                default = 'gemini-2.0-flash',
+              env = {
+                api_key = 'cmd:op read op://personal/Gemini/credential --no-newline',
               },
-            },
-          })
-        end,
-        -- inline = function()
-        --   return require('codecompanion.adapters').extend('gemini', {
-        --     env = {
-        --       api_key = os.getenv 'ANTHROPIC_API_KEY',
-        --     },
-        --     schema = {
-        --       model = {
-        --         default = 'claude-3-7-sonnet-20250219',
-        --         choices = {
-        --           ['claude-3-7-sonnet-20250219'] = {
-        --             opts = { can_reason = false },
-        --           },
-        --         },
-        --       },
-        --     },
-        --   })
-        -- end,
+            })
+          end,
+        },
+        http = {
+          chat = function()
+            return require('codecompanion.adapters').extend('gemini', {
+              env = {
+                api_key = os.getenv 'GEMINI_API_KEY',
+              },
+              schema = {
+                model = {
+                  default = 'gemini-2.5-flash-preview-05-20',
+                },
+              },
+            })
+          end,
+          inline = function()
+            return require('codecompanion.adapters').extend('gemini', {
+              env = {
+                api_key = os.getenv 'GEMINI_API_KEY',
+              },
+              schema = {
+                model = {
+                  default = 'gemini-2.5-flash-preview-05-20',
+                },
+              },
+            })
+          end,
+        },
       },
       strategies = {
         chat = {
-          adapter = 'chat',
+          adapter = 'gemini_cli',
         },
         inline = {
           adapter = 'inline',

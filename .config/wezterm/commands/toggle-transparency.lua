@@ -9,7 +9,7 @@ local command = {
 
 		if not overrides.window_background_opacity or overrides.window_background_opacity == 1 then
 			overrides.window_background_opacity = 0.8
-			overrides.window_background_image = ""
+			overrides.macos_window_background_blur = 30
 		else
 			overrides.window_background_opacity = 1
 			overrides.window_background_image = constants.bg_image

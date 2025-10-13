@@ -18,6 +18,7 @@ require('lazy').setup({
     { import = 'plugins.ai.supermaven' },
     { import = 'plugins.ai.codecompanion' },
     { import = 'plugins.ai.avante' },
+    { import = 'plugins.ai.claude' },
     { import = 'plugins.coding.better-escape' },
     { import = 'plugins.coding.autopairs' },
     { import = 'plugins.coding.harpoon' },
