@@ -29,6 +29,9 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
+# ripgrep
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/.ripgreprc"
+
 # alias
 alias vim=nvim
 alias git="LANG=en_GB.UTF-8 git"
