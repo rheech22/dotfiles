@@ -14,7 +14,8 @@ local plugins = {
 	{ name = 'img-clip',         src = H.github('hakonharnes/img-clip.nvim') },
 	{ name = 'markdown-preview', src = H.github('iamcco/markdown-preview.nvim') },
 	{ name = 'lazygit',          src = H.github('kdheepak/lazygit.nvim') },
-	{ name = 'plenary',          src = H.github('nvim-lua/plenary.nvim') },
+	{ name = 'dap',              src = H.github('mfussenegger/nvim-dap') },
+	{ name = 'dap-view',         src = H.github('igorlfs/nvim-dap-view') },
 }
 
 vim.pack.add(plugins)

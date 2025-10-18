@@ -17,7 +17,7 @@ map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
 
 -- picker
 map('n', L 'g', C 'Pick grep_live', 'Grep live')
-map('n', L 'f', C 'Pick files', 'Find files')
+map('n', L '<space>', C "Pick files", 'Find files')
 map('n', L 'r', C 'Pick buffers', 'Find buffers')
 map('n', L 'h', C 'Pick help', 'Find help')
 
@@ -33,6 +33,7 @@ map('n', 'dp', C 'lua vim.diagnostic.jump({ count = -1, float = true })', 'Previ
 -- editing
 map('n', L 'ip', C 'PasteImage', 'Paste image from clipboard')
 map('n', L 'zz', C 'exe "norm! i```"| exe "norm! O```" | startinsert!', 'Generate Code Block')
+map('n', 'U', '<C-r>', 'Redo')
 
 -- popup
 map('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', 'Move Next Completion Item', { expr = true })
@@ -56,17 +57,18 @@ map({ 'n', 'v', 'x' }, L 'O', C 'restart', 'Restart vim.')
 map('n', '<C-f>', C 'Open .', 'Open current directory in Finder.')
 
 -- control panes
-map('n', 'ss', C 'split', 'Split horizontal', { noremap = true, silent = true })
-map('n', 'sv', C 'vsplit', 'Split vertical', { noremap = true, silent = true })
-map('n', 'sk', '<C-w>k', 'Focus pane above')
-map('n', 'sh', '<C-w>h', 'Focus pane left')
-map('n', 'sj', '<C-w>j', 'Focus pane below')
-map('n', 'sl', '<C-w>l', 'Focus pane right')
-map('n', 'sq', '<C-w>q', 'Close pane')
-map('n', '<C-w><left>', '<C-w><', 'Decrease pane width')
-map('n', '<C-w><right>', '<C-w>>', 'Increase pane width')
-map('n', '<C-w><up>', '<C-w>+', 'Increase pane height')
-map('n', '<C-w><down>', '<C-w>-', 'Decrease pane height')
+-- also at terminal?
+map({ 'n', 't' }, 'ss', C 'split', 'Split horizontal', { noremap = true, silent = true })
+map({ 'n', 't' }, 'sv', C 'vsplit', 'Split vertical', { noremap = true, silent = true })
+map({ 'n', 't' }, 'sk', '<C-w>k', 'Focus pane above')
+map({ 'n', 't' }, 'sh', '<C-w>h', 'Focus pane left')
+map({ 'n', 't' }, 'sj', '<C-w>j', 'Focus pane below')
+map({ 'n', 't' }, 'sl', '<C-w>l', 'Focus pane right')
+map({ 'n', 't' }, 'sq', '<C-w>q', 'Close pane')
+map({ 'n', 't' }, '<C-w><left>', '<C-w><', 'Decrease pane width')
+map({ 'n', 't' }, '<C-w><right>', '<C-w>>', 'Increase pane width')
+map({ 'n', 't' }, '<C-w><up>', '<C-w>+', 'Increase pane height')
+map({ 'n', 't' }, '<C-w><down>', '<C-w>-', 'Decrease pane height')
 
 -- plugin:vimwiki
 map('n', '\\ww', '<Plug>VimwikiIndex', 'Go to WikiIndex')
@@ -77,3 +79,14 @@ map('n', '\\]', '<Plug>VimwikiToggleListItem', 'Toggle List Item')
 
 -- plugin:lazygit
 map('n', L 'lg', C 'LazyGit', 'Open LazyGit', { silent = true })
+
+-- plugin:dap
+map('n', L 'dc', C 'lua require("dap").continue()', 'Run/Continue')
+map('n', L 'db', C 'lua require("dap").toggle_breakpoint()', 'Toggle Breakpoint')
+map('n', L 'di', C 'lua require("dap").step_into()', 'Step Into')
+map('n', L 'do', C 'lua require("dap").step_over()', 'Step Over')
+map('n', L 'dO', C 'lua require("dap").step_out()', 'Step Out')
+map('n', L 'dt', C 'lua require("dap").terminate()', 'Terminate')
+
+-- plugin:dap-view
+map('n', L 'dv', C 'lua require("dap-view").toggle()', 'Toggle Debug View')

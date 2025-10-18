@@ -16,4 +16,5 @@ My Personal dotfiles.
 - pngpaste `0.2.3`
 - Node.js `>=22`
 - Flutter `>=3.31`
+- Typescript 5.9.3
  
