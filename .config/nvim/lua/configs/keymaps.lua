@@ -90,3 +90,11 @@ map('n', L 'dt', C 'lua require("dap").terminate()', 'Terminate')
 
 -- plugin:dap-view
 map('n', L 'dv', C 'lua require("dap-view").toggle()', 'Toggle Debug View')
+
+-- plugin:flutter-tools
+map('n', L 'fl', C 'FlutterRun', 'Flutter Run')
+map('n', L 'fq', C 'FlutterQuit', 'Flutter Quit')
+map('n', L 'fo', C 'FlutterReload', 'Flutter Reload')
+map('n', L 'fr', C 'FlutterRestart', 'Flutter Restart')
+map('n', L 'fb', C 'FlutterPubGet', 'Flutter PubGet')
+map('n', L 'fg', C '!dart run build_runner build --delete-conflicting-outputs', 'Flutter Code Generate')

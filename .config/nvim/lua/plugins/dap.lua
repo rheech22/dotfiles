@@ -55,6 +55,15 @@ return {
 				},
 			}
 		end
+		-- dart/flutter
+		-- flutter configurations are in ../lsp/flutter_tools.lua
+		for _, type in ipairs({ "dart", "flutter" }) do
+			dap.adapters[type] = {
+				type = 'executable',
+				command = type,
+				args = { 'debug_adapter' },
+			}
+		end
 
 		-- icon
 		local dap_icons = {
