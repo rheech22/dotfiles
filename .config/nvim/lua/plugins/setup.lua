@@ -18,6 +18,7 @@ local plugins = {
   { name = 'dap-view', src = H.github 'igorlfs/nvim-dap-view' },
   { name = 'fidget', src = H.github 'j-hui/fidget.nvim' },
   { name = 'conform', src = H.github 'stevearc/conform.nvim' },
+  { name = 'supermaven', src = H.github 'supermaven-inc/supermaven-nvim' },
 }
 
 vim.pack.add(plugins)

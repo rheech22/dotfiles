@@ -121,6 +121,10 @@
       "rev": "b9fd522",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "supermaven": {
+      "rev": "07d20fc",
+      "src": "https://github.com/supermaven-inc/supermaven-nvim"
+    },
     "todo-comments": {
       "rev": "19d461d",
       "src": "https://github.com/folke/todo-comments.nvim"
