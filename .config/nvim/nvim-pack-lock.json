@@ -8,6 +8,10 @@
       "rev": "19a38aa",
       "src": "https://github.com/max397574/better-escape.nvim"
     },
+    "codecompanion": {
+      "rev": "5efcc8f",
+      "src": "https://github.com/olimorris/codecompanion.nvim"
+    },
     "conform": {
       "rev": "fbcb4fa",
       "src": "https://github.com/stevearc/conform.nvim"

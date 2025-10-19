@@ -3,6 +3,7 @@ vim.g.maplocalleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.o.mouse = 'a'
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.signcolumn = 'yes'
@@ -15,8 +16,9 @@ vim.o.undofile = true
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.winborder = 'rounded'
+vim.o.splitright = true
+vim.o.splitbelow = true
 
-vim.cmd [[set mouse=]]
 vim.cmd [[set noswapfile]]
 vim.cmd ':hi satusline guibg=NONE'
 

@@ -102,3 +102,8 @@ map('n', L 'fo', C 'FlutterReload', 'Flutter Reload')
 map('n', L 'fr', C 'FlutterRestart', 'Flutter Restart')
 map('n', L 'fb', C 'FlutterPubGet', 'Flutter PubGet')
 map('n', L 'fg', C '!dart run build_runner build --delete-conflicting-outputs', 'Flutter Code Generate')
+
+-- plugin:codecompanion
+map('n', L 'aa', C 'CodeCompanionActions', 'CodeCompanion Actions')
+map('n', L 'ac', C 'CodeCompanionChat', 'New Chat')
+map('n', L 'at', C 'CodeCompanionChat Toggle', 'Toggle Chat')

@@ -19,6 +19,7 @@ local plugins = {
   { name = 'fidget', src = H.github 'j-hui/fidget.nvim' },
   { name = 'conform', src = H.github 'stevearc/conform.nvim' },
   { name = 'supermaven', src = H.github 'supermaven-inc/supermaven-nvim' },
+  { name = 'codecompanion', src = H.github 'olimorris/codecompanion.nvim' },
 }
 
 vim.pack.add(plugins)
