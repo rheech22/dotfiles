@@ -1,5 +1,18 @@
 local H = require 'helpers'
 
+vim.g.vimwiki_list = {
+  {
+    path = vim.fn.expand '~/Library/Mobile Documents/com~apple~CloudDocs/Notes',
+    ext = '.md',
+    diary_rel_path = 'retrospectives',
+  },
+}
+
+vim.g.vimwiki_ext2syntax = {
+  ['.md'] = 'markdown',
+  ['.mdx'] = 'markdown',
+}
+
 local plugins = {
   { name = 'vague', src = H.github 'vague2k/vague.nvim' },
   { name = 'nvim-treesitter', src = H.github 'nvim-treesitter/nvim-treesitter', version = 'main' },
@@ -20,6 +33,7 @@ local plugins = {
   { name = 'conform', src = H.github 'stevearc/conform.nvim' },
   { name = 'supermaven', src = H.github 'supermaven-inc/supermaven-nvim' },
   { name = 'codecompanion', src = H.github 'olimorris/codecompanion.nvim' },
+  { name = 'markview', src = H.github 'OXY2DEV/markview.nvim' },
 }
 
 vim.pack.add(plugins)

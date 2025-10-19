@@ -19,3 +19,5 @@ My Personal dotfiles.
 - Typescript `5.9.3`
 - prettierd `0.25.2`
 - stylua `2.3.0` 
+- fnm `1.38.1`
+- tree-sitter-cli `0.25.10`

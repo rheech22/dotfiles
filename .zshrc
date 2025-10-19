@@ -9,25 +9,7 @@ export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export EDITOR="nvim"
 
 # node version manager
-# TODO: change to fnm
-lazy_load_nvm() {
-  unset -f npm node nvm
-  export NVM_DIR=~/.nvm
-  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-}
-npm() {
-  lazy_load_nvm
-  npm $@
-}
-node() {
-  lazy_load_nvm
-  node $@
-}
-nvm() {
-  lazy_load_nvm
-  nvm $@
-}
+eval "$(fnm env --use-on-cd --shell zsh)"
 
 # soruce
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
