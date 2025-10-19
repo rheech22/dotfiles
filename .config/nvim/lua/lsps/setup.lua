@@ -1,6 +1,6 @@
 local H = require 'helpers'
 
-vim.lsp.enable { 'lua_ls', 'tailwindcss', 'cssls' }
+vim.lsp.enable { 'lua_ls', 'tailwindcss', 'cssls', 'astro' }
 
 local lsp_plugins = {
   { name = 'plenary', src = H.github 'nvim-lua/plenary.nvim' },

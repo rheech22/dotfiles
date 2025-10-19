@@ -9,17 +9,25 @@ export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 export EDITOR="nvim"
 
 # node version manager
-export NVM_DIR="$HOME/.nvm"
-[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh" --no-use
-
-NVM_DEFAULT_ALIAS_PATH="$NVM_DIR/alias/default"
-if [ -f "$NVM_DEFAULT_ALIAS_PATH" ]; then
-  NVM_DEFAULT_VERSION=$(cat "$NVM_DEFAULT_ALIAS_PATH")
-  NVM_NODE_PATH="$NVM_DIR/versions/node/v$NVM_DEFAULT_VERSION/bin"
-  if [ -d "$NVM_NODE_PATH" ]; then
-    export PATH="$NVM_NODE_PATH:$PATH"
-  fi
-fi
+# TODO: change to fnm
+lazy_load_nvm() {
+  unset -f npm node nvm
+  export NVM_DIR=~/.nvm
+  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+}
+npm() {
+  lazy_load_nvm
+  npm $@
+}
+node() {
+  lazy_load_nvm
+  node $@
+}
+nvm() {
+  lazy_load_nvm
+  nvm $@
+}
 
 # soruce
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh

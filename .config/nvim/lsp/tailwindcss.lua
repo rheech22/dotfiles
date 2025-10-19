@@ -5,6 +5,7 @@ return {
     'javascriptreact',
     'typescript',
     'typescriptreact',
+    'astro',
     'vue',
     'svelte',
     'html',
