@@ -61,18 +61,38 @@ map({ 'n', 'v', 'x' }, L 'O', C 'restart', 'Restart vim.')
 map('n', '<C-f>', C 'Open .', 'Open current directory in Finder.')
 
 -- control panes
--- also at terminal?
-map({ 'n', 't' }, 'ss', C 'split', 'Split horizontal', { noremap = true, silent = true })
-map({ 'n', 't' }, 'sv', C 'vsplit', 'Split vertical', { noremap = true, silent = true })
-map({ 'n', 't' }, 'sk', '<C-w>k', 'Focus pane above')
-map({ 'n', 't' }, 'sh', '<C-w>h', 'Focus pane left')
-map({ 'n', 't' }, 'sj', '<C-w>j', 'Focus pane below')
-map({ 'n', 't' }, 'sl', '<C-w>l', 'Focus pane right')
-map({ 'n', 't' }, 'sq', '<C-w>q', 'Close pane')
-map({ 'n', 't' }, '<C-w><left>', '<C-w><', 'Decrease pane width')
-map({ 'n', 't' }, '<C-w><right>', '<C-w>>', 'Increase pane width')
-map({ 'n', 't' }, '<C-w><up>', '<C-w>+', 'Increase pane height')
-map({ 'n', 't' }, '<C-w><down>', '<C-w>-', 'Decrease pane height')
+map('n', 'ss', C 'split', 'Split horizontal', { noremap = true, silent = true })
+map('n', 'sv', C 'vsplit', 'Split vertical', { noremap = true, silent = true })
+map('n', 'sk', '<C-w>k', 'Focus pane above')
+map('n', 'sh', '<C-w>h', 'Focus pane left')
+map('n', 'sj', '<C-w>j', 'Focus pane below')
+map('n', 'sl', '<C-w>l', 'Focus pane right')
+map('n', 'sq', '<C-w>q', 'Close pane')
+map('n', '<C-w><left>', '<C-w><', 'Decrease pane width')
+map('n', '<C-w><right>', '<C-w>>', 'Increase pane width')
+map('n', '<C-w><up>', '<C-w>+', 'Increase pane height')
+map('n', '<C-w><down>', '<C-w>-', 'Decrease pane height')
+
+-- terminal
+local T = function(mode)
+  if mode == 'vertical' then
+    return function()
+      vim.cmd 'vert split | term'
+    end
+  elseif mode == 'horizontal' then
+    return function()
+      vim.cmd 'hor split | term'
+    end
+  elseif mode == 'gemini' then
+    return function()
+      vim.cmd 'vert split | term gemini'
+    end
+  end
+end
+map('n', L 'tv', T 'vertical', 'Open terminal vertically')
+map('n', L 'th', T 'horizontal', 'Open terminal horizontally')
+map('n', L 'ge', T 'gemini', 'Open terminal with Gemini CLI')
+map('t', 'jj', '<C-\\><C-n>', 'Change to normal mode in terminal')
 
 -- plugin:vimwiki
 map('n', '\\ww', '<Plug>VimwikiIndex', 'Go to WikiIndex')

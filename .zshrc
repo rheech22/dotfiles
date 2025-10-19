@@ -10,7 +10,16 @@ export EDITOR="nvim"
 
 # node version manager
 export NVM_DIR="$HOME/.nvm"
-. "$(brew --prefix nvm)/nvm.sh"
+[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh" --no-use
+
+NVM_DEFAULT_ALIAS_PATH="$NVM_DIR/alias/default"
+if [ -f "$NVM_DEFAULT_ALIAS_PATH" ]; then
+  NVM_DEFAULT_VERSION=$(cat "$NVM_DEFAULT_ALIAS_PATH")
+  NVM_NODE_PATH="$NVM_DIR/versions/node/v$NVM_DEFAULT_VERSION/bin"
+  if [ -d "$NVM_NODE_PATH" ]; then
+    export PATH="$NVM_NODE_PATH:$PATH"
+  fi
+fi
 
 # soruce
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh

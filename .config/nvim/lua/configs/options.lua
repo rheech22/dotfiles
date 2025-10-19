@@ -32,3 +32,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+vim.api.nvim_create_autocmd('TermOpen', {
+  desc = 'Disable number and relative number in terminal',
+  group = vim.api.nvim_create_augroup('term-open', { clear = true }),
+  callback = function()
+    vim.o.number = false
+    vim.o.relativenumber = false
+  end,
+})
