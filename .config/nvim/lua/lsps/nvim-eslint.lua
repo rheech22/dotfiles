@@ -1,5 +1,5 @@
 return {
-	config = function()
-		require('nvim-eslint').setup {}
-	end
+  config = function()
+    require('nvim-eslint').setup {}
+  end,
 }

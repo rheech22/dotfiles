@@ -16,5 +16,6 @@ My Personal dotfiles.
 - pngpaste `0.2.3`
 - Node.js `>=22`
 - Flutter `>=3.31`
-- Typescript 5.9.3
- 
+- Typescript `5.9.3`
+- prettierd `0.25.2`
+- stylua `2.3.0` 

@@ -1,9 +1,13 @@
-local L = function(key) return "<leader>" .. key end
-local C = function(cmd) return "<Cmd>" .. cmd .. "<CR>" end
+local L = function(key)
+  return '<leader>' .. key
+end
+local C = function(cmd)
+  return '<Cmd>' .. cmd .. '<CR>'
+end
 local map = function(mode, lhs, rhs, desc, opts)
-	opts = opts or {}
-	opts.desc = desc
-	vim.keymap.set(mode, lhs, rhs, opts)
+  opts = opts or {}
+  opts.desc = desc
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 -- file & buffer
@@ -17,7 +21,7 @@ map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
 
 -- picker
 map('n', L 'g', C 'Pick grep_live', 'Grep live')
-map('n', L '<space>', C "Pick files", 'Find files')
+map('n', L '<space>', C 'Pick files', 'Find files')
 map('n', L 'r', C 'Pick buffers', 'Find buffers')
 map('n', L 'h', C 'Pick help', 'Find help')
 

@@ -1,7 +1,7 @@
 return {
-	config = function()
-		require('todo-comments').setup {
-			signs = false,
-		}
-	end
+  config = function()
+    require('todo-comments').setup {
+      signs = false,
+    }
+  end,
 }

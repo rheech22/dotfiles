@@ -1,5 +1,5 @@
 return {
-	config = function()
-		require('mini.pairs').setup {}
-	end
+  config = function()
+    require('mini.pairs').setup {}
+  end,
 }

@@ -8,6 +8,10 @@
       "rev": "19a38aa",
       "src": "https://github.com/max397574/better-escape.nvim"
     },
+    "conform": {
+      "rev": "fbcb4fa",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
     "dap": {
       "rev": "881f7dc",
       "src": "https://github.com/mfussenegger/nvim-dap"
