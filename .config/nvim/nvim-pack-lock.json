@@ -16,6 +16,10 @@
       "rev": "668e9e6",
       "src": "https://github.com/igorlfs/nvim-dap-view"
     },
+    "fidget": {
+      "rev": "3f54759",
+      "src": "https://github.com/j-hui/fidget.nvim"
+    },
     "flutter-tools": {
       "rev": "65b7399",
       "src": "https://github.com/nvim-flutter/flutter-tools.nvim"

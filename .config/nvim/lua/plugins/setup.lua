@@ -16,6 +16,7 @@ local plugins = {
 	{ name = 'lazygit',          src = H.github('kdheepak/lazygit.nvim') },
 	{ name = 'dap',              src = H.github('mfussenegger/nvim-dap') },
 	{ name = 'dap-view',         src = H.github('igorlfs/nvim-dap-view') },
+	{ name = 'fidget',           src = H.github('j-hui/fidget.nvim') },
 }
 
 vim.pack.add(plugins)
