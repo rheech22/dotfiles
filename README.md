@@ -2,6 +2,29 @@
 
 My Personal dotfiles.
 
+## Setup
+
+### Zsh Configuration
+
+The zsh configuration files are located in `.config/zsh/`. To use them, create symbolic links:
+
+```bash
+# Link the entire zsh config folder
+ln -sf ~/dotfiles/.config/zsh ~/.config/zsh
+
+# Link config files to home directory
+ln -sf ~/.config/zsh/.zshrc ~/.zshrc
+ln -sf ~/.config/zsh/.zshenv ~/.zshenv
+ln -sf ~/.config/zsh/.zprofile ~/.zprofile
+```
+
+The `.local` files are for machine-specific configurations:
+- `.zprofile.local` - Machine-specific PATH configurations (e.g., Homebrew)
+- `.zshenv.local` - Machine-specific environment variables (e.g., API keys)
+- `.zshrc.local` - Machine-specific aliases and functions
+
+See [`.local.example`](.config/zsh/.local.example) for detailed examples and templates.
+
 ## Versions
 
 - Bob `4.1.3`
@@ -21,3 +44,4 @@ My Personal dotfiles.
 - stylua `2.3.0` 
 - fnm `1.38.1`
 - tree-sitter-cli `0.25.10`
+- ripgrep `15.0.0`

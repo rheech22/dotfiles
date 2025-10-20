@@ -1,0 +1,59 @@
+# ============================================================================
+# Zsh Local Configuration Template
+# ============================================================================
+# Copy this file and split into three separate files:
+#   - .zprofile.local (PATH configurations)
+#   - .zshenv.local (environment variables)
+#   - .zshrc.local (aliases and functions)
+#
+# These files are gitignored and should contain machine-specific settings.
+# ============================================================================
+
+
+# ============================================================================
+# .zprofile.local - PATH configurations
+# ============================================================================
+# Add machine-specific PATH modifications here
+# This file is sourced for login shells
+
+# Example: Homebrew
+# export PATH=/opt/homebrew/bin:$PATH
+
+# ============================================================================
+# .zshenv.local - Environment variables
+# ============================================================================
+# Add machine-specific environment variables here
+# This file is sourced for all zsh sessions
+
+# Example: Workspace Name
+# export WORKSPACE="work"
+#
+# Example: API Keys
+# export OPENAI_API_KEY="sk-..."
+# export ANTHROPIC_API_KEY="sk-ant-..."
+# export GEMINI_API_KEY="..."
+
+# Example: Apple Developer
+# export APPLE_ID="your-email@example.com"
+# export APPLE_APP_SPECIFIC_PASSWORD="xxxx-xxxx-xxxx-xxxx"
+# export APPLE_TEAM_ID="XXXXXXXXXX"
+
+# ============================================================================
+# .zshrc.local - Aliases and functions
+# ============================================================================
+# Add machine-specific aliases, functions, and interactive shell settings here
+# This file is sourced for interactive shells
+
+# Example: Project shortcuts
+# alias blog="cd ~/Projects/blog"
+# alias work="cd ~/Projects/work"
+# alias cloud="cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/Notes"
+
+# Example: Custom commands
+# alias python="python3"
+# alias pip="pip3"
+
+# Example: Functions
+# function mkcd() {
+#   mkdir -p "$1" && cd "$1"
+# }
