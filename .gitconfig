@@ -1,6 +1,6 @@
 [user]
-	name = Aiden
-	email = rheech22@gmail.com
+	name = 이창혁
+	email = changhyuk.lee@socra.ai
 
 [core]
 	editor = vim -c 'norm! ggA ' -c 'startinsert'
@@ -32,7 +32,7 @@
 	ws = "!gh status"
 [credential "https://github.com"]
 	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/opt/homebrew/bin/gh auth git-credential

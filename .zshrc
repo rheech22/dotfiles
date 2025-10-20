@@ -1,3 +1,7 @@
+# brew
+# TODO: ..?
+export PATH=/opt/homebrew/bin:$PATH
+
 # colortheme
 eval "$(starship init zsh)"
 
@@ -14,7 +18,8 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 # soruce
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $HOME/.local/bin/env
+# TODO: load conditionally
+# source $HOME/.local/bin/env
 
 # flutter 
 export PATH="$HOME/flutter/bin:$PATH"
