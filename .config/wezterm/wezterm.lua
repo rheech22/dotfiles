@@ -6,7 +6,7 @@ local config = wezterm.config_builder()
 local act = wezterm.action
 
 -- Font settings
-config.font_size = 19
+config.font_size = 16
 config.font = wezterm.font("DankMono Nerd Font")
 
 -- Colors

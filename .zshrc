@@ -22,9 +22,9 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 # source $HOME/.local/bin/env
 
 # flutter 
-export PATH="$HOME/flutter/bin:$PATH"
-export PATH=~/Library/Android/sdk/tools:$PATH
-export PATH=~/Library/Android/sdk/platform-tools:$PATH
+# export PATH="$HOME/flutter/bin:$PATH"
+# export PATH=~/Library/Android/sdk/tools:$PATH
+# export PATH=~/Library/Android/sdk/platform-tools:$PATH
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
