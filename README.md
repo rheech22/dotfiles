@@ -21,3 +21,4 @@ My Personal dotfiles.
 - stylua `2.3.0` 
 - fnm `1.38.1`
 - tree-sitter-cli `0.25.10`
+- ripgrep `15.0.0`
