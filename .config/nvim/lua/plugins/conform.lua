@@ -16,7 +16,7 @@ return {
   config = function()
     local prettier_formatters_by = {}
     for _, ft in ipairs(prettier_supported) do
-      prettier_formatters_by[ft] = { 'prettier' }
+      prettier_formatters_by[ft] = { 'prettierd' }
     end
     require('conform').setup {
       formatters_by_ft = vim.tbl_extend('keep', {
