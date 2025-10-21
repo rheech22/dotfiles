@@ -15,7 +15,7 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 alias v='nvim .'
 alias vim=nvim
 alias git="LANG=en_GB.UTF-8 git"
-alias git:sw="gh auth switch && gh auth setup-git"
+alias gsw="gh auth switch && gh auth setup-git"
 alias ll="ls -al --color"
 alias lg="lazygit"
 alias cc="claude"
