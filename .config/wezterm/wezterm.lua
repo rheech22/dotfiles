@@ -2,14 +2,14 @@ local wezterm = require("wezterm")
 
 local constants = require("constants")
 local commands = require("commands")
-local workspace = os.getenv("WORKSPACE")
+local hostname = wezterm.hostname()
 
 local config = wezterm.config_builder()
 local act = wezterm.action
 
 -- Font settings
 config.font = wezterm.font("DankMono Nerd Font")
-if workspace == "work" then
+if hostname == "ichanghyeogs-MacBook-Pro.local" then
 	config.font_size = 16
 else
 	config.font_size = 19

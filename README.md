@@ -35,7 +35,7 @@ See [`.local.example`](.config/zsh/.local.example) for detailed examples and tem
 - Git `2.45.2`
 - GitHub CLI `2.66.1`
 - Lazygit `0.55.1`
-- Wezterm `20240203-110809-5046fc22`
+- Wezterm `20251014-193657-64f2907c`
 - pngpaste `0.2.3`
 - Node.js `>=22`
 - Flutter `>=3.31`

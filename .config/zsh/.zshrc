@@ -4,6 +4,9 @@ eval "$(starship init zsh)"
 # auto completion
 autoload -U compinit; compinit
 
+# node version manager
+eval "$(fnm env --use-on-cd --shell zsh)"
+
 # plugins
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
