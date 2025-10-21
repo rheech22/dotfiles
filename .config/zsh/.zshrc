@@ -18,7 +18,7 @@ alias git="LANG=en_GB.UTF-8 git"
 alias git:sw="gh auth switch && gh auth setup-git"
 alias ll="ls -al --color"
 alias lg="lazygit"
-alias ca="claude"
+alias cc="claude"
 alias dot="cd $HOME/dotfiles"
 
 # Check if .zshrc.local exists and source it

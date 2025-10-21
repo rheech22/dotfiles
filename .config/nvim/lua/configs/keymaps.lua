@@ -21,6 +21,12 @@ map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
 
 -- picker
 map('n', L 'g', C 'Pick grep_live', 'Grep live')
+map(
+  { 'n', 'v' },
+  L 'sw',
+  C 'lua require("mini.pick").builtin.grep { pattern = vim.fn.expand "<cword>" }',
+  'Search word'
+)
 map('n', L '<space>', C 'Pick files', 'Find files')
 map('n', L 'r', C 'Pick buffers', 'Find buffers')
 map('n', L 'h', C 'Pick help', 'Find help')
@@ -83,16 +89,17 @@ local T = function(mode)
     return function()
       vim.cmd 'hor split | term'
     end
-  elseif mode == 'gemini' then
+  else
     return function()
-      vim.cmd 'vert split | term gemini'
+      vim.cmd('vert split | term ' .. mode)
     end
   end
 end
 map('n', L 'tv', T 'vertical', 'Open terminal vertically')
 map('n', L 'th', T 'horizontal', 'Open terminal horizontally')
 map('n', L 'ge', T 'gemini', 'Open terminal with Gemini CLI')
-map('t', 'jj', '<C-\\><C-n>', 'Change to normal mode in terminal')
+map('n', L 'cc', T 'claude', 'Open terminal with Claude Code')
+map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
 
 -- plugin:vimwiki
 map('n', '\\ww', '<Plug>VimwikiIndex', 'Go to WikiIndex')

@@ -1,8 +1,29 @@
 # https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
 
-# Search hidden files / directories (e.g. dotfiles) by default
 --hidden
+--smart-case
+--max-columns=500
+--max-columns-preview
+--line-number
+--binary
 
---glob
-!.git/*
+# exclude
+--glob=!.git/*
+--glob=!node_modules/*
+--glob=!.next/*
+--glob=!.nuxt/*
+--glob=!dist/*
+--glob=!build/*
+--glob=!target/*
+--glob=!vendor/*
+--glob=!*.lock
+--glob=!package-lock.json
+--glob=!yarn.lock
+
+# colors
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=line:fg:yellow
+--colors=match:fg:red
+--colors=match:style:bold
 
