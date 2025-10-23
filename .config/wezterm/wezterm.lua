@@ -22,12 +22,12 @@ config.colors = {
 }
 
 -- Appearance
-config.window_decorations = "RESIZE"
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
 	left = 0,
 	right = 0,
-	top = 0,
+	top = 48,
 	bottom = 0,
 }
 
