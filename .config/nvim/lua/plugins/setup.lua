@@ -20,6 +20,7 @@ local plugins = {
   { name = 'mini.pick', src = H.github 'echasnovski/mini.pick' },
   { name = 'mini.pairs', src = H.github 'nvim-mini/mini.pairs' },
   { name = 'mini.icons', src = H.github 'nvim-mini/mini.icons' },
+  { name = 'mini.starter', src = H.github 'nvim-mini/mini.starter' },
   { name = 'oil', src = H.github 'stevearc/oil.nvim' },
   { name = 'better-escape', src = H.github 'max397574/better-escape.nvim' },
   { name = 'todo-comments', src = H.github 'folke/todo-comments.nvim' },

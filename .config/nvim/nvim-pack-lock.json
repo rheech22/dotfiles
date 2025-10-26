@@ -100,6 +100,10 @@
       "rev": "96ee37d",
       "src": "https://github.com/echasnovski/mini.pick"
     },
+    "mini.starter": {
+      "rev": "b43df0b",
+      "src": "https://github.com/nvim-mini/mini.starter"
+    },
     "nvim-eslint": {
       "rev": "c51802b",
       "src": "https://github.com/esmuellert/nvim-eslint"
