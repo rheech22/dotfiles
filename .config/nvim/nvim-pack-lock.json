@@ -141,6 +141,10 @@
       "rev": "b9fd522",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "smear-cursor": {
+      "rev": "abfa583",
+      "src": "https://github.com/sphamba/smear-cursor.nvim"
+    },
     "supermaven": {
       "rev": "07d20fc",
       "src": "https://github.com/supermaven-inc/supermaven-nvim"

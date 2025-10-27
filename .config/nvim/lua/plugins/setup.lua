@@ -38,6 +38,7 @@ local plugins = {
   { name = 'supermaven', src = H.github 'supermaven-inc/supermaven-nvim' },
   { name = 'codecompanion', src = H.github 'olimorris/codecompanion.nvim' },
   { name = 'markview', src = H.github 'OXY2DEV/markview.nvim' },
+  { name = 'smear-cursor', src = H.github 'sphamba/smear-cursor.nvim' },
 }
 
 vim.pack.add(plugins)
