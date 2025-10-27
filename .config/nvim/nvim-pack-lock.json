@@ -36,6 +36,14 @@
       "rev": "65b7399",
       "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
     },
+    "github-nvim-theme": {
+      "rev": "c106c94",
+      "src": "https://github.com/projekt0n/github-nvim-theme"
+    },
+    "github-theme": {
+      "rev": "c106c94",
+      "src": "https://github.com/projekt0n/github-nvim-theme"
+    },
     "gitsigns": {
       "rev": "1ee5c1f",
       "src": "https://github.com/lewis6991/gitsigns.nvim"

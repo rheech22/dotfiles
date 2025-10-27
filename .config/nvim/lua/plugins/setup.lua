@@ -14,7 +14,10 @@ vim.g.vimwiki_ext2syntax = {
 }
 
 local plugins = {
+  -- colorschemes
   { name = 'vague', src = H.github 'vague2k/vague.nvim' },
+  -- { name = 'github-theme', src = H.github 'projekt0n/github-nvim-theme' },
+  --
   { name = 'nvim-treesitter', src = H.github 'nvim-treesitter/nvim-treesitter', version = 'main' },
   { name = 'vimwiki', src = H.github 'vimwiki/vimwiki', version = 'dev' },
   { name = 'mini.pick', src = H.github 'echasnovski/mini.pick' },
