@@ -16,7 +16,7 @@ return {
 		-- }, "\n")
 
 		local starter = require('mini.starter')
-		local bullet_padding = string.rep(" ", 3)
+		-- local bullet_padding = string.rep(" ", 3)
 		local shortcut_section = 'Shortcuts'
 		local add_item = function(to, name, action)
 			return { name = name, action = action, section = to }
@@ -36,11 +36,11 @@ return {
 				add_item(shortcut_section, '.(Dotfiles)', 'e ~/dotfiles'),
 			},
 			content_hooks = {
-				starter.gen_hook.adding_bullet(bullet_padding .. "░ ", false),
+				-- starter.gen_hook.adding_bullet(bullet_padding .. "░ ", false),
 				starter.gen_hook.aligning("center", "center"),
 				starter.gen_hook.indexing("all", { shortcut_section }),
 			},
-			header = 'Why...?',
+			header = '',
 			footer = '',
 		}
 

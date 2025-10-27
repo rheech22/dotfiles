@@ -17,8 +17,27 @@ end
 
 -- Colors
 config.colors = {
-	cursor_bg = "white",
-	cursor_border = "white",
+	background = "#141415",
+	foreground = "#cdcdcd",
+	cursor_bg = "#ffffff",
+	cursor_border = "#ffffff",
+	selection_fg = '#c3c3d5',
+	selection_bg = '#333738',
+	split = '#e8b589',
+	tab_bar = {
+		active_tab = {
+			bg_color = "#141415",
+			fg_color = "#e8b589",
+		},
+		new_tab = {
+			bg_color = "None",
+			fg_color = "#e8b589",
+		},
+		new_tab_hover = {
+			bg_color = "#141415",
+			fg_color = "#e8b589",
+		}
+	}
 }
 
 -- Appearance
@@ -32,8 +51,8 @@ config.window_padding = {
 }
 
 -- config.window_background_image = constants.bg_blurred
-config.window_background_opacity = constants.opacity
-config.macos_window_background_blur = 80
+-- config.macos_window_background_blur = 80
+-- config.window_background_opacity = constants.opacity
 config.command_palette_font_size = 16
 config.command_palette_bg_color = "#5E4090"
 config.command_palette_rows = 16

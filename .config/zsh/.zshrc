@@ -1,5 +1,6 @@
 # colortheme
 eval "$(starship init zsh)"
+export LSCOLORS="ExFxBxDxCxegedabagacad"
 
 # auto completion
 autoload -U compinit; compinit
@@ -12,14 +13,15 @@ source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # alias
-alias v='nvim'
-alias vim=nvim
+alias v="nvim"
+alias vim="nvim"
 alias git="LANG=en_GB.UTF-8 git"
 alias gsw="gh auth switch && gh auth setup-git"
 alias ll="ls -al --color"
 alias lg="lazygit"
 alias cc="claude"
 alias dot="cd $HOME/dotfiles"
+alias zsh="source ~/.zshrc"
 
 # Check if .zshrc.local exists and source it
 if [ -f "$HOME/.config/zsh/.zshrc.local" ]; then
