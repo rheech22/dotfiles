@@ -3,7 +3,7 @@
 	email = rheech22@gmail.com
 
 [core]
-	editor = vim -c 'norm! ggA ' -c 'startinsert'
+	editor = nvim -c 'norm! ggA ' -c 'startinsert'
 	autocrlf = input
 
 [alias]
