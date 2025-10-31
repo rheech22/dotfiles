@@ -141,6 +141,10 @@
       "rev": "b9fd522",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "render-markdown": {
+      "rev": "10126ef",
+      "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+    },
     "smear-cursor": {
       "rev": "abfa583",
       "src": "https://github.com/sphamba/smear-cursor.nvim"
@@ -161,6 +165,10 @@
       "rev": "846d5113",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
+    },
+    "treesitter-context": {
+      "rev": "ec308c7",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "typescript-tools": {
       "rev": "bf11d98",

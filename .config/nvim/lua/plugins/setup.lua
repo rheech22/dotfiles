@@ -19,6 +19,7 @@ local plugins = {
   -- { name = 'github-theme', src = H.github 'projekt0n/github-nvim-theme' },
   --
   { name = 'nvim-treesitter', src = H.github 'nvim-treesitter/nvim-treesitter', version = 'main' },
+  { name = 'treesitter-context', src = H.github 'nvim-treesitter/nvim-treesitter-context' },
   { name = 'vimwiki', src = H.github 'vimwiki/vimwiki', version = 'dev' },
   { name = 'mini.pick', src = H.github 'echasnovski/mini.pick' },
   { name = 'mini.pairs', src = H.github 'nvim-mini/mini.pairs' },
@@ -37,7 +38,7 @@ local plugins = {
   { name = 'conform', src = H.github 'stevearc/conform.nvim' },
   { name = 'supermaven', src = H.github 'supermaven-inc/supermaven-nvim' },
   { name = 'codecompanion', src = H.github 'olimorris/codecompanion.nvim' },
-  { name = 'markview', src = H.github 'OXY2DEV/markview.nvim' },
+  { name = 'render-markdown', src = H.github 'MeanderingProgrammer/render-markdown.nvim' },
   { name = 'smear-cursor', src = H.github 'sphamba/smear-cursor.nvim' },
 }
 
