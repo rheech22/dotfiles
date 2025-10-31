@@ -37,8 +37,8 @@ return {
 			},
 			content_hooks = {
 				-- starter.gen_hook.adding_bullet(bullet_padding .. "░ ", false),
+				-- starter.gen_hook.indexing("all", { shortcut_section }),
 				starter.gen_hook.aligning("center", "center"),
-				starter.gen_hook.indexing("all", { shortcut_section }),
 			},
 			header = '',
 			footer = '',

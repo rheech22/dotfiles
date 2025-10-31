@@ -1,13 +1,13 @@
 local L = function(key)
-  return '<leader>' .. key
+	return '<leader>' .. key
 end
 local C = function(cmd)
-  return '<Cmd>' .. cmd .. '<CR>'
+	return '<Cmd>' .. cmd .. '<CR>'
 end
 local map = function(mode, lhs, rhs, desc, opts)
-  opts = opts or {}
-  opts.desc = desc
-  vim.keymap.set(mode, lhs, rhs, opts)
+	opts = opts or {}
+	opts.desc = desc
+	vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 -- file & buffer
@@ -22,23 +22,31 @@ map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
 -- picker
 map('n', L 'g', C 'Pick grep_live', 'Grep live')
 map(
-  { 'n', 'v' },
-  L 'sw',
-  C 'lua require("mini.pick").builtin.grep { pattern = vim.fn.expand "<cword>" }',
-  'Search word'
+	{ 'n', 'v' },
+	L 'sw',
+	C 'lua require("mini.pick").builtin.grep { pattern = vim.fn.expand "<cword>" }',
+	'Search word'
 )
 map('n', L '<space>', C 'Pick files', 'Find files')
 map('n', L 'r', C 'Pick buffers', 'Find buffers')
 map('n', L 'h', C 'Pick help', 'Find help')
 
 -- lsp
-map('n', L 'lf', C 'lua vim.lsp.buf.format()', 'Format buffer')
 map('n', L 'cr', C 'lua vim.lsp.buf.rename()', 'Rename symbol')
 map('n', L 'ca', C 'lua vim.lsp.buf.code_action()', 'Code action')
 map('n', 'gd', C 'lua vim.lsp.buf.definition()', 'Go to definition')
 map('n', 'gl', C 'lua vim.diagnostic.open_float()', 'Show diagnostics')
 map('n', 'dn', C 'lua vim.diagnostic.jump({ count = 1, float = true })', 'Next diagnostic')
 map('n', 'dp', C 'lua vim.diagnostic.jump({ count = -1, float = true })', 'Previous diagnostic')
+map('n', L 'lf', function()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local eslint_client = vim.lsp.get_clients({ bufnr = bufnr, name = "eslint" })[1]
+	if eslint_client then
+		vim.cmd("LspEslintFixAll")
+	else
+		vim.lsp.buf.format({ async = true })
+	end
+end, 'Format buffer')
 
 -- editing
 map('n', L 'ip', C 'PasteImage', 'Paste image from clipboard')
@@ -81,19 +89,19 @@ map('n', '<C-w><down>', '<C-w>-', 'Decrease pane height')
 
 -- terminal
 local T = function(mode)
-  if mode == 'vertical' then
-    return function()
-      vim.cmd 'vert split | term'
-    end
-  elseif mode == 'horizontal' then
-    return function()
-      vim.cmd 'hor split | term'
-    end
-  else
-    return function()
-      vim.cmd('vert split | term ' .. mode)
-    end
-  end
+	if mode == 'vertical' then
+		return function()
+			vim.cmd 'vert split | term'
+		end
+	elseif mode == 'horizontal' then
+		return function()
+			vim.cmd 'hor split | term'
+		end
+	else
+		return function()
+			vim.cmd('vert split | term ' .. mode)
+		end
+	end
 end
 map('n', L 'tv', T 'vertical', 'Open terminal vertically')
 map('n', L 'th', T 'horizontal', 'Open terminal horizontally')
