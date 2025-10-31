@@ -107,6 +107,8 @@ map('n', L 'tv', T 'vertical', 'Open terminal vertically')
 map('n', L 'th', T 'horizontal', 'Open terminal horizontally')
 map('n', L 'ge', T 'gemini', 'Open terminal with Gemini CLI')
 map('n', L 'cc', T 'claude', 'Open terminal with Claude Code')
+map('n', L 'ta', C 'set autochdir', 'Attach Terminal to Current Buffer')
+map('n', L 'td', C 'set noautochdir', 'Detach Terminal from Current Buffer')
 map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
 
 -- plugin:vimwiki
