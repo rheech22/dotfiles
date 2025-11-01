@@ -46,3 +46,4 @@ See [`.local.example`](.config/zsh/.local.example) for detailed examples and tem
 - tree-sitter-cli `0.25.10`
 - ripgrep `15.0.0`
 - vscode-langservers-extracted `4.10.0`
+- yazi `2.5.31`
