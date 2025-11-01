@@ -20,16 +20,15 @@ map({ 'n', 'v', 'x' }, L 's', C 'e #', 'Edit alternate file')
 map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
 
 -- picker
-map('n', L 'g', C 'Pick grep_live', 'Grep live')
-map(
-	{ 'n', 'v' },
-	L 'sw',
-	C 'lua require("mini.pick").builtin.grep { pattern = vim.fn.expand "<cword>" }',
-	'Search word'
-)
-map('n', L '<space>', C 'Pick files', 'Find files')
-map('n', L 'r', C 'Pick buffers', 'Find buffers')
-map('n', L 'h', C 'Pick help', 'Find help')
+map('n', L '<space>', C 'FzfLua files', 'Find files')
+map('n', L 'b', C 'FzfLua buffers', 'Find buffers')
+map('n', L 'h', C 'FzfLua helptags', 'Find help')
+map('n', L 'g', C 'FzfLua live_grep', 'Grep live')
+map('n', L 'r', C 'FzfLua oldfiles', 'Find recent files')
+map('n', L 'fb', C 'FzfLua builtin', 'Show FzfLua builtin')
+map('n', L 'fw', C 'FzfLua grep_cword', 'Grep word under cursor')
+map('n', L 'fW', C 'FzfLua grep_cWORD', 'Grep WORD under cursor')
+map('v', L 'fw', C 'FzfLua grep_visual', 'Grep visual selection')
 
 -- lsp
 map('n', L 'cr', C 'lua vim.lsp.buf.rename()', 'Rename symbol')
@@ -133,12 +132,12 @@ map('n', L 'dt', C 'lua require("dap").terminate()', 'Terminate')
 map('n', L 'dv', C 'lua require("dap-view").toggle()', 'Toggle Debug View')
 
 -- plugin:flutter-tools
-map('n', L 'fl', C 'FlutterRun', 'Flutter Run')
-map('n', L 'fq', C 'FlutterQuit', 'Flutter Quit')
-map('n', L 'fo', C 'FlutterReload', 'Flutter Reload')
-map('n', L 'fr', C 'FlutterRestart', 'Flutter Restart')
-map('n', L 'fb', C 'FlutterPubGet', 'Flutter PubGet')
-map('n', L 'fg', C '!dart run build_runner build --delete-conflicting-outputs', 'Flutter Code Generate')
+map('n', L 'Fl', C 'FlutterRun', 'Flutter Run')
+map('n', L 'Fq', C 'FlutterQuit', 'Flutter Quit')
+map('n', L 'Fo', C 'FlutterReload', 'Flutter Reload')
+map('n', L 'Fr', C 'FlutterRestart', 'Flutter Restart')
+map('n', L 'Fb', C 'FlutterPubGet', 'Flutter PubGet')
+map('n', L 'Fg', C '!dart run build_runner build --delete-conflicting-outputs', 'Flutter Code Generate')
 
 -- plugin:codecompanion
 map('n', L 'aa', C 'CodeCompanionActions', 'CodeCompanion Actions')

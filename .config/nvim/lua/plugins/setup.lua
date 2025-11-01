@@ -17,11 +17,9 @@ local plugins = {
   -- colorschemes
   { name = 'vague', src = H.github 'vague2k/vague.nvim' },
   -- { name = 'github-theme', src = H.github 'projekt0n/github-nvim-theme' },
-  --
   { name = 'nvim-treesitter', src = H.github 'nvim-treesitter/nvim-treesitter', version = 'main' },
   { name = 'treesitter-context', src = H.github 'nvim-treesitter/nvim-treesitter-context' },
   { name = 'vimwiki', src = H.github 'vimwiki/vimwiki', version = 'dev' },
-  { name = 'mini.pick', src = H.github 'echasnovski/mini.pick' },
   { name = 'mini.pairs', src = H.github 'nvim-mini/mini.pairs' },
   { name = 'mini.icons', src = H.github 'nvim-mini/mini.icons' },
   { name = 'mini.starter', src = H.github 'nvim-mini/mini.starter' },
@@ -40,6 +38,7 @@ local plugins = {
   { name = 'codecompanion', src = H.github 'olimorris/codecompanion.nvim' },
   { name = 'render-markdown', src = H.github 'MeanderingProgrammer/render-markdown.nvim' },
   { name = 'smear-cursor', src = H.github 'sphamba/smear-cursor.nvim' },
+  { name = 'fzf-lua', src = H.github 'ibhagwan/fzf-lua' },
 }
 
 vim.pack.add(plugins)

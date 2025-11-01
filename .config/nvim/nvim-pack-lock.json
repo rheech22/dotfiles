@@ -4,10 +4,6 @@
       "rev": "19a38aa",
       "src": "https://github.com/max397574/better-escape.nvim"
     },
-    "better-escape.nvim": {
-      "rev": "19a38aa",
-      "src": "https://github.com/max397574/better-escape.nvim"
-    },
     "codecompanion": {
       "rev": "5efcc8f",
       "src": "https://github.com/olimorris/codecompanion.nvim"
@@ -32,23 +28,11 @@
       "rev": "65b7399",
       "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
     },
-    "flutter-tools.nvim": {
-      "rev": "65b7399",
-      "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
-    },
-    "github-nvim-theme": {
-      "rev": "c106c94",
-      "src": "https://github.com/projekt0n/github-nvim-theme"
-    },
-    "github-theme": {
-      "rev": "c106c94",
-      "src": "https://github.com/projekt0n/github-nvim-theme"
+    "fzf-lua": {
+      "rev": "a8458b7",
+      "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns": {
-      "rev": "1ee5c1f",
-      "src": "https://github.com/lewis6991/gitsigns.nvim"
-    },
-    "gitsigns.nvim": {
       "rev": "1ee5c1f",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
@@ -56,15 +40,7 @@
       "rev": "e7e29f0",
       "src": "https://github.com/hakonharnes/img-clip.nvim"
     },
-    "img-clip.nvim": {
-      "rev": "f33f3af",
-      "src": "https://github.com/hakonharnes/img-clip.nvim"
-    },
     "lazygit": {
-      "rev": "2305dee",
-      "src": "https://github.com/kdheepak/lazygit.nvim"
-    },
-    "lazygit.nvim": {
       "rev": "2305dee",
       "src": "https://github.com/kdheepak/lazygit.nvim"
     },
@@ -72,27 +48,11 @@
       "rev": "3ddd1b4",
       "src": "https://github.com/onsails/lspkind.nvim"
     },
-    "lspkind.nvim": {
-      "rev": "3ddd1b4",
-      "src": "https://github.com/onsails/lspkind.nvim"
-    },
     "markdown-preview": {
       "rev": "a923f5f",
       "src": "https://github.com/iamcco/markdown-preview.nvim"
     },
-    "markdown-preview.nvim": {
-      "rev": "a923f5f",
-      "src": "https://github.com/iamcco/markdown-preview.nvim"
-    },
-    "markview": {
-      "rev": "c93ea99",
-      "src": "https://github.com/OXY2DEV/markview.nvim"
-    },
     "mason": {
-      "rev": "ad7146a",
-      "src": "https://github.com/mason-org/mason.nvim"
-    },
-    "mason.nvim": {
       "rev": "ad7146a",
       "src": "https://github.com/mason-org/mason.nvim"
     },
@@ -104,17 +64,9 @@
       "rev": "b9aada8",
       "src": "https://github.com/nvim-mini/mini.pairs"
     },
-    "mini.pick": {
-      "rev": "96ee37d",
-      "src": "https://github.com/echasnovski/mini.pick"
-    },
     "mini.starter": {
       "rev": "b43df0b",
       "src": "https://github.com/nvim-mini/mini.starter"
-    },
-    "nvim-eslint": {
-      "rev": "c51802b",
-      "src": "https://github.com/esmuellert/nvim-eslint"
     },
     "nvim-lspconfig": {
       "rev": "ac98db2",
@@ -157,10 +109,6 @@
       "rev": "19d461d",
       "src": "https://github.com/folke/todo-comments.nvim"
     },
-    "todo-comments.nvim": {
-      "rev": "19d461d",
-      "src": "https://github.com/folke/todo-comments.nvim"
-    },
     "treesitter": {
       "rev": "846d5113",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
@@ -174,15 +122,7 @@
       "rev": "bf11d98",
       "src": "https://github.com/pmizio/typescript-tools.nvim"
     },
-    "typescript-tools.nvim": {
-      "rev": "bf11d98",
-      "src": "https://github.com/pmizio/typescript-tools.nvim"
-    },
     "vague": {
-      "rev": "27a19ff",
-      "src": "https://github.com/vague2k/vague.nvim"
-    },
-    "vague.nvim": {
       "rev": "27a19ff",
       "src": "https://github.com/vague2k/vague.nvim"
     },
