@@ -1,7 +1,7 @@
 local _ = require 'installer'
 
 -- enable lsp server
-vim.lsp.enable { 'lua_ls', 'tailwindcss', 'cssls', 'astro', 'eslint' }
+vim.lsp.enable { 'lua_ls', 'tailwindcss', 'cssls', 'astro', 'eslint', 'basedpyright', 'ruff' }
 
 _.install({
 	plugins = {
