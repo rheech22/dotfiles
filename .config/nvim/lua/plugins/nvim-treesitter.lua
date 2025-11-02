@@ -1,26 +1,18 @@
 return {
-  config = function()
-    require('nvim-treesitter.configs').setup {
-      ensure_installed = {
-        'lua',
-        'vim',
-        'vimdoc',
-        'markdown',
-        'markdown_inline',
-        'css',
-        'styled',
-        'html',
-        'yaml',
-      },
-      sync_install = false,
-      auto_install = true,
-      ignore_install = {},
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-    }
-
-    vim.treesitter.language.register('markdown', 'vimwiki')
-  end,
+	config = function()
+		local treesitter = require('nvim-treesitter')
+		treesitter.setup({})
+		treesitter.install({
+			'lua',
+			'vim',
+			'vimdoc',
+			'markdown',
+			'markdown_inline',
+			'css',
+			'styled',
+			'html',
+			'yaml',
+		})
+		vim.treesitter.language.register('markdown', 'vimwiki')
+	end,
 }

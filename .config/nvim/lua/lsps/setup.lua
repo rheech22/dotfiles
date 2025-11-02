@@ -1,27 +1,22 @@
-local H = require 'helpers'
+local _ = require 'installer'
 
 -- enable lsp server
 vim.lsp.enable { 'lua_ls', 'tailwindcss', 'cssls', 'astro', 'eslint' }
 
--- add lsp plugins
-local lsp_plugins = {
-	{ name = 'plenary',          src = H.github 'nvim-lua/plenary.nvim' },
-	{ name = 'mason',            src = H.github 'mason-org/mason.nvim' },
-	{ name = 'nvim-lspconfig',   src = H.github 'neovim/nvim-lspconfig' },
-	{ name = 'flutter-tools',    src = H.github 'nvim-flutter/flutter-tools.nvim' },
-	{ name = 'typescript-tools', src = H.github 'pmizio/typescript-tools.nvim' },
-	{ name = 'lspkind',          src = H.github 'onsails/lspkind.nvim' },
-}
-vim.pack.add(lsp_plugins)
-
--- setup lsp plugins
-local plugins_dir = vim.fn.stdpath 'config' .. '/lua/lsps/'
-for _, plugin in ipairs(lsp_plugins) do
-	local setting = H.get_plugin_setting(plugins_dir, plugin)
-	if setting and setting.config then
-		setting.config()
-	end
-end
+_.install({
+	plugins = {
+		{ name = 'mason',            repo = 'mason-org/mason.nvim' },
+		{ name = 'lspkind',          repo = 'onsails/lspkind.nvim' },
+		{ name = 'nvim-lspconfig',   repo = 'neovim/nvim-lspconfig' },
+		{ name = 'typescript-tools', repo = 'pmizio/typescript-tools.nvim' },
+		{
+			name = 'flutter-tools',
+			repo = 'nvim-flutter/flutter-tools.nvim',
+			deps = { 'nvim-lua/plenary.nvim' }
+		},
+	},
+	setup_dir = vim.fn.stdpath 'config' .. '/lua/lsps/',
+})
 
 -- auto completion
 vim.api.nvim_create_autocmd('LspAttach', {
