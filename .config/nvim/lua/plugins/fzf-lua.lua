@@ -1,6 +1,7 @@
 return {
 	config = function()
-		require('fzf-lua').setup {
+		local _ = require 'fzf-lua'
+		_.setup {
 			winopts = {
 				height = 0.75,
 				width = 0.75,
@@ -25,5 +26,6 @@ return {
 				prompt = "",
 			},
 		}
+		_.register_ui_select()
 	end,
 }
