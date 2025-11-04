@@ -1,0 +1,5 @@
+[user]
+	name = local_username
+	email = local_email@example.com
+[alias]
+	test = "!echo 'local gitconfig is loaded'"
