@@ -4,6 +4,14 @@
       "rev": "19a38aa",
       "src": "https://github.com/max397574/better-escape.nvim"
     },
+    "claude-code": {
+      "rev": "c9a31e5",
+      "src": "https://github.com/greggh/claude-code.nvim"
+    },
+    "claudecode": {
+      "rev": "1552086",
+      "src": "https://github.com/coder/claudecode.nvim"
+    },
     "codecompanion": {
       "rev": "ee6c2a1",
       "src": "https://github.com/olimorris/codecompanion.nvim"
