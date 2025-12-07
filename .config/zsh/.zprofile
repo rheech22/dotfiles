@@ -1,3 +1,6 @@
+# bob
+export PATH="$PATH:/Users/demian/.local/bin"
+
 # nvim
 export PATH=$HOME/.local/share/bob/nvim-bin:$PATH
 

@@ -4,6 +4,10 @@
       "rev": "19a38aa",
       "src": "https://github.com/max397574/better-escape.nvim"
     },
+    "blink": {
+      "rev": "57d900e",
+      "src": "https://github.com/saghen/blink.cmp"
+    },
     "claude-code": {
       "rev": "c9a31e5",
       "src": "https://github.com/greggh/claude-code.nvim"
@@ -19,6 +23,10 @@
     "conform": {
       "rev": "9fd3d5e",
       "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "copilot": {
+      "rev": "efe5638",
+      "src": "https://github.com/zbirenbaum/copilot.lua"
     },
     "dap": {
       "rev": "6782b09",

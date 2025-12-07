@@ -18,26 +18,26 @@ local plugin_registry = {}
 ---@param plugins Plugin[]
 ---@return vim.pack.Spec[]
 local function _spec(plugins)
-	return vim.tbl_map(function(plugin)
-		return {
-			name = plugin.name,
-			version = plugin.version,
-			src = 'https://github.com/' .. plugin.repo,
-		}
-	end, plugins)
+  return vim.tbl_map(function(plugin)
+    return {
+      name = plugin.name,
+      version = plugin.version,
+      src = 'https://github.com/' .. plugin.repo,
+    }
+  end, plugins)
 end
 
 ---install plugins
 ---@param plugins Plugin[]
 local function _install(plugins)
-	local will_be_installed = {}
-	for _, plugin in ipairs(plugins) do
-		if not plugin_registry[plugin.repo] then
-			table.insert(will_be_installed, plugin)
-			plugin_registry[plugin.repo] = 'installed'
-		end
-	end
-	vim.pack.add(_spec(will_be_installed), { confirm = false })
+  local will_be_installed = {}
+  for _, plugin in ipairs(plugins) do
+    if not plugin_registry[plugin.repo] then
+      table.insert(will_be_installed, plugin)
+      plugin_registry[plugin.repo] = 'installed'
+    end
+  end
+  vim.pack.add(_spec(will_be_installed), { confirm = false })
 end
 
 ---load setup file for plugin
@@ -45,74 +45,76 @@ end
 ---@param plugin_name string
 ---@return table | nil
 local function _setup(dir, plugin_name)
-	local ok1, chunk = pcall(loadfile, dir .. plugin_name .. '.lua')
-	if not ok1 or not chunk then
-		return nil
-	end
-	local ok2, setup = pcall(chunk)
-	if not ok2 or type(setup) ~= 'table' then
-		return nil
-	end
-	return setup
+  local ok1, chunk = pcall(loadfile, dir .. plugin_name .. '.lua')
+  if not ok1 or not chunk then
+    return nil
+  end
+  local ok2, setup = pcall(chunk)
+  if not ok2 or type(setup) ~= 'table' then
+    return nil
+  end
+  return setup
 end
 
 ---call cofig function for plugins
 ---@param dir string
 ---@param plugins Plugin[]
 local function _setups(dir, plugins)
-	for _, plugin in ipairs(plugins) do
-		if not plugin.name then return end
-		if plugin_registry[plugin.repo] == 'installed' then
-			local setup = _setup(dir, plugin.name)
-			if setup and setup.config then
-				setup.config()
-				plugin_registry[plugin.repo] = 'configured'
-			end
-		end
-	end
+  for _, plugin in ipairs(plugins) do
+    if not plugin.name then
+      return
+    end
+    if plugin_registry[plugin.repo] == 'installed' then
+      local setup = _setup(dir, plugin.name)
+      if setup and setup.config then
+        setup.config()
+        plugin_registry[plugin.repo] = 'configured'
+      end
+    end
+  end
 end
 
 ---parse to plugin table
 ---@param plugins (Plugin|string)[]
 ---@return Plugin[]
 local function _plugins(plugins)
-	return vim.tbl_map(function(plugin)
-		if type(plugin) == 'string' then
-			return { repo = plugin }
-		end
-		return plugin
-	end, plugins)
+  return vim.tbl_map(function(plugin)
+    if type(plugin) == 'string' then
+      return { repo = plugin }
+    end
+    return plugin
+  end, plugins)
 end
 
 ---extract dependencies from plugins
 ---@param plugins Plugin[]
 ---@return (Plugin|string)[]
 local function _deps(plugins)
-	local deps = {}
-	for _, plugin in ipairs(plugins) do
-		if plugin.deps and #plugin.deps > 0 then
-			for _, dep in ipairs(plugin.deps) do
-				table.insert(deps, dep)
-			end
-		end
-	end
-	return deps
+  local deps = {}
+  for _, plugin in ipairs(plugins) do
+    if plugin.deps and #plugin.deps > 0 then
+      for _, dep in ipairs(plugin.deps) do
+        table.insert(deps, dep)
+      end
+    end
+  end
+  return deps
 end
 
 ---install plugins and call config function for plugins
 ---@param params InstallerParams  params for installer {plugins} and {setup_dir}
 function M.install(params)
-	local dir = params.setup_dir
-	local plugins = _plugins(params.plugins)
+  local dir = params.setup_dir
+  local plugins = _plugins(params.plugins)
 
-	local deps = _plugins(_deps(plugins))
-	if #deps > 0 then
-		_install(deps)
-		_setups(dir, deps)
-	end
+  local deps = _plugins(_deps(plugins))
+  if #deps > 0 then
+    _install(deps)
+    _setups(dir, deps)
+  end
 
-	_install(plugins)
-	_setups(dir, plugins)
+  _install(plugins)
+  _setups(dir, plugins)
 end
 
 return M

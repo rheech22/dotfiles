@@ -1,11 +1,11 @@
 local _ = require 'installer'
-
 _.install {
   plugins = {
     { name = 'vague', repo = 'vague2k/vague.nvim' },
     { name = 'nvim-treesitter', repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
     { name = 'treesitter-context', repo = 'nvim-treesitter/nvim-treesitter-context' },
     { name = 'vimwiki', repo = 'vimwiki/vimwiki', version = 'dev' },
+    { name = 'blink', repo = 'saghen/blink.cmp' },
     { name = 'mini.pairs', repo = 'nvim-mini/mini.pairs' },
     { name = 'mini.icons', repo = 'nvim-mini/mini.icons' },
     { name = 'mini.starter', repo = 'nvim-mini/mini.starter' },
@@ -18,7 +18,8 @@ _.install {
     { name = 'lazygit', repo = 'kdheepak/lazygit.nvim' },
     { name = 'fidget', repo = 'j-hui/fidget.nvim' },
     { name = 'conform', repo = 'stevearc/conform.nvim' },
-    { name = 'supermaven', repo = 'supermaven-inc/supermaven-nvim' },
+    -- { name = 'supermaven', repo = 'supermaven-inc/supermaven-nvim' },
+    { name = 'copilot', repo = 'zbirenbaum/copilot.lua' },
     { name = 'smear-cursor', repo = 'sphamba/smear-cursor.nvim' },
     { name = 'fzf-lua', repo = 'ibhagwan/fzf-lua' },
     { name = 'claude-code', repo = 'greggh/claude-code.nvim', deps = { 'nvim-lua/plenary.nvim' } },

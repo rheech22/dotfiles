@@ -1,3 +1,4 @@
+-- NOTE: this plugins is not used currently since it is not maintained these days.
 return {
   config = function()
     require('supermaven-nvim').setup {

@@ -70,3 +70,4 @@ See [`.local.example`](.config/git/.local.example) for a template. Copy it to `.
 - ripgrep `15.0.0`
 - vscode-langservers-extracted `4.10.0`
 - yazi `2.5.31`
+- rustc `1.94.0-nightly`
