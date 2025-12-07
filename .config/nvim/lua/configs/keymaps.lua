@@ -64,9 +64,9 @@ map('n', 'n', 'nzzzv', 'Next search result and center')
 map('n', 'N', 'Nzzzv', 'Previous search result and center')
 
 -- config files
-map({ 'n', 'v', 'x' }, L 'v', C 'e $MYVIMRC', 'Edit nvim config')
-map({ 'n', 'v', 'x' }, L 'z', C 'e ~/.zshrc', 'Edit zshrc')
-map({ 'n', 'v', 'x' }, L 'wz', C 'e ~/.config/wezterm/wezterm.lua', 'Edit wezterm config')
+map({ 'n', 'v', 'x' }, L 'xv', C 'e $MYVIMRC', 'Edit nvim config')
+map({ 'n', 'v', 'x' }, L 'xz', C 'e ~/.zshrc', 'Edit zshrc')
+map({ 'n', 'v', 'x' }, L 'xw', C 'e ~/.config/wezterm/wezterm.lua', 'Edit wezterm config')
 map({ 'n', 'v', 'x' }, L 'o', C 'source $MYVIMRC', 'Source ' .. vim.fn.expand '$MYVIMRC')
 map({ 'n', 'v', 'x' }, L 'O', C 'restart', 'Restart vim.')
 
