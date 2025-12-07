@@ -8,6 +8,10 @@
       "rev": "57d900e",
       "src": "https://github.com/saghen/blink.cmp"
     },
+    "blink-copilot": {
+      "rev": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39",
+      "src": "https://github.com/fang2hou/blink-copilot"
+    },
     "claude-code": {
       "rev": "c9a31e5",
       "src": "https://github.com/greggh/claude-code.nvim"
@@ -71,6 +75,10 @@
     "mason": {
       "rev": "ad7146a",
       "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mason-lspconfig": {
+      "rev": "0b9bb925c000ae649ff7e7149c8cd00031f4b539",
+      "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mini.icons": {
       "rev": "2847986",

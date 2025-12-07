@@ -1,13 +1,13 @@
 local L = function(key)
-	return '<leader>' .. key
+  return '<leader>' .. key
 end
 local C = function(cmd)
-	return '<Cmd>' .. cmd .. '<CR>'
+  return '<Cmd>' .. cmd .. '<CR>'
 end
 local map = function(mode, lhs, rhs, desc, opts)
-	opts = opts or {}
-	opts.desc = desc
-	vim.keymap.set(mode, lhs, rhs, opts)
+  opts = opts or {}
+  opts.desc = desc
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 -- file & buffer
@@ -38,13 +38,13 @@ map('n', 'gl', C 'lua vim.diagnostic.open_float()', 'Show diagnostics')
 map('n', 'dn', C 'lua vim.diagnostic.jump({ count = 1, float = true })', 'Next diagnostic')
 map('n', 'dp', C 'lua vim.diagnostic.jump({ count = -1, float = true })', 'Previous diagnostic')
 map('n', L 'lf', function()
-	local bufnr = vim.api.nvim_get_current_buf()
-	local eslint_client = vim.lsp.get_clients({ bufnr = bufnr, name = "eslint" })[1]
-	if eslint_client then
-		vim.cmd("LspEslintFixAll")
-	else
-		vim.lsp.buf.format({ async = true })
-	end
+  local bufnr = vim.api.nvim_get_current_buf()
+  local eslint_client = vim.lsp.get_clients({ bufnr = bufnr, name = 'eslint' })[1]
+  if eslint_client then
+    vim.cmd 'LspEslintFixAll'
+  else
+    vim.lsp.buf.format { async = true }
+  end
 end, 'Format buffer')
 
 -- editing
@@ -53,9 +53,9 @@ map('n', L 'zz', C 'exe "norm! i```"| exe "norm! O```" | startinsert!', 'Generat
 map('n', 'U', '<C-r>', 'Redo')
 
 -- popup
-map('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', 'Move Next Completion Item', { expr = true })
-map('i', '<S-Tab>', 'pumvisible() ? "<C-p>" : "<S-Tab>"', 'Move Next Completion Item', { expr = true })
-map('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', 'Move Next Completion Item', { expr = true })
+-- map('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', 'Move Next Completion Item', { expr = true })
+-- map('i', '<S-Tab>', 'pumvisible() ? "<C-p>" : "<S-Tab>"', 'Move Next Completion Item', { expr = true })
+-- map('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', 'Move Next Completion Item', { expr = true })
 
 -- navigation
 map('n', '<C-k>', '<C-u>zz', 'Scroll up and center')
@@ -88,19 +88,19 @@ map('n', '<C-w><down>', '<C-w>-', 'Decrease pane height')
 
 -- terminal
 local T = function(mode)
-	if mode == 'vertical' then
-		return function()
-			vim.cmd 'vert split | term'
-		end
-	elseif mode == 'horizontal' then
-		return function()
-			vim.cmd 'hor split | term'
-		end
-	else
-		return function()
-			vim.cmd('vert split | term ' .. mode)
-		end
-	end
+  if mode == 'vertical' then
+    return function()
+      vim.cmd 'vert split | term'
+    end
+  elseif mode == 'horizontal' then
+    return function()
+      vim.cmd 'hor split | term'
+    end
+  else
+    return function()
+      vim.cmd('vert split | term ' .. mode)
+    end
+  end
 end
 map('n', L 'tv', T 'vertical', 'Open terminal vertically')
 map('n', L 'th', T 'horizontal', 'Open terminal horizontally')

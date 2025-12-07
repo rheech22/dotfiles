@@ -1,24 +1,37 @@
 local _ = require 'installer'
 
--- enable lsp server
-vim.lsp.enable { 'lua_ls', 'tailwindcss', 'cssls', 'astro', 'eslint', 'basedpyright', 'ruff' }
+_.install {
+  plugins = {
+    {
+      name = 'mason',
+      repo = 'mason-org/mason.nvim',
+    },
+    {
+      name = 'mason-lspconfig',
+      repo = 'mason-org/mason-lspconfig.nvim',
+    },
+    {
+      name = 'lspkind',
+      repo = 'onsails/lspkind.nvim',
+    },
+    {
+      name = 'nvim-lspconfig',
+      repo = 'neovim/nvim-lspconfig',
+    },
+    {
+      name = 'typescript-tools',
+      repo = 'pmizio/typescript-tools.nvim',
+    },
+    {
+      name = 'flutter-tools',
+      repo = 'nvim-flutter/flutter-tools.nvim',
+      deps = { 'nvim-lua/plenary.nvim' },
+    },
+  },
+  setup_dir = vim.fn.stdpath 'config' .. '/lua/lsps/',
+}
 
-_.install({
-	plugins = {
-		{ name = 'mason',            repo = 'mason-org/mason.nvim' },
-		{ name = 'lspkind',          repo = 'onsails/lspkind.nvim' },
-		{ name = 'nvim-lspconfig',   repo = 'neovim/nvim-lspconfig' },
-		{ name = 'typescript-tools', repo = 'pmizio/typescript-tools.nvim' },
-		{
-			name = 'flutter-tools',
-			repo = 'nvim-flutter/flutter-tools.nvim',
-			deps = { 'nvim-lua/plenary.nvim' }
-		},
-	},
-	setup_dir = vim.fn.stdpath 'config' .. '/lua/lsps/',
-})
-
--- auto completion
+-- show auto completion natevly
 -- vim.api.nvim_create_autocmd('LspAttach', {
 -- 	group = vim.api.nvim_create_augroup('auto_completion', {}),
 -- 	callback = function(args)
