@@ -11,3 +11,6 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/.ripgreprc"
 if [ -f "$HOME/.config/zsh/.zshenv.local" ]; then
   source "$HOME/.config/zsh/.zshenv.local"
 fi
+
+# cargo
+. "$HOME/.cargo/env"
