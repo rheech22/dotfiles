@@ -25,6 +25,7 @@ _.install {
     { name = 'smear-cursor', repo = 'sphamba/smear-cursor.nvim' },
     { name = 'fzf-lua', repo = 'ibhagwan/fzf-lua' },
     { name = 'claude-code', repo = 'greggh/claude-code.nvim', deps = { 'nvim-lua/plenary.nvim' } },
+    { name = 'opencode', repo = 'NickvanDyke/opencode.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',

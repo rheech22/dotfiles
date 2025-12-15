@@ -23,6 +23,7 @@ alias gsw="gh auth switch && gh auth setup-git"
 alias ll="ls -al --color"
 alias lg="lazygit"
 alias cc="claude"
+alias oo="opencode"
 alias dot="cd $HOME/dotfiles"
 alias zsh="source ~/.zshrc"
 
