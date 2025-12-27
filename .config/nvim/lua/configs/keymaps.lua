@@ -137,3 +137,11 @@ map('n', L 'Fg', C '!dart run build_runner build --delete-conflicting-outputs', 
 map('n', L 'aa', C 'CodeCompanionActions', 'CodeCompanion Actions')
 map('n', L 'ac', C 'CodeCompanionChat', 'New Chat')
 map('n', L 'at', C 'CodeCompanionChat Toggle', 'Toggle Chat')
+
+-- plugin:opencode
+map({ 'n', 'x' }, '<C-a>', C "lua require('opencode').ask('@this: ', { submit = true })", 'Ask opencode')
+map({ 'n', 'x' }, '<C-x>', C "lua require('opencode').select()", 'Execute opencode action…')
+map({ 'n', 't' }, '<C-,>', C "lua require('opencode').toggle()", 'Toggle opencode')
+map({ 'n', 'x' }, 'go', function()
+  return require('opencode').operator '@this '
+end, 'Add range to opencode', { expr = true })

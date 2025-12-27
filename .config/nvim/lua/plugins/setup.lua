@@ -29,6 +29,7 @@ _.install {
     { name = 'fzf-lua', repo = 'ibhagwan/fzf-lua' },
     { name = 'claude-code', repo = 'greggh/claude-code.nvim', deps = { 'nvim-lua/plenary.nvim' } },
     { name = 'opencode', repo = 'NickvanDyke/opencode.nvim' },
+    { name = 'snacks', repo = 'folke/snacks.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',
