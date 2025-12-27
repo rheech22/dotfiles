@@ -1,6 +1,5 @@
 return {
   config = function()
-    -- https://github.com/NickvanDyke/opencode.nvim/blob/main/lua/opencode/config.lua
     vim.g.opencode_opts = {
       provider = {
         enabled = 'snacks',

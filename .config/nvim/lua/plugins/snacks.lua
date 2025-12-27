@@ -1,11 +1,9 @@
 return {
   config = function()
     require('snacks').setup {
-      -- used
       input = { enabled = true },
       picker = { enabled = true },
       terminal = { enabled = true },
-      -- not used
       bigfile = { enabled = false },
       dashboard = { enabled = false },
       dim = { enabled = false },
@@ -18,6 +16,20 @@ return {
       statuscolumn = { enabled = false },
       words = { enabled = false },
       zen = { enabled = false },
+      styles = {
+        terminal_right = {
+          bo = { filetype = 'snacks_terminal' },
+          wo = {},
+          position = 'right',
+          width = 0.4,
+        },
+        terminal_bottom = {
+          bo = { filetype = 'snacks_terminal' },
+          wo = {},
+          position = 'bottom',
+          height = 0.3,
+        },
+      },
     }
   end,
 }

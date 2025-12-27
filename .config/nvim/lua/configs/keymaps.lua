@@ -80,26 +80,19 @@ map('n', '<C-w><right>', '<C-w>>', 'Increase pane width')
 map('n', '<C-w><up>', '<C-w>+', 'Increase pane height')
 map('n', '<C-w><down>', '<C-w>-', 'Decrease pane height')
 
--- terminal
-local T = function(mode)
-  if mode == 'vertical' then
-    return function()
-      vim.cmd 'vert split | term'
-    end
-  elseif mode == 'horizontal' then
-    return function()
-      vim.cmd 'hor split | term'
-    end
-  else
-    return function()
-      vim.cmd('vert split | term ' .. mode)
-    end
-  end
-end
-map('n', L 'tv', T 'vertical', 'Open terminal vertically')
-map('n', L 'th', T 'horizontal', 'Open terminal horizontally')
-map('n', L 'ge', T 'gemini', 'Open terminal with Gemini CLI')
-map('n', L 'cc', T 'claude', 'Open terminal with Claude Code')
+-- terminal (snacks.terminal)
+map('n', L 'tv', function()
+  require('snacks').terminal(nil, {
+    win = { style = 'terminal_right' },
+    count = 1,
+  })
+end, 'Toggle terminal (vertical)')
+map('n', L 'th', function()
+  require('snacks').terminal(nil, {
+    win = { style = 'terminal_bottom' },
+    count = 2,
+  })
+end, 'Toggle terminal (horizontal)')
 map('n', L 'ta', C 'set autochdir', 'Attach Terminal to Current Buffer')
 map('n', L 'td', C 'set noautochdir', 'Detach Terminal from Current Buffer')
 map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
