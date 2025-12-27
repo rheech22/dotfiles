@@ -1,3 +1,6 @@
+# brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # bob
 export PATH="$PATH:/Users/demian/.local/bin"
 

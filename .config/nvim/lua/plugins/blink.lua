@@ -1,11 +1,14 @@
 return {
   config = function()
     require('blink.cmp').setup {
+      enabled = function()
+        return not vim.tbl_contains({ 'vimwiki' }, vim.bo.filetype)
+      end,
       -- NOTE: you need to run "cargo build --release" in the blink plugin directory
       fuzzy = { implementation = 'prefer_rust_with_warning' },
 
       snippets = {
-        preset = 'default',
+        preset = 'mini_snippets',
       },
 
       sources = {
@@ -19,14 +22,23 @@ return {
         },
       },
 
-      keymap = {
-        preset = 'super-tab',
+      completion = {
+        accept = {
+          auto_brackets = {
+            enabled = true,
+          },
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 100,
+        },
+        ghost_text = {
+          enabled = vim.g.ai_cmp,
+        },
       },
 
-      completion = {
-        documentation = { auto_show = true, auto_show_delay_ms = 500 },
-
-        ghost_text = { enabled = true },
+      keymap = {
+        preset = 'enter',
       },
     }
   end,

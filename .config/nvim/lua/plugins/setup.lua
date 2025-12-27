@@ -8,11 +8,14 @@ _.install {
     {
       name = 'blink',
       repo = 'saghen/blink.cmp',
+      build = 'cargo build --release',
       deps = { 'fang2hou/blink-copilot' },
     },
+    { name = 'friendly-snippets', repo = 'rafamadriz/friendly-snippets' },
     { name = 'mini.pairs', repo = 'nvim-mini/mini.pairs' },
     { name = 'mini.icons', repo = 'nvim-mini/mini.icons' },
     { name = 'mini.starter', repo = 'nvim-mini/mini.starter' },
+    { name = 'mini.snippets', repo = 'nvim-mini/mini.snippets' },
     { name = 'oil', repo = 'stevearc/oil.nvim' },
     { name = 'better-escape', repo = 'max397574/better-escape.nvim' },
     { name = 'todo-comments', repo = 'folke/todo-comments.nvim' },
@@ -37,13 +40,13 @@ _.install {
       repo = 'olimorris/codecompanion.nvim',
       deps = { 'nvim-lua/plenary.nvim' },
     },
-    {
-      name = 'render-markdown',
-      repo = 'MeanderingProgrammer/render-markdown.nvim',
-      deps = {
-        { repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
-      },
-    },
+    -- {
+    --   name = 'render-markdown',
+    --   repo = 'MeanderingProgrammer/render-markdown.nvim',
+    --   deps = {
+    --     { repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
+    --   },
+    -- },
   },
   setup_dir = vim.fn.stdpath 'config' .. '/lua/plugins/',
 }

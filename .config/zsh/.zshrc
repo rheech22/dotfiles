@@ -39,3 +39,12 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
+# fnm
+FNM_PATH="/usr/local/opt/fnm/bin"
+if [ -d "$FNM_PATH" ]; then
+  eval "`fnm env`"
+fi
+
+# opencode
+export PATH=/Users/demian/.opencode/bin:$PATH

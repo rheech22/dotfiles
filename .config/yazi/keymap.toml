@@ -112,13 +112,14 @@ keymap = [
 	{ on = [ ",", "r" ], run = "sort random --reverse=no",                      desc = "Sort randomly" },
 
 	# Goto
+	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Jump interactively" },
+	{ on = [ "g", "f" ],       run = "follow",           desc = "Follow hovered symlink" },
 	{ on = [ "g", "h" ],       run = "cd ~",             desc = "Go home" },
 	{ on = [ "g", "c" ],       run = "cd ~/.config",     desc = "Go ~/.config" },
 	{ on = [ "g", "l" ],       run = "cd ~/.local",    desc = "Go ~/.local" },
 	{ on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go ~/Downloads" },
-	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Jump interactively" },
-	{ on = [ "g", "f" ],       run = "follow",           desc = "Follow hovered symlink" },
 	{ on = [ "g", "p" ],       run = "cd ~/Projects",    desc = "Go ~/Projects" },
+	{ on = [ "g", "P" ],       run = "cd ~/.local/share/nvim/site/pack/core/opt",    desc = "Go to see nvim plugins" },
 
 	# Tabs
 	{ on = "t", run = "tab_create --current", desc = "Create a new tab with CWD" },

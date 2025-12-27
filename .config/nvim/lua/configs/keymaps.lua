@@ -49,17 +49,11 @@ end, 'Format buffer')
 
 -- editing
 map('n', L 'ip', C 'PasteImage', 'Paste image from clipboard')
-map('n', L 'zz', C 'exe "norm! i```"| exe "norm! O```" | startinsert!', 'Generate Code Block')
 map('n', 'U', '<C-r>', 'Redo')
 
--- popup
--- map('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', 'Move Next Completion Item', { expr = true })
--- map('i', '<S-Tab>', 'pumvisible() ? "<C-p>" : "<S-Tab>"', 'Move Next Completion Item', { expr = true })
--- map('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"', 'Move Next Completion Item', { expr = true })
-
 -- navigation
-map('n', '<C-k>', '<C-u>zz', 'Scroll up and center')
-map('n', '<C-j>', '<C-d>zz', 'Scroll down and center')
+map({ 'n', 'v' }, '<C-k>', '<C-u>zz', 'Scroll up and center')
+map({ 'n', 'v' }, '<C-j>', '<C-d>zz', 'Scroll down and center')
 map('n', 'n', 'nzzzv', 'Next search result and center')
 map('n', 'N', 'Nzzzv', 'Previous search result and center')
 
