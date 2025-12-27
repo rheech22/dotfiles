@@ -42,6 +42,7 @@ declare -A CONFIG_ITEMS=(
   
   # Folders linked to ~/.config/ path
   ["nvim"]="$DOTFILES_DIR/.config/nvim|$CONFIG_DIR/nvim|Neovim configuration"
+  ["opencode"]="$DOTFILES_DIR/.config/opencode|$CONFIG_DIR/opencode|OpenCode AI assistant"
   ["wezterm"]="$DOTFILES_DIR/.config/wezterm|$CONFIG_DIR/wezterm|Wezterm terminal"
   ["yazi"]="$DOTFILES_DIR/.config/yazi|$CONFIG_DIR/yazi|Yazi file manager"
   ["lazygit"]="$DOTFILES_DIR/.config/lazygit|$CONFIG_DIR/lazygit|Lazygit configuration"

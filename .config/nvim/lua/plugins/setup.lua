@@ -30,6 +30,7 @@ _.install {
     { name = 'claude-code', repo = 'greggh/claude-code.nvim', deps = { 'nvim-lua/plenary.nvim' } },
     { name = 'opencode', repo = 'NickvanDyke/opencode.nvim' },
     { name = 'snacks', repo = 'folke/snacks.nvim' },
+    { name = 'lualine', repo = 'nvim-lualine/lualine.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',

@@ -18,9 +18,9 @@ vim.o.relativenumber = true
 vim.o.winborder = 'rounded'
 vim.o.splitright = true
 vim.o.splitbelow = true
+vim.o.showmode = false
 
 vim.cmd [[set noswapfile]]
-vim.cmd ':hi satusline guibg=NONE'
 
 vim.schedule(function()
 	vim.opt.clipboard = 'unnamedplus'
