@@ -21,7 +21,11 @@ _.install {
     { name = 'todo-comments', repo = 'folke/todo-comments.nvim' },
     { name = 'gitsigns', repo = 'lewis6991/gitsigns.nvim' },
     { name = 'img-clip', repo = 'hakonharnes/img-clip.nvim' },
-    { name = 'markdown-preview', repo = 'iamcco/markdown-preview.nvim' },
+    {
+      name = 'markdown-preview',
+      repo = 'iamcco/markdown-preview.nvim',
+      build = 'cd app && npm install',
+    },
     { name = 'lazygit', repo = 'kdheepak/lazygit.nvim' },
     { name = 'fidget', repo = 'j-hui/fidget.nvim' },
     { name = 'conform', repo = 'stevearc/conform.nvim' },
@@ -42,13 +46,6 @@ _.install {
       repo = 'olimorris/codecompanion.nvim',
       deps = { 'nvim-lua/plenary.nvim' },
     },
-    -- {
-    --   name = 'render-markdown',
-    --   repo = 'MeanderingProgrammer/render-markdown.nvim',
-    --   deps = {
-    --     { repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
-    --   },
-    -- },
   },
   setup_dir = vim.fn.stdpath 'config' .. '/lua/plugins/',
 }
