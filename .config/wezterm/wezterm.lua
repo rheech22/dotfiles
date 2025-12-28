@@ -12,7 +12,7 @@ config.font = wezterm.font("DankMono Nerd Font")
 if hostname == "ichanghyeogs-MacBook-Pro.local" then
 	config.font_size = 16
 else
-	config.font_size = 19
+	config.font_size = 18
 end
 
 -- Colors
@@ -21,9 +21,9 @@ config.colors = {
 	foreground = "#cdcdcd",
 	cursor_bg = "#ffffff",
 	cursor_border = "#ffffff",
-	selection_fg = '#c3c3d5',
-	selection_bg = '#333738',
-	split = '#e8b589',
+	selection_fg = "#c3c3d5",
+	selection_bg = "#333738",
+	split = "#e8b589",
 	tab_bar = {
 		active_tab = {
 			bg_color = "#141415",
@@ -36,8 +36,8 @@ config.colors = {
 		new_tab_hover = {
 			bg_color = "#141415",
 			fg_color = "#e8b589",
-		}
-	}
+		},
+	},
 }
 
 -- Appearance
