@@ -1,6 +1,6 @@
-local _ = require 'installer'
+local pack = require 'pack'
 
-_.install {
+pack.install {
   plugins = {
     {
       name = 'mason',

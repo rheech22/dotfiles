@@ -1,5 +1,5 @@
-local _ = require 'installer'
-_.install {
+local pack = require 'pack'
+pack.install {
   plugins = {
     { name = 'vague', repo = 'vague2k/vague.nvim' },
     { name = 'nvim-treesitter', repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
