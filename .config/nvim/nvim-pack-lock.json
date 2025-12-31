@@ -80,6 +80,10 @@
       "rev": "9f9c67795d0795a6e8612f5a899ca64a074a1076",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
+    "melange": {
+      "rev": "ce42f6b",
+      "src": "https://github.com/savq/melange-nvim"
+    },
     "mini.icons": {
       "rev": "ff2e4f1d29f659cc2bad0f9256f2f6195c6b2428",
       "src": "https://github.com/nvim-mini/mini.icons"
