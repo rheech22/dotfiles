@@ -10,7 +10,7 @@ local act = wezterm.action
 -- Font settings
 config.font = wezterm.font("DankMono Nerd Font")
 if hostname == "ichanghyeogs-MacBook-Pro.local" then
-	config.font_size = 16
+	config.font_size = 16.5
 else
 	config.font_size = 18
 end
@@ -42,7 +42,7 @@ config.colors = {
 
 -- Appearance
 config.window_decorations = "RESIZE"
-config.hide_tab_bar_if_only_one_tab = true
+-- config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
 	left = 0,
 	right = 0,
