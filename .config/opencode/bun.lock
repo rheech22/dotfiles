@@ -4,14 +4,14 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@opencode-ai/plugin": "1.0.204",
+        "@opencode-ai/plugin": "1.0.222",
       },
     },
   },
   "packages": {
-    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.204", "", { "dependencies": { "@opencode-ai/sdk": "1.0.204", "zod": "4.1.8" } }, "sha512-9bhPmOsebUoD++6Hy4zQVyUVSOEZl8C5KrlkG8NOwuk+b91uplF+GmzrUeeqfP8jqvboJPEaos1lkwA05xdj6Q=="],
+    "@opencode-ai/plugin": ["@opencode-ai/plugin@1.0.222", "", { "dependencies": { "@opencode-ai/sdk": "1.0.222", "zod": "4.1.8" } }, "sha512-PiAIAUfMGuotEUExpxF11qLd+uBMnfpaLa0IdOP4J1DTEwrR5JCR097TouWy8O3zJqhwwlrxHUkojmw1WgVwoQ=="],
 
-    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.204", "", {}, "sha512-lqhkpL+qp1QyXtW+HR6IXTeF/qIR+zxOl0efUFepNwzeaJEeVsbWrQUdapW/FBG6DqIxG0kuLPHn0duuHp1hPA=="],
+    "@opencode-ai/sdk": ["@opencode-ai/sdk@1.0.222", "", {}, "sha512-t92owHoFYhYlbi7RgOlor+gUkji7wUk3jm7gtzJQC3tJCYNMSEaPhHUYVtYwhsZVAIZBzdbeR8/h9tgSlYNofw=="],
 
     "zod": ["zod@4.1.8", "", {}, "sha512-5R1P+WwQqmmMIEACyzSvo4JXHY5WiAFHRMg+zBZKgKS+Q1viRa0C1hmUKtHltoIFKtIdki3pRxkmpP74jnNYHQ=="],
   }

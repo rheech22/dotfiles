@@ -12,7 +12,7 @@ config.font = wezterm.font("DankMono Nerd Font")
 if hostname == "ichanghyeogs-MacBook-Pro.local" then
 	config.font_size = 16.5
 else
-	config.font_size = 18
+	config.font_size = 18.5
 end
 
 -- Colors
