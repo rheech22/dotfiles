@@ -16,6 +16,9 @@ return {
       statuscolumn = { enabled = false },
       words = { enabled = false },
       zen = { enabled = false },
+      image = {
+        enabled = true,
+      },
       styles = {
         terminal_right = {
           bo = { filetype = 'snacks_terminal' },

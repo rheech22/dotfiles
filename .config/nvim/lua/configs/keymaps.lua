@@ -46,6 +46,8 @@ map('n', L 'lf', function()
     vim.lsp.buf.format { async = true }
   end
 end, 'Format buffer')
+map('n', '<C-l>', 'zo', 'Open the fold at the cursor.')
+map('n', '<C-h>', 'zc', 'Close the fold at the cursor.')
 
 -- editing
 map('n', L 'ip', C 'PasteImage', 'Paste image from clipboard')
@@ -132,7 +134,7 @@ map('n', L 'ac', C 'CodeCompanionChat', 'New Chat')
 map('n', L 'at', C 'CodeCompanionChat Toggle', 'Toggle Chat')
 
 -- plugin:opencode
-map({ 'n', 'x' }, '<C-l>', C "lua require('opencode').ask('@this: ', { submit = true })", 'Ask opencode')
+map({ 'n', 'x' }, '<C-y>', C "lua require('opencode').ask('@this: ', { submit = true })", 'Ask opencode')
 map({ 'n', 'x' }, '<C-x>', C "lua require('opencode').select()", 'Execute opencode action…')
 map({ 'n', 't' }, '<C-,>', C "lua require('opencode').toggle()", 'Toggle opencode')
 map({ 'n', 'x' }, 'go', function()
