@@ -48,3 +48,12 @@ fi
 
 # opencode
 export PATH=/Users/demian/.opencode/bin:$PATH
+
+# fnm
+FNM_PATH="/opt/homebrew/opt/fnm/bin"
+if [ -d "$FNM_PATH" ]; then
+  eval "`fnm env`"
+fi
+
+# opencode
+export PATH=/Users/conerstone/.opencode/bin:$PATH
