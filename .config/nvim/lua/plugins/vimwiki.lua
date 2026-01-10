@@ -46,6 +46,7 @@ return {
 						'---',
 						'created: ' .. os.date '%Y-%m-%d %H:%M:%S +0900',
 						'updated: ' .. os.date '%Y-%m-%d %H:%M:%S +0900',
+						'title: ',
 						'tags: []',
 						'---',
 						'',
