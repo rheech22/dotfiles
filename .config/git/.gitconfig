@@ -2,9 +2,28 @@
 	name = Aiden
 	email = rheech22@gmail.com
 
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/local/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/local/bin/gh auth git-credential
+
 [core]
 	editor = nvim -c 'norm! ggA ' -c 'startinsert'
 	autocrlf = input
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true 
+	dark = true 
+
+[merge]
+	conflictStyle = zdiff3
 
 [alias]
 	a = "add ."
@@ -30,14 +49,6 @@
 	ts = "!tsc --watch"
 	w = "!gh browse"
 	ws = "!gh status"
-
-[credential "https://github.com"]
-	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
-
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
 
 [includeIf "hasconfig:remote.*.url:https://github.com/riiid/**"]
   path = ~/.gitconfig.local

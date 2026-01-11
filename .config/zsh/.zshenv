@@ -1,6 +1,9 @@
 # editor
 export EDITOR="nvim"
 
+# lazygit
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # claude
 export USE_BUILTIN_RIPGREP=0
 
