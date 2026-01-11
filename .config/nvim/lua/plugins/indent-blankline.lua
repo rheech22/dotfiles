@@ -19,14 +19,15 @@ local rainbow_del_hl = {
   'RainbowDelimiterCyan',
 }
 
-local base_pallette = {
-  Red = '#e06c75',
-  Yellow = '#e5c07b',
-  Blue = '#61afef',
-  Orange = '#d19a66',
-  Green = '#98c379',
-  Violet = '#c678dd',
-  Cyan = '#56b6c2',
+local base = Colors.palette()
+local pallette = {
+  Red = base.red,
+  Yellow = base.yellow,
+  Blue = base.blue,
+  Orange = base.orange,
+  Green = base.green,
+  Violet = base.violet,
+  Cyan = base.cyan,
 }
 
 return {
@@ -34,15 +35,14 @@ return {
     local hooks = require 'ibl.hooks'
 
     hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-      local bg = Colors.get_bg()
-      for name, color in pairs(base_pallette) do
+      for name, color in pairs(pallette) do
         vim.api.nvim_set_hl(0, 'Rainbow' .. name, {
-          fg = Colors.blend(color, bg, 0.85),
+          fg = Colors.blend(color, base.bg, 0.85),
           bg = 'NONE',
           nocombine = true,
         })
         vim.api.nvim_set_hl(0, 'RainbowDelimiter' .. name, {
-          fg = Colors.blend(color, bg, 0.55),
+          fg = Colors.blend(color, base.bg, 0.55),
           bg = 'NONE',
           nocombine = true,
         })

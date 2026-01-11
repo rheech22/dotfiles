@@ -12,9 +12,26 @@ local function _rgb_to_hex(rgb)
   return string.format('#%02x%02x%02x', rgb.r, rgb.g, rgb.b)
 end
 
-function M.get_bg()
+local function _get_bg()
   local hl = vim.api.nvim_get_hl(0, { name = 'Normal', link = false })
   return hl.bg and string.format('#%06x', hl.bg) or '#000000'
+end
+
+function M.palette()
+  local bg = _get_bg()
+
+  return {
+    bg = bg,
+    fg = '#cdcdcd',
+    red = '#e06c75',
+    green = '#98c379',
+    blue = '#61afef',
+    violet = '#c678dd',
+    cyan = '#56b6c2',
+    yellow = '#e5c07b',
+    orange = '#d19a66',
+    magenta = '#c48282',
+  }
 end
 
 function M.blend(fg, bg, alpha)

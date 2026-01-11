@@ -2,17 +2,24 @@ return {
   config = function()
     local lualine = require 'lualine'
 
+    local Colors = require 'utils.colors'
+    local base = Colors.palette()
+    local bg = base.bg
+    local function tone(hex)
+      return Colors.blend(hex, bg, 0.25)
+    end
+
     local colors = {
-      bg = '#141415',
-      fg = '#cdcdcd',
-      red = '#d8647e',
-      green = '#7fa563',
-      blue = '#7e98e8',
-      violet = '#bb9dbd',
-      cyan = '#6e94b2',
-      yellow = '#f3be7c',
-      orange = '#e0a363',
-      magenta = '#c48282',
+      bg = bg,
+      fg = base.fg,
+      red = tone(base.red),
+      green = tone(base.green),
+      blue = tone(base.blue),
+      violet = tone(base.violet),
+      cyan = tone(base.cyan),
+      yellow = tone(base.yellow),
+      orange = tone(base.orange),
+      magenta = tone(base.magenta),
     }
 
     local mode_map = {

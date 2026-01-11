@@ -137,6 +137,10 @@
       "rev": "fe7cfe9800a182274d0f868a74b7263b8c0c020b",
       "src": "https://github.com/folke/snacks.nvim"
     },
+    "teide": {
+      "rev": "c8df92c32cd8f9741858241474c9069af74c20ca",
+      "src": "https://github.com/serhez/teide.nvim"
+    },
     "todo-comments": {
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
       "src": "https://github.com/folke/todo-comments.nvim"
