@@ -4,6 +4,7 @@
 ---@field deps (Plugin|string)[] | nil plugin dependencies
 ---@field version string | nil git branch, tag, or commit hash
 ---@field build string | nil shell command to run in plugin directory after install
+---@field provider_host string | nil default: https://github.com
 
 ---@class InstallerParams
 ---@field plugins (Plugin|string)[] plugins to install

@@ -36,6 +36,8 @@ pack.install {
     { name = 'snacks', repo = 'folke/snacks.nvim' },
     { name = 'lualine', repo = 'nvim-lualine/lualine.nvim' },
     { name = 'winsep', repo = 'nvim-zh/colorful-winsep.nvim' },
+    { name = 'rainbow-delimiters', repo = 'HiPhish/rainbow-delimiters.nvim', provider_host = 'https://gitlab.com/' },
+    { name = 'indent-blankline', repo = 'lukas-reineke/indent-blankline.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',

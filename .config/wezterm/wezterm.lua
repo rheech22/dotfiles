@@ -41,6 +41,8 @@ config.colors = {
 }
 
 -- Appearance
+config.underline_thickness = "200%"
+config.underline_position = "200%"
 config.window_decorations = "RESIZE"
 -- config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
