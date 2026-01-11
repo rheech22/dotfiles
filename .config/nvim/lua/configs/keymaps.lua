@@ -52,6 +52,7 @@ map('n', '<C-h>', 'zc', 'Close the fold at the cursor.')
 -- editing
 map('n', L 'ip', _G.paste_image_temporarily, 'Paste image from clipboard')
 map('n', 'U', '<C-r>', 'Redo')
+map({ 'n', 'v' }, '<C-w>', C 'set wrap', 'Wrap')
 
 -- navigation
 map({ 'n', 'v' }, '<C-k>', '<C-u>zz', 'Scroll up and center')
