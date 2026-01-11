@@ -149,6 +149,10 @@
       "rev": "72792615e739d0eb54a9c8f7e0a46a6e2407c9e8",
       "src": "https://github.com/vimwiki/vimwiki",
       "version": "'dev'"
+    },
+    "winsep": {
+      "rev": "e555611c8f39918e30d033a97ea1a5af457ce75e",
+      "src": "https://github.com/nvim-zh/colorful-winsep.nvim"
     }
   }
 }

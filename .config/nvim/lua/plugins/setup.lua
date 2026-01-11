@@ -36,6 +36,7 @@ pack.install {
     { name = 'opencode', repo = 'NickvanDyke/opencode.nvim' },
     { name = 'snacks', repo = 'folke/snacks.nvim' },
     { name = 'lualine', repo = 'nvim-lualine/lualine.nvim' },
+    { name = 'winsep', repo = 'nvim-zh/colorful-winsep.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',
