@@ -6,8 +6,6 @@ return {
       'lua',
       'vim',
       'vimdoc',
-      'markdown',
-      'markdown_inline',
       'css',
       'html',
       'yaml',
@@ -16,6 +14,5 @@ return {
       'dart',
       'python',
     }
-    vim.treesitter.language.register('markdown', 'vimwiki')
   end,
 }

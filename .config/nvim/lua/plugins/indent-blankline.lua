@@ -62,6 +62,7 @@ return {
         highlight = rainbow_del_hl,
         char = '▏',
       },
+      exclude = { filetypes = { 'dashboard', 'vimwiki', 'markdown', 'text' } },
     }
   end,
 }
