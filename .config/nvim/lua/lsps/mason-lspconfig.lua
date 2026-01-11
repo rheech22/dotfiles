@@ -9,7 +9,6 @@ return {
         'eslint',
         'basedpyright',
         'ruff',
-        'copilot',
       },
       automatic_enable = true,
     }

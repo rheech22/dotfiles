@@ -12,14 +12,7 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
-        providers = {
-          copilot = {
-            name = 'copilot',
-            module = 'blink-copilot',
-            async = true,
-          },
-        },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
 
       completion = {

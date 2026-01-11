@@ -10,7 +10,6 @@ pack.install {
       name = 'blink',
       repo = 'saghen/blink.cmp',
       build = 'cargo build --release',
-      deps = { 'fang2hou/blink-copilot' },
     },
     { name = 'friendly-snippets', repo = 'rafamadriz/friendly-snippets' },
     { name = 'mini.pairs', repo = 'nvim-mini/mini.pairs' },
