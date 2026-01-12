@@ -5,6 +5,17 @@ export LSCOLORS="ExFxBxDxCxegedabagacad"
 # auto completion
 autoload -U compinit; compinit
 
+# history size
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY
+
+# auto cd
+setopt autocd
+
+# search history via Ctrl+R
+source <(fzf --zsh)
+
 # node version manager
 eval "$(fnm env --use-on-cd --shell zsh)"
 
@@ -32,6 +43,13 @@ if [ -f "$HOME/.config/zsh/.zshrc.local" ]; then
   source "$HOME/.config/zsh/.zshrc.local"
 fi
 
+# fnm
+FNM_PATH="/usr/local/opt/fnm/bin"
+if [ -d "$FNM_PATH" ]; then
+  eval "`fnm env`"
+fi
+
+# functions
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
@@ -40,20 +58,11 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-# fnm
-FNM_PATH="/usr/local/opt/fnm/bin"
-if [ -d "$FNM_PATH" ]; then
-  eval "`fnm env`"
-fi
+function wt() {
+  local dir
+  dir=$(git worktree list --porcelain \
+    | awk '/^worktree / {print $2}' \
+    | fzf)
 
-# opencode
-export PATH=/Users/demian/.opencode/bin:$PATH
-
-# fnm
-FNM_PATH="/opt/homebrew/opt/fnm/bin"
-if [ -d "$FNM_PATH" ]; then
-  eval "`fnm env`"
-fi
-
-# opencode
-export PATH=/Users/conerstone/.opencode/bin:$PATH
+  [ -n "$dir" ] && cd "$dir"
+}

@@ -14,6 +14,9 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
+# opencode
+export PATH=$HOME/.opencode/bin:$PATH
+
 # Check if .zprofile.local exists and source it
 if [ -f "$HOME/.config/zsh/.zprofile.local" ]; then
   source "$HOME/.config/zsh/.zprofile.local"
