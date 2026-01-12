@@ -42,6 +42,7 @@ pack.install {
     { name = 'winsep', repo = 'nvim-zh/colorful-winsep.nvim' },
     { name = 'rainbow-delimiters', repo = 'HiPhish/rainbow-delimiters.nvim', provider_host = 'https://gitlab.com/' },
     { name = 'indent-blankline', repo = 'lukas-reineke/indent-blankline.nvim' },
+    { name = 'flash', repo = 'folke/flash.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',

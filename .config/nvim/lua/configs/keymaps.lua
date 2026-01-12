@@ -141,3 +141,20 @@ map({ 'n', 't' }, '<C-,>', C "lua require('opencode').toggle()", 'Toggle opencod
 map({ 'n', 'x' }, 'go', function()
   return require('opencode').operator '@this '
 end, 'Add range to opencode', { expr = true })
+
+-- plugin:flash
+map({ 'n', 'x', 'o' }, 'm', function()
+  require('flash').jump()
+end, 'Flash')
+map({ 'n', 'x', 'o' }, 'M', function()
+  require('flash').treesitter()
+end, 'Flash Treesitter')
+map('o', 'r', function()
+  require('flash').remote()
+end, 'Remote Flash')
+map({ 'x', 'o' }, 'R', function()
+  require('flash').treesitter_search()
+end, 'Treesitter Search')
+map('c', '<C-s>', function()
+  require('flash').toggle()
+end, 'Toggle Flash Search')

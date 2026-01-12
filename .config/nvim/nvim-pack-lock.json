@@ -36,6 +36,10 @@
       "rev": "64463022a1f2ff1318ab22a2ea4125ed9313a483",
       "src": "https://github.com/j-hui/fidget.nvim"
     },
+    "flash": {
+      "rev": "fcea7ff",
+      "src": "https://github.com/folke/flash.nvim"
+    },
     "flutter-tools": {
       "rev": "539e84f5a652d96917f0afc1341c20f0d59dd789",
       "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
@@ -57,7 +61,7 @@
       "src": "https://github.com/hakonharnes/img-clip.nvim"
     },
     "indent-blankline": {
-      "rev": "005b56001b2cb30bfa61b7986bc50657816ba4ba",
+      "rev": "005b560",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
     },
     "lazygit": {
@@ -126,7 +130,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "rainbow-delimiters": {
-      "rev": "8aafe2cbd89cd4090f573a98cab6b20366576fde",
+      "rev": "d6b8025",
       "src": "https://gitlab.com//HiPhish/rainbow-delimiters.nvim"
     },
     "smear-cursor": {
@@ -163,7 +167,7 @@
       "version": "'dev'"
     },
     "winsep": {
-      "rev": "e555611c8f39918e30d033a97ea1a5af457ce75e",
+      "rev": "e555611",
       "src": "https://github.com/nvim-zh/colorful-winsep.nvim"
     }
   }
