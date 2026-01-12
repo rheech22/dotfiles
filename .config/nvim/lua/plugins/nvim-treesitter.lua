@@ -13,6 +13,7 @@ return {
       'typescript',
       'dart',
       'python',
+      'tsx',
     }
   end,
 }
