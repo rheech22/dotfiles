@@ -37,6 +37,7 @@ return {
       formatters_by_ft = vim.tbl_extend('keep', {
         lua = { 'stylua' },
         python = { 'ruff_format' },
+        rust = { 'rustfmt', lsp_format = 'fallback' },
       }, prettier_formatters_by),
       format_on_save = {
         timeout_ms = 500,

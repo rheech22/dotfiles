@@ -9,6 +9,7 @@ return {
         'eslint',
         'basedpyright',
         'ruff',
+        'rust_analyzer',
       },
       automatic_enable = true,
     }
