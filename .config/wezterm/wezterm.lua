@@ -27,15 +27,15 @@ config.colors = {
 	tab_bar = {
 		active_tab = {
 			bg_color = "#141415",
-			fg_color = "#e8b589",
+			fg_color = "#cdcdcd",
 		},
 		new_tab = {
 			bg_color = "None",
-			fg_color = "#e8b589",
+			fg_color = "#cdcdcd",
 		},
 		new_tab_hover = {
 			bg_color = "#141415",
-			fg_color = "#e8b589",
+			fg_color = "#cdcdcd",
 		},
 	},
 }
@@ -43,7 +43,8 @@ config.colors = {
 -- Appearance
 config.underline_thickness = "200%"
 config.underline_position = "200%"
-config.window_decorations = "RESIZE"
+config.window_decorations = "RESIZE | MACOS_FORCE_DISABLE_SHADOW"
+-- config.use_fancy_tab_bar = false
 -- config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
 	left = 0,
