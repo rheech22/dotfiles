@@ -38,15 +38,15 @@ alias oo="opencode"
 alias dot="cd $HOME/dotfiles"
 alias zsh="source ~/.zshrc"
 
-# Check if .zshrc.local exists and source it
-if [ -f "$HOME/.config/zsh/.zshrc.local" ]; then
-  source "$HOME/.config/zsh/.zshrc.local"
-fi
-
-# fnm
+# fnm, TODO: move to local
 FNM_PATH="/usr/local/opt/fnm/bin"
 if [ -d "$FNM_PATH" ]; then
   eval "`fnm env`"
+fi
+
+# Check if .zshrc.local exists and source it
+if [ -f "$HOME/.config/zsh/.zshrc.local" ]; then
+  source "$HOME/.config/zsh/.zshrc.local"
 fi
 
 # functions
@@ -61,8 +61,11 @@ function y() {
 function wt() {
   local dir
   dir=$(git worktree list --porcelain \
-    | awk '/^worktree / {print $2}' \
+    | awk -v pwd="$PWD" '/^worktree / && $2 != pwd {print $2}' \
     | fzf)
-
-  [ -n "$dir" ] && cd "$dir"
+	
+  if [ -n "$dir" ]; then
+    cd "$dir"
+  fi
 }
+
