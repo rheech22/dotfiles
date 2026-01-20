@@ -14,13 +14,13 @@ $character"""
 style = "#CDCDCD"
 
 [character]
-success_symbol = "[:](bold #F3BE7C)"
+success_symbol = "[:](bold #00FF00)"
 error_symbol = "[:](bold #D8647E)"
 vimcmd_symbol = "[❮](#7FA563)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "italic #F3BE7C"
+style = "italic #00FF00"
 
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](#BB9DBD) ($ahead_behind$stashed)]($style)"
