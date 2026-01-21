@@ -54,8 +54,8 @@ config.window_padding = {
 }
 
 -- config.window_background_image = constants.bg_blurred
--- config.macos_window_background_blur = 80
--- config.window_background_opacity = constants.opacity
+config.macos_window_background_blur = 38
+config.window_background_opacity = constants.opacity
 config.command_palette_font_size = 16
 config.command_palette_bg_color = "#5E4090"
 config.command_palette_rows = 16
