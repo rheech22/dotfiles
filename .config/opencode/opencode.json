@@ -17,27 +17,9 @@
     "external_directory": "ask"
   },
 	"plugin": [
-    "opencode-cursor-auth@1.0.16",
 		"opencode-antigravity-auth@1.3.0"
 	],
   "provider": {
-    "cursor": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Cursor Agent (local)",
-      "options": {
-        "baseURL": "http://127.0.0.1:32123/v1"
-      },
-      "models": {
-        "auto": { "name": "Cursor Agent Auto" },
-        "composer-1": { "name": "Composer-1" },
-        "gpt-5": { "name": "Cursor Agent GPT-5 (alias → gpt-5.2)" },
-        "gpt-5.2": { "name": "Cursor Agent GPT-5.2" },
-        "gpt-5.1": { "name": "Cursor Agent GPT-5.1" },
-        "gpt-5.1-codex": { "name": "Cursor Agent GPT-5.1 Codex" },
-        "sonnet-4.5": { "name": "Cursor Agent Sonnet 4.5" },
-        "sonnet-4.5-thinking": { "name": "Cursor Agent Sonnet 4.5 Thinking" }
-      }
-    },
 		"google": {
       "models": {
         "antigravity-gemini-3-pro": {
@@ -63,34 +45,6 @@
         "antigravity-claude-sonnet-4-5": {
           "name": "Claude Sonnet 4.5 (Antigravity)",
           "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
-        },
-        "antigravity-claude-sonnet-4-5-thinking": {
-          "name": "Claude Sonnet 4.5 Thinking (Antigravity)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": {
-            "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
-            "max": { "thinkingConfig": { "thinkingBudget": 32768 } }
-          }
-        },
-        "antigravity-claude-opus-4-5-thinking": {
-          "name": "Claude Opus 4.5 Thinking (Antigravity)",
-          "limit": { "context": 200000, "output": 64000 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
-          "variants": {
-            "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
-            "max": { "thinkingConfig": { "thinkingBudget": 32768 } }
-          }
-        },
-        "gemini-2.5-flash": {
-          "name": "Gemini 2.5 Flash (Gemini CLI)",
-          "limit": { "context": 1048576, "output": 65536 },
-          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
-        },
-        "gemini-2.5-pro": {
-          "name": "Gemini 2.5 Pro (Gemini CLI)",
-          "limit": { "context": 1048576, "output": 65536 },
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
         },
         "gemini-3-flash-preview": {

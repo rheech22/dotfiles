@@ -9,19 +9,19 @@ importers:
   .:
     dependencies:
       '@opencode-ai/plugin':
-        specifier: 1.1.14
-        version: 1.1.14
+        specifier: 1.1.25
+        version: 1.1.25
       opencode-cursor-auth:
         specifier: ^1.0.16
         version: 1.0.16
 
 packages:
 
-  '@opencode-ai/plugin@1.1.14':
-    resolution: {integrity: sha512-tfF4bEjeF7Gm0W0ViQUhzy77AaZfRxQ/kcPa7/Bc/YM9HddzjEqz0wOJ6ePG8UdUYc0dkKSJOJVhapUbAn/tOw==}
+  '@opencode-ai/plugin@1.1.25':
+    resolution: {integrity: sha512-oTUWS446H/j7z3pdzo3cOrB5N87XZ/RKdgPD8yHv/rLX92B4YQHjOqggVQ56Q+1VEnN0jxzhoqRylv/0ZEts/Q==}
 
-  '@opencode-ai/sdk@1.1.14':
-    resolution: {integrity: sha512-PJFu2QPxnOk0VZzlPm+IxhD1wSA41PJyCG6gkxAMI767gfAO96A0ukJJN7VK/gO6MbxLF5oTFaxBX5rAGcBRVw==}
+  '@opencode-ai/sdk@1.1.25':
+    resolution: {integrity: sha512-mWUX489ArEF2ICg3iZsx2VQaGS3Z2j/dwAJDacao9t7dGDzjOIaacPw2weZ10zld7XmT9V9C0PM/A5lDZ52J+w==}
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -162,12 +162,12 @@ packages:
 
 snapshots:
 
-  '@opencode-ai/plugin@1.1.14':
+  '@opencode-ai/plugin@1.1.25':
     dependencies:
-      '@opencode-ai/sdk': 1.1.14
+      '@opencode-ai/sdk': 1.1.25
       zod: 4.1.8
 
-  '@opencode-ai/sdk@1.1.14': {}
+  '@opencode-ai/sdk@1.1.25': {}
 
   base64-js@1.5.1: {}
 

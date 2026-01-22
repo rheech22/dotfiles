@@ -71,4 +71,5 @@ See [`.local.example`](.config/git/.local.example) for a template. Copy it to `.
 - vscode-langservers-extracted `4.10.0`
 - yazi `2.5.31`
 - rustc `1.94.0-nightly`
+- eslintd `14.3.0`
 - opencode `latest`
