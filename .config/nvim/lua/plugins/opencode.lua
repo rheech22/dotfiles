@@ -68,5 +68,29 @@ return {
     }
 
     vim.o.autoread = true
+    vim.g.opencode_opts.port = 4096
+
+    local function notify_opencode(message)
+      local ok, fidget = pcall(require, 'fidget')
+      if ok and type(fidget.notify) == 'function' then
+        fidget.notify(message)
+        return
+      end
+      vim.notify(message)
+    end
+
+    -- Handle `opencode` events
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'OpencodeEvent:*', -- Optionally filter event types
+      callback = function(args)
+        ---@type opencode.cli.client.Event
+        local event = args.data.event
+        -- vim.notify(vim.inspect(event))
+        ---@type number
+        if event.type == 'session.idle' then
+          notify_opencode '`opencode` finished responding'
+        end
+      end,
+    })
   end,
 }

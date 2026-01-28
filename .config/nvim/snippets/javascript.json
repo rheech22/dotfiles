@@ -14,5 +14,9 @@
     "console.dir": {
         "prefix": "cd",
         "body": "console.dir('${1}:', ${1})"
+    },
+    "className": {
+        "prefix": "cn",
+        "body": "className={cn('${0}')}"
     }
 }
