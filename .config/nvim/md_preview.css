@@ -259,7 +259,7 @@ main {
 
 .markdown-body pre code {
   display: block !important;
-  font-size: 1em !important;
+  font-size: .8em !important;
   font-family: "Fira Code", Monaco, "Courier New", "DejaVu Sans Mono",
     "Bitstream Vera Sans Mono", monospace !important;
   padding: 0 !important;
