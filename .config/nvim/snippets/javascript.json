@@ -18,5 +18,17 @@
     "className": {
         "prefix": "cn",
         "body": "className={cn('${0}')}"
+    },
+    "function": {
+        "prefix": "fc",
+        "body": "function ${1} (${2}) {\n\t${0}\n}"
+    },
+    "arrow.function": {
+        "prefix": "afc",
+        "body": "const ${1} = (${2}) => {\n\t${0}\n}"
+    },
+    "return.jsx": {
+        "prefix": "rjsx",
+        "body": "return (\n\t<${1:tag}>\n\t\t${0}\n\t</$1>\n)"
     }
 }

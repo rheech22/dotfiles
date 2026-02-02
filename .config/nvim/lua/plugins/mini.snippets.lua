@@ -5,7 +5,7 @@ return {
 
     mini_snippets.setup {
       snippets = {
-        -- loader.from_file '~/.config/nvim/snippets/example.json',
+        loader.from_file '~/.config/nvim/snippets/example.json',
         loader.from_lang {
           lang_patterns = {
             javascript = { 'javascript.json' },

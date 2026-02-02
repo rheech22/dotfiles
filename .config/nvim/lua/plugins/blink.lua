@@ -12,10 +12,23 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'snippets', 'lsp', 'path', 'buffer' },
+        providers = {
+          snippets = {
+            opts = {
+              friendly_snippets = false,
+            },
+          },
+        },
       },
 
       completion = {
+        list = {
+          selection = {
+            preselect = true,
+            auto_insert = true,
+          },
+        },
         accept = {
           auto_brackets = {
             enabled = true,
