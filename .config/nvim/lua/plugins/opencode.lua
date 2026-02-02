@@ -2,7 +2,8 @@ return {
   config = function()
     vim.g.opencode_opts = {
       provider = {
-        enabled = 'snacks',
+        enabled = 'wezterm',
+        -- NOTE: snack window reamins a zombie process
         snacks = {
           win = {
             position = 'left',
@@ -16,7 +17,7 @@ return {
         wezterm = {
           direction = 'left',
           top_level = true,
-          percent = 35,
+          percent = 40,
         },
       },
       ask = {
