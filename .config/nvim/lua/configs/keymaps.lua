@@ -129,11 +129,6 @@ map('n', L 'Fr', C 'FlutterRestart', 'Flutter Restart')
 map('n', L 'Fb', C 'FlutterPubGet', 'Flutter PubGet')
 map('n', L 'Fg', C '!dart run build_runner build --delete-conflicting-outputs', 'Flutter Code Generate')
 
--- plugin:codecompanion
-map('n', L 'aa', C 'CodeCompanionActions', 'CodeCompanion Actions')
-map('n', L 'ac', C 'CodeCompanionChat', 'New Chat')
-map('n', L 'at', C 'CodeCompanionChat Toggle', 'Toggle Chat')
-
 -- plugin:opencode
 map({ 'n', 'x' }, '<C-y>', C "lua require('opencode').ask('@this: ', { submit = true })", 'Ask opencode')
 map({ 'n', 'x' }, '<C-x>', C "lua require('opencode').select()", 'Execute opencode action…')

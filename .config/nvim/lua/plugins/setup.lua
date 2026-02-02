@@ -3,8 +3,8 @@ pack.install {
   plugins = {
     -- themes
     -- { name = 'vague', repo = 'vague2k/vague.nvim' },
-    -- { name = 'teide', repo = 'serhez/teide.nvim' },
-    { name = 'petrolnoir', repo = 'connormxfadden/petrolnoir.nvim' },
+    { name = 'teide', repo = 'serhez/teide.nvim' },
+    -- { name = 'petrolnoir', repo = 'connormxfadden/petrolnoir.nvim' },
     -- themes
 
     { name = 'melange', repo = 'savq/melange-nvim' },
@@ -44,17 +44,13 @@ pack.install {
     { name = 'rainbow-delimiters', repo = 'HiPhish/rainbow-delimiters.nvim', provider_host = 'https://gitlab.com/' },
     { name = 'indent-blankline', repo = 'lukas-reineke/indent-blankline.nvim' },
     { name = 'flash', repo = 'folke/flash.nvim' },
+    { name = 'sidekick', repo = 'folke/sidekick.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',
       deps = { 'mason-org/mason.nvim' },
     },
     { name = 'dap-view', repo = 'igorlfs/nvim-dap-view' },
-    {
-      name = 'codecompanion',
-      repo = 'olimorris/codecompanion.nvim',
-      deps = { 'nvim-lua/plenary.nvim' },
-    },
   },
   setup_dir = vim.fn.stdpath 'config' .. '/lua/plugins/',
 }
