@@ -13,13 +13,6 @@ return {
 
       sources = {
         default = { 'snippets', 'lsp', 'path', 'buffer' },
-        providers = {
-          snippets = {
-            opts = {
-              friendly_snippets = false,
-            },
-          },
-        },
       },
 
       completion = {
@@ -44,7 +37,7 @@ return {
       },
 
       keymap = {
-        preset = 'enter',
+        preset = 'super-tab',
       },
     }
   end,

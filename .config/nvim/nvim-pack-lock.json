@@ -12,10 +12,6 @@
       "rev": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39",
       "src": "https://github.com/fang2hou/blink-copilot"
     },
-    "claude-code": {
-      "rev": "c9a31e51069977edaad9560473b5d031fcc5d38b",
-      "src": "https://github.com/greggh/claude-code.nvim"
-    },
     "codecompanion": {
       "rev": "e6ec73c06d3ed8ce28f144d2f89c30dec0286961",
       "src": "https://github.com/olimorris/codecompanion.nvim"
@@ -107,6 +103,10 @@
     "mini.starter": {
       "rev": "8ee6ce6a4c9be47682516908557cc062c4d595a2",
       "src": "https://github.com/nvim-mini/mini.starter"
+    },
+    "minuet-ai": {
+      "rev": "3d25c24487876676d29d325c01ce108cbdbd0753",
+      "src": "https://github.com/milanglacier/minuet-ai.nvim"
     },
     "nvim-lspconfig": {
       "rev": "d696e36d5792daf828f8c8e8d4b9aa90c1a10c2a",

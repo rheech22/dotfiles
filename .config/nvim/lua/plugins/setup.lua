@@ -6,7 +6,6 @@ pack.install {
     { name = 'teide', repo = 'serhez/teide.nvim' },
     -- { name = 'petrolnoir', repo = 'connormxfadden/petrolnoir.nvim' },
     -- themes
-
     { name = 'melange', repo = 'savq/melange-nvim' },
     { name = 'nvim-treesitter', repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
     { name = 'treesitter-context', repo = 'nvim-treesitter/nvim-treesitter-context' },
@@ -36,8 +35,9 @@ pack.install {
     { name = 'conform', repo = 'stevearc/conform.nvim' },
     { name = 'smear-cursor', repo = 'sphamba/smear-cursor.nvim' },
     { name = 'fzf-lua', repo = 'ibhagwan/fzf-lua' },
-    { name = 'claude-code', repo = 'greggh/claude-code.nvim', deps = { 'nvim-lua/plenary.nvim' } },
     { name = 'opencode', repo = 'NickvanDyke/opencode.nvim' },
+    { name = 'minuet-ai', repo = 'milanglacier/minuet-ai.nvim', deps = { 'nvim-lua/plenary.nvim' } },
+    { name = 'dap-view', repo = 'igorlfs/nvim-dap-view' },
     { name = 'snacks', repo = 'folke/snacks.nvim' },
     { name = 'lualine', repo = 'nvim-lualine/lualine.nvim' },
     { name = 'winsep', repo = 'nvim-zh/colorful-winsep.nvim' },
@@ -49,7 +49,6 @@ pack.install {
       repo = 'mfussenegger/nvim-dap',
       deps = { 'mason-org/mason.nvim' },
     },
-    { name = 'dap-view', repo = 'igorlfs/nvim-dap-view' },
   },
   setup_dir = vim.fn.stdpath 'config' .. '/lua/plugins/',
 }
