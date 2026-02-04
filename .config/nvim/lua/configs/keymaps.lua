@@ -154,3 +154,9 @@ end, 'Treesitter Search')
 map('c', '<C-s>', function()
   require('flash').toggle()
 end, 'Toggle Flash Search')
+
+-- plugin:overseer
+map('n', L 'oo', C 'OverseerToggle', 'Overseer Toggle')
+map('n', L 'or', C 'OverseerRun', 'Overseer Run')
+map('n', L 'ot', C 'OverseerTaskAction', 'Overseer Task Action')
+map('n', L 'os', C 'OverseerShell', 'Overseer Shell')

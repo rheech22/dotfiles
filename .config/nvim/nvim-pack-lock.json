@@ -125,6 +125,10 @@
       "rev": "dfca5bb214d78a600781d50da350238b3e6e2621",
       "src": "https://github.com/NickvanDyke/opencode.nvim"
     },
+    "overseer": {
+      "rev": "5828bdbd86677497613033c142f0a8624489216f",
+      "src": "https://github.com/stevearc/overseer.nvim"
+    },
     "petrolnoir": {
       "rev": "874572bfc75c19a4efc038f5f12f651e04b7d549",
       "src": "https://github.com/connormxfadden/petrolnoir.nvim"

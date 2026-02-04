@@ -45,6 +45,7 @@ pack.install {
     { name = 'indent-blankline', repo = 'lukas-reineke/indent-blankline.nvim' },
     { name = 'flash', repo = 'folke/flash.nvim' },
     { name = 'zen-mode', repo = 'folke/zen-mode.nvim' },
+    { name = 'overseer', repo = 'stevearc/overseer.nvim' },
     {
       name = 'dap',
       repo = 'mfussenegger/nvim-dap',
