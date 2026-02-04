@@ -173,6 +173,10 @@
     "winsep": {
       "rev": "e555611",
       "src": "https://github.com/nvim-zh/colorful-winsep.nvim"
+    },
+    "zen-mode": {
+      "rev": "8564ce6",
+      "src": "https://github.com/folke/zen-mode.nvim"
     }
   }
 }

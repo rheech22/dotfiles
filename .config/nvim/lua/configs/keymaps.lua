@@ -18,6 +18,7 @@ map('n', L 'e', C 'Oil', 'Open file explorer')
 map('n', L 'E', C 'lua require("oil").open_float()', 'Open file explorer (float)')
 map({ 'n', 'v', 'x' }, L 's', C 'e #', 'Edit alternate file')
 map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
+map('n', L 'z', C 'ZenMode', 'Toggle ZenMode')
 
 -- picker
 map('n', L '<space>', C 'FzfLua files', 'Find files')
