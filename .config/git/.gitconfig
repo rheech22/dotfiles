@@ -28,7 +28,7 @@
 [alias]
 	a = "add ."
 	b = "!git branch | grep -v '^\\*'"
-	bb = "!git checkout $(git branch -vv | grep -v '^\\*' | fzf | awk '{print $1}')"
+	bb = "!git checkout $(git branch -vv | grep -v '^[\\*+]' | fzf | awk '{print $1}')"
 	bc = "switch -c"
 	bd = "!git branch -D $(git b | fzf -m)"
 	bs = "switch"
