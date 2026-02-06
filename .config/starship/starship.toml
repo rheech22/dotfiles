@@ -1,3 +1,5 @@
+palette = "light"
+
 format = """
 $username\
 $hostname\
@@ -11,20 +13,20 @@ $python\
 $character"""
 
 [directory]
-style = "#CDCDCD"
+style = "dir"
 
 [character]
-success_symbol = "[:](bold #00FF00)"
-error_symbol = "[:](bold #D8647E)"
-vimcmd_symbol = "[❮](#7FA563)"
+success_symbol = "[:](bold ok)"
+error_symbol = "[:](bold err)"
+vimcmd_symbol = "[❮](vim)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "italic #00FF00"
+style = "italic branch"
 
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](#BB9DBD) ($ahead_behind$stashed)]($style)"
-style = "#6E94B2"
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](status) ($ahead_behind$stashed)]($style)"
+style = "status2"
 conflicted = "!"
 untracked = "?"
 modified = "~"
@@ -39,8 +41,28 @@ style = "bright-white"
 
 [cmd_duration]
 format = "[$duration]($style) "
-style = "#7FA563"
+style = "duration"
 
 [python]
 format = "[$virtualenv]($style) "
 style = "bright-black"
+
+[palettes.dark]
+dir = "#CDCDCD"
+ok = "#00FF00"
+err = "#D8647E"
+vim = "#7FA563"
+branch = "#00FF00"
+status = "#BB9DBD"
+status2 = "#6E94B2"
+duration = "#7FA563"
+
+[palettes.light]
+dir = "#4c4f69"
+ok = "#40a02b"
+err = "#d20f39"
+vim = "#179299"
+branch = "#40a02b"
+status = "#8839ef"
+status2 = "#1e66f5"
+duration = "#179299"

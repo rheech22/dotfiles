@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 
-local constants = require("constants")
 local commands = require("commands")
+local themes = require("themes")
 local hostname = wezterm.hostname()
 
 local config = wezterm.config_builder()
@@ -12,40 +12,20 @@ config.font = wezterm.font("DankMono Nerd Font")
 if hostname == "ichanghyeogs-MacBook-Pro.local" then
 	config.font_size = 14.5
 else
-	config.font_size = 18.5
+	config.font_size = 18
 end
 
 -- Colors
-config.colors = {
-	background = "#141415",
-	foreground = "#cdcdcd",
-	cursor_bg = "#ffffff",
-	cursor_border = "#ffffff",
-	selection_fg = "#c3c3d5",
-	selection_bg = "#333738",
-	split = "#00FF00",
-	tab_bar = {
-		active_tab = {
-			bg_color = "#141415",
-			fg_color = "#cdcdcd",
-		},
-		new_tab = {
-			bg_color = "None",
-			fg_color = "#cdcdcd",
-		},
-		new_tab_hover = {
-			bg_color = "#141415",
-			fg_color = "#cdcdcd",
-		},
-	},
-}
+local current_theme = themes.load_state()
+config.colors = themes.get(current_theme)
+themes.sync_starship(current_theme)
 
 -- Appearance
 config.underline_thickness = "200%"
 config.underline_position = "200%"
 config.window_decorations = "RESIZE | MACOS_FORCE_DISABLE_SHADOW | MACOS_FORCE_SQUARE_CORNERS"
 config.tab_bar_at_bottom = true
--- config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = false
 -- config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
 	left = 0,
@@ -55,11 +35,11 @@ config.window_padding = {
 }
 
 -- config.window_background_image = constants.bg_blurred
-config.macos_window_background_blur = 38
-config.window_background_opacity = constants.opacity
+-- config.macos_window_background_blur = 38
+-- config.window_background_opacity = constants.opacity
 config.command_palette_font_size = 16
 config.command_palette_bg_color = "#5E4090"
-config.command_palette_rows = 16
+config.command_palette_rows = 10
 
 -- Keymaps
 config.keys = {
@@ -126,6 +106,19 @@ config.keys = {
 		action = act.CloseCurrentPane({ confirm = true }),
 	},
 }
+
+-- Nvim theme sync
+wezterm.on("user-var-changed", function(window, pane, name, value)
+	if name == "nvim_theme" then
+		local overrides = window:get_config_overrides() or {}
+		overrides.colors = themes.get(value)
+		window:set_config_overrides(overrides)
+		themes.sync_starship(value)
+		themes.save_state(value)
+		-- We don't broadcast here because this signal came FROM nvim.
+		-- Broadcasting would trigger the sender to reload itself unnecessarily.
+	end
+end)
 
 -- Custom Commands
 wezterm.on("augment-command-palette", function()

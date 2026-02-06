@@ -28,6 +28,10 @@
       "rev": "9d057d1a1e6c6a4eafa4d04aca493d32eba7e591",
       "src": "https://github.com/igorlfs/nvim-dap-view"
     },
+    "everforest": {
+      "rev": "b03a03148c8b34c24c96960b93da9c8883d11f54",
+      "src": "https://github.com/sainnhe/everforest"
+    },
     "fidget": {
       "rev": "64463022a1f2ff1318ab22a2ea4125ed9313a483",
       "src": "https://github.com/j-hui/fidget.nvim"
@@ -108,6 +112,10 @@
       "rev": "3d25c24487876676d29d325c01ce108cbdbd0753",
       "src": "https://github.com/milanglacier/minuet-ai.nvim"
     },
+    "nvim": {
+      "rev": "beaf41a30c26fd7d6c386d383155cbd65dd554cd",
+      "src": "https://github.com/catppuccin/nvim"
+    },
     "nvim-lspconfig": {
       "rev": "d696e36d5792daf828f8c8e8d4b9aa90c1a10c2a",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -152,6 +160,14 @@
     "teide": {
       "rev": "c8df92c32cd8f9741858241474c9069af74c20ca",
       "src": "https://github.com/serhez/teide.nvim"
+    },
+    "teide.nvim": {
+      "rev": "95041d1d78e786bd88be64bca3e1771f7b6236df",
+      "src": "https://github.com/serhez/teide.nvim"
+    },
+    "theme": {
+      "rev": "c1ab4d4891ff3a27deba6a80222d895ac8ffb2e5",
+      "src": "https://github.com/vague2k/vague.nvim"
     },
     "todo-comments": {
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",

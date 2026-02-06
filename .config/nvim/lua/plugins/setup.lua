@@ -1,11 +1,15 @@
 local pack = require 'pack'
 pack.install {
   plugins = {
-    -- themes
-    -- { name = 'vague', repo = 'vague2k/vague.nvim' },
-    { name = 'teide', repo = 'serhez/teide.nvim' },
-    -- { name = 'petrolnoir', repo = 'connormxfadden/petrolnoir.nvim' },
-    -- themes
+    {
+      name = 'theme',
+      repo = 'vague2k/vague.nvim',
+      deps = {
+        'serhez/teide.nvim',
+        'catppuccin/nvim',
+        'sainnhe/everforest',
+      },
+    },
     { name = 'melange', repo = 'savq/melange-nvim' },
     { name = 'nvim-treesitter', repo = 'nvim-treesitter/nvim-treesitter', version = 'main' },
     { name = 'treesitter-context', repo = 'nvim-treesitter/nvim-treesitter-context' },
