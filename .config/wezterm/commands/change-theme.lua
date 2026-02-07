@@ -5,7 +5,17 @@ local commands = {}
 
 for _, name in ipairs(themes.names) do
 	table.insert(commands, {
-		brief = "Theme: " .. name,
+		brief = "Theme (Terminal): " .. name,
+		icon = "md_monitor",
+		action = wezterm.action_callback(function(window)
+			local overrides = window:get_config_overrides() or {}
+			overrides.colors = themes.get(name)
+			window:set_config_overrides(overrides)
+		end),
+	})
+
+	table.insert(commands, {
+		brief = "Theme (Global): " .. name,
 		icon = "md_palette",
 		action = wezterm.action_callback(function(window)
 			local ok, applied = themes.sync_external_tools(name)
