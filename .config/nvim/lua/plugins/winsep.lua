@@ -10,6 +10,5 @@ return {
         enabled = 'shift',
       },
     }
-    vim.api.nvim_set_hl(0, 'ColorfulWinSep', { fg = '#00FF00', bg = 'black' })
   end,
 }

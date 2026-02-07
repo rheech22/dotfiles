@@ -2,6 +2,11 @@
 eval "$(starship init zsh)"
 export LSCOLORS="ExFxBxDxCxegedabagacad"
 
+# Re-render prompt on SIGUSR1 (triggered by theme sync)
+TRAPUSR1() {
+  zle && zle reset-prompt
+}
+
 # auto completion
 autoload -U compinit; compinit
 

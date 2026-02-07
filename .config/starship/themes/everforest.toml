@@ -1,0 +1,68 @@
+palette = "light"
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$python\
+$character"""
+
+[directory]
+style = "dir"
+
+[character]
+success_symbol = "[:](bold ok)"
+error_symbol = "[:](bold err)"
+vimcmd_symbol = "[❮](vim)"
+
+[git_branch]
+format = "[$branch]($style)"
+style = "italic branch"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](status) ($ahead_behind$stashed)]($style)"
+style = "status2"
+conflicted = "!"
+untracked = "?"
+modified = "~"
+staged = "+"
+renamed = "»"
+deleted = "-"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-white"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "duration"
+
+[python]
+format = "[$virtualenv]($style) "
+style = "bright-black"
+
+[palettes.dark]
+dir = "#CDCDCD"
+ok = "#00FF00"
+err = "#D8647E"
+vim = "#7FA563"
+branch = "#00FF00"
+status = "#BB9DBD"
+status2 = "#6E94B2"
+duration = "#7FA563"
+
+[palettes.light]
+dir = "#4c4f69"
+ok = "#40a02b"
+err = "#d20f39"
+vim = "#179299"
+branch = "#40a02b"
+status = "#8839ef"
+status2 = "#1e66f5"
+duration = "#179299"

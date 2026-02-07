@@ -8,12 +8,17 @@ for _, name in ipairs(themes.names) do
 		brief = "Theme: " .. name,
 		icon = "md_palette",
 		action = wezterm.action_callback(function(window)
+			local ok, applied = themes.sync_external_tools(name)
+			if not ok then
+				return
+			end
+
 			local overrides = window:get_config_overrides() or {}
-			overrides.colors = themes.get(name)
+			overrides.colors = themes.get(applied)
 			window:set_config_overrides(overrides)
-			themes.sync_starship(name)
-			themes.save_state(name)
+			themes.save_state(applied)
 			themes.broadcast_to_nvim()
+			themes.broadcast_to_zsh()
 		end),
 	})
 end

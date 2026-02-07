@@ -10,7 +10,22 @@ local M = {
   },
 }
 
-local theme_file = vim.fn.expand '~/.cache/nvim_theme.txt'
+local theme_file = vim.fn.expand '~/.cache/theme.txt'
+
+local winsep_highlights = {
+  vague = { fg = '#00FF00', bg = '#141415' },
+  ['catppuccin-latte'] = { fg = '#1e66f5', bg = '#eff1f5' },
+  ['catppuccin-frappe'] = { fg = '#8caaee', bg = '#303446' },
+  ['catppuccin-macchiato'] = { fg = '#8aadf4', bg = '#24273a' },
+  ['catppuccin-mocha'] = { fg = '#89b4fa', bg = '#1e1e2e' },
+  ['teide-darker'] = { fg = '#5CCEFF', bg = '#171B20' },
+  everforest = { fg = '#8da101', bg = '#FDF6E3' },
+}
+
+local function apply_winsep_highlight(name)
+  local hl = winsep_highlights[name] or winsep_highlights.vague
+  vim.api.nvim_set_hl(0, 'ColorfulWinSep', hl)
+end
 
 local function set_wezterm_theme(scheme)
   local b64 = vim.base64.encode(scheme)
@@ -48,6 +63,8 @@ function M.apply_theme(name)
     vim.o.background = 'dark'
     pcall(vim.cmd.colorscheme, name)
   end
+
+  apply_winsep_highlight(name)
 
   vim.g.applied_colorscheme = name
 

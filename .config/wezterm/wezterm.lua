@@ -17,8 +17,14 @@ end
 
 -- Colors
 local current_theme = themes.load_state()
-config.colors = themes.get(current_theme)
-themes.sync_starship(current_theme)
+local startup_ok, startup_theme = themes.sync_external_tools(current_theme)
+if not startup_ok then
+	startup_theme = "vague"
+end
+config.colors = themes.get(startup_theme)
+if startup_theme ~= current_theme then
+	themes.save_state(startup_theme)
+end
 
 -- Appearance
 config.underline_thickness = "200%"
@@ -110,12 +116,17 @@ config.keys = {
 -- Nvim theme sync
 wezterm.on("user-var-changed", function(window, pane, name, value)
 	if name == "nvim_theme" then
+		local ok, applied = themes.sync_external_tools(value)
+		if not ok then
+			return
+		end
+
 		local overrides = window:get_config_overrides() or {}
-		overrides.colors = themes.get(value)
+		overrides.colors = themes.get(applied)
 		window:set_config_overrides(overrides)
-		themes.sync_starship(value)
-		themes.save_state(value)
-		-- We don't broadcast here because this signal came FROM nvim.
+		themes.save_state(applied)
+		themes.broadcast_to_zsh()
+		-- We don't broadcast_to_nvim here because this signal came FROM nvim.
 		-- Broadcasting would trigger the sender to reload itself unnecessarily.
 	end
 end)

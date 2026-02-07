@@ -3,6 +3,7 @@ export EDITOR="nvim"
 
 # lazygit
 export XDG_CONFIG_HOME="$HOME/.config"
+export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml,$HOME/.cache/lazygit-theme.yml"
 
 # claude
 export USE_BUILTIN_RIPGREP=0

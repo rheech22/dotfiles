@@ -38,7 +38,7 @@ declare -A CONFIG_ITEMS=(
   ["gitconfig-local"]="$DOTFILES_DIR/.config/git/.gitconfig.local|$HOME/.gitconfig.local|Git local configuration"
   
   # Files linked to ~/.config/ path
-  ["starship"]="$DOTFILES_DIR/.config/starship/starship.toml|$CONFIG_DIR/starship.toml|Starship prompt"
+  ["starship"]="$DOTFILES_DIR/.config/starship/themes/vague.toml|$CONFIG_DIR/starship.toml|Starship prompt"
   
   # Folders linked to ~/.config/ path
   ["nvim"]="$DOTFILES_DIR/.config/nvim|$CONFIG_DIR/nvim|Neovim configuration"
