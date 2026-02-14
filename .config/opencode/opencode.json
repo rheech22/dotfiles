@@ -39,7 +39,7 @@
     }
 	},
 	"plugin": [
-		"opencode-antigravity-auth@1.4.5"
+		"opencode-antigravity-auth@1.5.1"
 	],
   "provider": {
     "google": {

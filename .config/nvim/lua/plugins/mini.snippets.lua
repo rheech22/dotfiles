@@ -13,6 +13,8 @@ return {
             javascriptreact = { 'javascript.json' },
             typescriptreact = { 'javascript.json' },
             tsx = { 'javascript.json' },
+            vimwiki = { 'markdown.json' },
+            markdown = { 'markdown.json' },
           },
         },
       },

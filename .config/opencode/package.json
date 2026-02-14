@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@opencode-ai/plugin": "1.1.53",
+    "@opencode-ai/plugin": "1.2.0",
     "opencode-cursor-auth": "^1.0.16"
   }
 }

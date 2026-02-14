@@ -1,0 +1,50 @@
+{
+  "h1": {
+    "prefix": "h1",
+    "body": "# ${0}"
+  },
+  "h2": {
+    "prefix": "h2",
+    "body": "## ${0}"
+  },
+  "h3": {
+    "prefix": "h3",
+    "body": "### ${0}"
+  },
+  "h4": {
+    "prefix": "h4",
+    "body": "#### ${0}"
+  },
+  "a": {
+    "prefix": "aa",
+    "body": "[${2}](${1})${0}"
+  },
+  "strong": {
+    "prefix": "st",
+    "body": "**${1}**${0}"
+  },
+  "math": {
+    "prefix": "ma",
+    "body": "$$\n${0}\n$$"
+  },
+  "code.block": {
+    "prefix": "cb",
+    "body": "```${1}\n${0}\n```"
+  },
+  "code.inline": {
+    "prefix": "ci",
+    "body": "`${1}`${0}"
+  },
+  "mdx:gridimage": {
+    "prefix": "gi",
+    "body": "<ImageGrid>\n\t${0}\n</ImageGrid>"
+  },
+  "mdx:quotes": {
+    "prefix": "qt",
+    "body": "<Blockquote ${1}>\n\t${0}\n</Blockquote>"
+  },
+  "mdx:callout": {
+    "prefix": "co",
+    "body": "<Callout title='${1}'>\n\t${0}\n</Callout>"
+  }
+}

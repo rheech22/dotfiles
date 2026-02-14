@@ -1,9 +1,6 @@
 return {
   config = function()
     require('blink.cmp').setup {
-      enabled = function()
-        return not vim.tbl_contains({ 'vimwiki' }, vim.bo.filetype)
-      end,
       -- NOTE: you need to run "cargo build --release" in the blink plugin directory
       fuzzy = { implementation = 'prefer_rust_with_warning' },
 
@@ -38,6 +35,10 @@ return {
 
       keymap = {
         preset = 'super-tab',
+      },
+
+      per_filetype = {
+        vimwiki = { 'snippets', 'path', 'buffer' },
       },
     }
   end,
