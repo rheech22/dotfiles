@@ -10,6 +10,9 @@ return {
 
       sources = {
         default = { 'snippets', 'lsp', 'path', 'buffer' },
+        per_filetype = {
+          vimwiki = { 'snippets', 'path', 'buffer' },
+        },
       },
 
       completion = {
@@ -35,10 +38,6 @@ return {
 
       keymap = {
         preset = 'super-tab',
-      },
-
-      per_filetype = {
-        vimwiki = { 'snippets', 'path', 'buffer' },
       },
     }
   end,

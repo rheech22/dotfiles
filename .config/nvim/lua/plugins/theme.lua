@@ -11,20 +11,41 @@ local M = {
 }
 
 local theme_file = vim.fn.expand '~/.cache/theme.txt'
+local palettes = require 'utils.theme-colors'
 
-local winsep_highlights = {
-  vague = { fg = '#00FF00', bg = '#141415' },
-  ['catppuccin-latte'] = { fg = '#1e66f5', bg = '#eff1f5' },
-  ['catppuccin-frappe'] = { fg = '#8caaee', bg = '#303446' },
-  ['catppuccin-macchiato'] = { fg = '#8aadf4', bg = '#24273a' },
-  ['catppuccin-mocha'] = { fg = '#89b4fa', bg = '#1e1e2e' },
-  ['teide-darker'] = { fg = '#5CCEFF', bg = '#171B20' },
-  everforest = { fg = '#8da101', bg = '#FDF6E3' },
-}
+local function get_palette(name)
+  return palettes[name] or palettes.vague
+end
 
-local function apply_winsep_highlight(name)
-  local hl = winsep_highlights[name] or winsep_highlights.vague
-  vim.api.nvim_set_hl(0, 'ColorfulWinSep', hl)
+local function apply_winsep_highlight(p)
+  vim.api.nvim_set_hl(0, 'ColorfulWinSep', { fg = p.winsep_fg, bg = p.bg })
+end
+
+local function apply_render_md_highlights(p)
+  local hls = {
+    RenderMarkdownH1         = { fg = p.red, bold = true },
+    RenderMarkdownH2         = { fg = p.blue, bold = true },
+    RenderMarkdownH3         = { fg = p.yellow, bold = true },
+    RenderMarkdownH4         = { fg = p.green, bold = true },
+    RenderMarkdownH5         = { fg = p.purple, bold = true },
+    RenderMarkdownH6         = { fg = p.teal, bold = true },
+    RenderMarkdownH1Bg       = { bg = p.h1_bg },
+    RenderMarkdownH2Bg       = { bg = p.h2_bg },
+    RenderMarkdownH3Bg       = { bg = p.h3_bg },
+    RenderMarkdownH4Bg       = { bg = p.h4_bg },
+    RenderMarkdownH5Bg       = { bg = p.h5_bg },
+    RenderMarkdownH6Bg       = { bg = p.h6_bg },
+    RenderMarkdownCode       = { bg = p.bg_dim },
+    RenderMarkdownCodeBorder = { fg = p.surface },
+    RenderMarkdownCodeInline = { bg = p.bg_line },
+    RenderMarkdownBullet     = { fg = p.lavender },
+    RenderMarkdownChecked    = { fg = p.green },
+    RenderMarkdownUnchecked  = { fg = p.comment },
+    RenderMarkdownTodo       = { fg = p.yellow },
+  }
+  for group, opts in pairs(hls) do
+    vim.api.nvim_set_hl(0, group, opts)
+  end
 end
 
 local function set_wezterm_theme(scheme)
@@ -64,7 +85,9 @@ function M.apply_theme(name)
     pcall(vim.cmd.colorscheme, name)
   end
 
-  apply_winsep_highlight(name)
+  local p = get_palette(name)
+  apply_winsep_highlight(p)
+  apply_render_md_highlights(p)
 
   vim.g.applied_colorscheme = name
 

@@ -9,11 +9,16 @@ return {
       'css',
       'html',
       'yaml',
+      'bash',
       'javascript',
+      'jsx',
       'typescript',
+      'tsx',
       'dart',
       'python',
-      'tsx',
+      'markdown',
+      'markdown_inline',
     }
+    vim.treesitter.language.register('markdown', 'vimwiki')
   end,
 }

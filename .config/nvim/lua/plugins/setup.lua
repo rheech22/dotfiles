@@ -34,6 +34,7 @@ pack.install {
       repo = 'iamcco/markdown-preview.nvim',
       build = 'cd app && npm install',
     },
+    { name = 'render-markdown', repo = 'MeanderingProgrammer/render-markdown.nvim' },
     { name = 'lazygit', repo = 'kdheepak/lazygit.nvim' },
     { name = 'fidget', repo = 'j-hui/fidget.nvim' },
     { name = 'conform', repo = 'stevearc/conform.nvim' },
