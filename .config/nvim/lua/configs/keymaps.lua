@@ -109,6 +109,50 @@ map('n', '\\w\\w', '<Plug>VimwikiMakeDiaryNote', 'Create a Diary Note')
 map('n', '\\w\\g', '<Plug>VimwikiDiaryGenerateLinks', 'Generate Links for Diary Notes')
 map('n', '\\]', '<Plug>VimwikiToggleListItem', 'Toggle List Item')
 
+-- plugin:vimwiki (search with fzf-lua)
+map('n', L 'wf', function()
+  local wiki_path = vim.fn.expand(vim.g.vimwiki_list[1].path)
+  local index = wiki_path .. '/note/index.md'
+  local lines = vim.fn.readfile(index)
+  local entries = {}
+  for _, line in ipairs(lines) do
+    local file, title = line:match '%[%[(.-)|(.-)]%]'
+    if file and title then
+      table.insert(entries, title .. '\t' .. wiki_path .. '/note/' .. file .. '.md')
+    end
+  end
+  require('fzf-lua').fzf_exec(entries, {
+    winopts = {
+      title = ' Wiki Notes ',
+      title_pos = 'center',
+    },
+    actions = {
+      ['default'] = function(selected)
+        local path = selected[1]:match '\t(.+)$'
+        if path then
+          vim.cmd('edit ' .. vim.fn.fnameescape(path))
+        end
+      end,
+    },
+    fzf_opts = {
+      ['--delimiter'] = '\t',
+      ['--with-nth'] = '1',
+    },
+  })
+end, 'Find wiki notes')
+
+map('n', L 'wg', function()
+  local note_dir = vim.fn.expand(vim.g.vimwiki_list[1].path) .. '/note'
+  require('fzf-lua').live_grep {
+    winopts = {
+      title = ' Wiki Notes Grep',
+      title_pos = 'center',
+    },
+    search_paths = { note_dir },
+    rg_opts = '--column --line-number --no-heading --color=always --smart-case -g "*.md"',
+  }
+end, 'Grep wiki notes')
+
 -- plugin:lazygit
 map('n', L 'lg', C 'LazyGit', 'Open LazyGit', { silent = true })
 
