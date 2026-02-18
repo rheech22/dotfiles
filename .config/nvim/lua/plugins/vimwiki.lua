@@ -5,7 +5,6 @@ return {
       work = {
         {
           path = '~/Dropbox/wiki',
-          syntax = 'markdown',
           ext = '.md',
           diary_rel_path = 'diary',
         },
@@ -13,13 +12,11 @@ return {
       home = {
         {
           path = vim.fn.expand '~/Library/Mobile Documents/com~apple~CloudDocs/Notes',
-          syntax = 'markdown',
           ext = '.md',
           diary_rel_path = 'retrospectives',
         },
         {
           path = '~/Dropbox/wiki',
-          syntax = 'markdown',
           ext = '.md',
         },
       },
