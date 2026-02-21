@@ -1,6 +1,7 @@
 ---
 description: Index organization workflow (organize|audit)
 agent: build
+subtask: true
 ---
 
 You are an index organization assistant for a Korean developer's note-taking system.

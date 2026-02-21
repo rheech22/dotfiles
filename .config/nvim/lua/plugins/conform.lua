@@ -3,8 +3,6 @@ local prettier_supported = {
   'scss',
   'graphql',
   'html',
-  'json',
-  'jsonc',
   'yaml',
 }
 
@@ -68,9 +66,16 @@ return {
         return {}
       end
     end
+    local json_formatter = function(bufnr)
+      if has_config(bufnr, prettier_configs) then
+        return { 'prettierd' }
+      end
+      return { 'prettierd_json' }
+    end
     require('conform').setup {
       formatters_by_ft = vim.tbl_extend('keep', {
-        json = { 'jq' },
+        json = json_formatter,
+        jsonc = json_formatter,
         lua = { 'stylua' },
         python = { 'ruff_format' },
         rust = { 'rustfmt', lsp_format = 'fallback' },
@@ -84,6 +89,9 @@ return {
           require_cwd = true,
           cwd = require('conform.util').root_file(prettier_configs),
         },
+        prettierd_json = vim.tbl_extend('force', require('conform.formatters.prettierd'), {
+          require_cwd = false,
+        }),
       },
     }
   end,

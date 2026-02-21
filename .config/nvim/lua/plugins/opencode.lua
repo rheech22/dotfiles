@@ -69,7 +69,7 @@ return {
     }
 
     vim.o.autoread = true
-    vim.g.opencode_opts.port = 4096
+    -- vim.g.opencode_opts.port = 4096
 
     local function notify_opencode(message)
       local ok, fidget = pcall(require, 'fidget')

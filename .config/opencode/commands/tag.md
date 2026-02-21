@@ -1,6 +1,7 @@
 ---
 description: Tag workflow (file|audit|refresh)
 agent: build
+subtask: true
 ---
 
 Follow @/Users/demian/Library/Mobile Documents/com~apple~CloudDocs/Notes/note/tagging-guide.md.

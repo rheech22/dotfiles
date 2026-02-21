@@ -1,6 +1,7 @@
 ---
 description: Title workflow (file|audit)
 agent: build
+subtask: true
 ---
 
 You are a title optimization assistant for a Korean developer's blog and note-taking system.
