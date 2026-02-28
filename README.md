@@ -73,3 +73,4 @@ See [`.local.example`](.config/git/.local.example) for a template. Copy it to `.
 - rustc `1.94.0-nightly`
 - eslintd `14.3.0`
 - opencode `latest`
+- zoxide `0.9.9`

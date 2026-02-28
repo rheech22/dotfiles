@@ -2,6 +2,9 @@
 eval "$(starship init zsh)"
 export LSCOLORS="ExFxBxDxCxegedabagacad"
 
+# zoxide
+eval "$(zoxide init zsh --cmd cd)"
+
 # Re-render prompt on SIGUSR1 (triggered by theme sync)
 TRAPUSR1() {
   zle && zle reset-prompt
@@ -42,6 +45,8 @@ alias cc="claude"
 alias oo="opencode"
 alias dot="cd $HOME/dotfiles"
 alias zsh="source ~/.zshrc"
+alias z='__zoxide_z'
+alias zi='__zoxide_zi'
 
 # fnm, TODO: move to local
 FNM_PATH="/usr/local/opt/fnm/bin"
