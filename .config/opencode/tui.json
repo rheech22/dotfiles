@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  "theme": "orng",
+  "keybinds": {
+    "leader": "ctrl+o",
+    "messages_half_page_up": "ctrl+k",
+    "messages_half_page_down": "ctrl+j"
+  },
+  "scroll_acceleration": {
+    "enabled": true
+  }
+}

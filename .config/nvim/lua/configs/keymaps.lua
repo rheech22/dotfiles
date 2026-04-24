@@ -98,8 +98,24 @@ map('n', L 'th', function()
     count = 2,
   })
 end, 'Toggle terminal (horizontal)')
-map('n', L 'ta', C 'set autochdir', 'Attach Terminal to Current Buffer')
-map('n', L 'td', C 'set noautochdir', 'Detach Terminal from Current Buffer')
+map('n', L 'ta', function()
+  local dir = vim.fn.expand '%:p:h'
+  vim.cmd('cd ' .. vim.fn.fnameescape(dir))
+  -- 현재 열린 snacks 터미널에 chdir 전송
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].buftype == 'terminal' then
+      local chan = vim.bo[buf].channel
+      if chan and chan > 0 then
+        vim.fn.chansend(chan, 'cd ' .. vim.fn.shellescape(dir) .. '\n')
+      end
+    end
+  end
+  vim.notify('cwd → ' .. dir, vim.log.levels.INFO)
+end, 'Attach Terminal to Current Buffer')
+map('n', L 'td', function()
+  vim.cmd('cd ' .. vim.fn.fnameescape(vim.fn.getcwd(-1, -1)))
+  vim.notify('cwd reset to global', vim.log.levels.INFO)
+end, 'Detach Terminal from Current Buffer')
 map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
 
 -- plugin:vimwiki

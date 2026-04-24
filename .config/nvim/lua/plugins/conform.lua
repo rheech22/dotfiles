@@ -57,13 +57,14 @@ return {
     local eslint_formatters_by = {}
     for _, ft in ipairs(eslint_supported) do
       eslint_formatters_by[ft] = function(bufnr)
-        if has_config(bufnr, eslint_configs) then
-          return { 'eslint_d' }
-        end
+        local formatters = {}
         if has_config(bufnr, prettier_configs) then
-          return { 'prettierd' }
+          table.insert(formatters, 'prettierd')
         end
-        return {}
+        if has_config(bufnr, eslint_configs) then
+          table.insert(formatters, 'eslint_d')
+        end
+        return formatters
       end
     end
     local json_formatter = function(bufnr)
@@ -89,7 +90,7 @@ return {
           require_cwd = true,
           cwd = require('conform.util').root_file(prettier_configs),
         },
-        prettierd_json = vim.tbl_extend('force', require('conform.formatters.prettierd'), {
+        prettierd_json = vim.tbl_extend('force', require 'conform.formatters.prettierd', {
           require_cwd = false,
         }),
       },

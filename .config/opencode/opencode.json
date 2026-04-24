@@ -1,7 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "theme": "orng",
   "small_model": "synthetic/hf:meta-llama/Llama-4-Scout-17B-16E-Instruct",
   "compaction": {
     "auto": true,
@@ -34,16 +33,6 @@
       "build/**",
       ".cache/**"
     ]
-  },
-  "keybinds": {
-    "leader": "ctrl+o",
-    "messages_half_page_up": "ctrl+k",
-    "messages_half_page_down": "ctrl+j"
-  },
-  "tui": {
-    "scroll_acceleration": {
-      "enabled": true
-    }
   },
   "mcp": {
     "chrome-devtools": {
