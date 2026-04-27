@@ -172,6 +172,14 @@ end, 'Grep wiki notes')
 -- plugin:lazygit
 map('n', L 'lg', C 'LazyGit', 'Open LazyGit', { silent = true })
 
+-- plugin:snacks.gh
+map('n', L 'gp', function()
+  require('snacks').picker.gh_pr()
+end, 'GitHub pull requests (open)')
+map('n', L 'gP', function()
+  require('snacks').picker.gh_pr { state = 'all' }
+end, 'GitHub pull requests (all)')
+
 -- plugin:dap
 map('n', L 'dc', C 'lua require("dap").continue()', 'Run/Continue')
 map('n', L 'db', C 'lua require("dap").toggle_breakpoint()', 'Toggle Breakpoint')

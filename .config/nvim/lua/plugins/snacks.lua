@@ -1,8 +1,20 @@
 return {
   config = function()
     require('snacks').setup {
+      gh = { enabled = true },
       input = { enabled = true },
-      picker = { enabled = true },
+      picker = {
+        enabled = true,
+        sources = {
+          gh_diff = {
+            auto_close = false,
+            layout = {
+              preset = 'right',
+              -- hidden = { 'preview' },
+            },
+          },
+        },
+      },
       terminal = { enabled = true },
       bigfile = { enabled = false },
       dashboard = { enabled = false },
