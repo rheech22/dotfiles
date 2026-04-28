@@ -10,6 +10,68 @@ local map = function(mode, lhs, rhs, desc, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+local snacks = require 'snacks'
+
+local grep_cWORD = function()
+  snacks.picker.grep {
+    regex = false,
+    live = false,
+    search = vim.fn.expand '<cWORD>',
+  }
+end
+
+local pick_colorscheme = function()
+  local themes = require 'plugins.theme'
+  local items = {}
+
+  for _, theme in ipairs(themes.available_themes) do
+    items[#items + 1] = { text = theme }
+  end
+
+  snacks.picker.pick {
+    title = 'Colorscheme',
+    items = items,
+    format = 'text',
+    preview = false,
+    confirm = function(picker, item)
+      picker:close()
+      if item and item.text then
+        themes.apply_theme(item.text)
+      end
+    end,
+  }
+end
+
+local pick_wiki_notes = function()
+  local wiki_path = vim.fn.expand(vim.g.vimwiki_list[1].path)
+  local index = wiki_path .. '/note/index.md'
+  local lines = vim.fn.readfile(index)
+  local items = {}
+
+  for _, line in ipairs(lines) do
+    local file, title = line:match '%[%[(.-)|(.-)]%]'
+    if file and title then
+      items[#items + 1] = {
+        text = title,
+        file = wiki_path .. '/note/' .. file .. '.md',
+      }
+    end
+  end
+
+  snacks.picker.pick {
+    title = 'Wiki Notes',
+    items = items,
+    format = 'text',
+    preview = 'preview',
+    confirm = function(picker, item)
+      picker:close()
+      if item and item.file then
+        vim.cmd('edit ' .. vim.fn.fnameescape(item.file))
+      end
+    end,
+  }
+end
+
 -- file & buffer
 map('n', L 'w', C 'write', 'Write buffer')
 map('n', L 'q', C 'quit', 'Quit window')
@@ -18,27 +80,61 @@ map('n', L 'e', C 'Oil', 'Open file explorer')
 map('n', L 'E', C 'lua require("oil").open_float()', 'Open file explorer (float)')
 map({ 'n', 'v', 'x' }, L 's', C 'e #', 'Edit alternate file')
 map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
-map('n', L 'z', C 'ZenMode', 'Toggle ZenMode')
+map('n', L 'z', function()
+  snacks.zen()
+end, 'Toggle ZenMode')
 map('n', L 'fp', C 'let @+=@%', 'Copy Path')
 
 -- picker
-map('n', L '<space>', C 'FzfLua files', 'Find files')
-map('n', L 'b', C 'FzfLua buffers', 'Find buffers')
-map('n', L 'h', C 'FzfLua helptags', 'Find help')
-map('n', L 'g', C 'FzfLua live_grep', 'Grep live')
-map('n', L 'r', C 'FzfLua oldfiles', 'Find recent files')
-map('n', L 'fb', C 'FzfLua builtin', 'Show FzfLua builtin')
-map('n', L 'fw', C 'FzfLua grep_cword', 'Grep word under cursor')
-map('n', L 'fW', C 'FzfLua grep_cWORD', 'Grep WORD under cursor')
-map('v', L 'fw', C 'FzfLua grep_visual', 'Grep visual selection')
+map('n', L '<space>', function()
+  snacks.picker.buffers()
+end, 'Find buffers')
+map('n', L 'pf', function()
+  snacks.picker.files { hidden = true }
+end, 'Find files')
+map('n', L 'ph', function()
+  snacks.picker.help()
+end, 'Find help')
+map('n', L 'pr', function()
+  snacks.picker.recent()
+end, 'Find recent files')
+map('n', L 'pl', function()
+  snacks.picker()
+end, 'Show picker list')
+
+map('n', L 'g', function()
+  snacks.picker.grep { hidden = true }
+end, 'Grep live')
+map({ 'n', 'v' }, L 'fw', function()
+  snacks.picker.grep_word()
+end, 'Grep word under cursor')
+map('n', L 'fW', grep_cWORD, 'Grep WORD under cursor')
 
 -- lsp
 map('n', L 'cr', C 'lua vim.lsp.buf.rename()', 'Rename symbol')
+map('n', L 'cR', function()
+  snacks.rename.rename_file()
+end, 'Rename file')
 map('n', L 'ca', C 'lua vim.lsp.buf.code_action()', 'Code action')
 map('n', 'gd', C 'lua vim.lsp.buf.definition()', 'Go to definition')
+map('n', 'gr', function()
+  snacks.picker.lsp_references()
+end, 'Go to references', { nowait = true })
+map({ 'n', 't' }, '[[', function()
+  snacks.words.jump(-vim.v.count1)
+end, 'Previous reference')
+map({ 'n', 't' }, ']]', function()
+  snacks.words.jump(vim.v.count1)
+end, 'Next reference')
 map('n', 'gl', C 'lua vim.diagnostic.open_float()', 'Show diagnostics')
 map('n', 'dn', C 'lua vim.diagnostic.jump({ count = 1, float = true })', 'Next diagnostic')
 map('n', 'dp', C 'lua vim.diagnostic.jump({ count = -1, float = true })', 'Previous diagnostic')
+map('n', L 'ss', function()
+  snacks.picker.lsp_symbols()
+end, 'LSP symbols')
+map('n', L 'sS', function()
+  snacks.picker.lsp_workspace_symbols()
+end, 'LSP workspace symbols')
 map('n', L 'lf', function()
   local bufnr = vim.api.nvim_get_current_buf()
   local eslint_client = vim.lsp.get_clients({ bufnr = bufnr, name = 'eslint' })[1]
@@ -66,6 +162,7 @@ map('n', 'N', 'Nzzzv', 'Previous search result and center')
 map({ 'n', 'v', 'x' }, L 'xv', C 'e $MYVIMRC', 'Edit nvim config')
 map({ 'n', 'v', 'x' }, L 'xz', C 'e ~/.zshrc', 'Edit zshrc')
 map({ 'n', 'v', 'x' }, L 'xw', C 'e ~/.config/wezterm/wezterm.lua', 'Edit wezterm config')
+map('n', L 'cs', pick_colorscheme, 'Pick colorscheme')
 map({ 'n', 'v', 'x' }, L 'o', C 'source $MYVIMRC', 'Source ' .. vim.fn.expand '$MYVIMRC')
 map({ 'n', 'v', 'x' }, L 'O', C 'restart', 'Restart vim.')
 
@@ -125,52 +222,25 @@ map('n', '\\w\\w', '<Plug>VimwikiMakeDiaryNote', 'Create a Diary Note')
 map('n', '\\w\\g', '<Plug>VimwikiDiaryGenerateLinks', 'Generate Links for Diary Notes')
 map('n', '\\]', '<Plug>VimwikiToggleListItem', 'Toggle List Item')
 
--- plugin:vimwiki (search with fzf-lua)
-map('n', L 'wf', function()
-  local wiki_path = vim.fn.expand(vim.g.vimwiki_list[1].path)
-  local index = wiki_path .. '/note/index.md'
-  local lines = vim.fn.readfile(index)
-  local entries = {}
-  for _, line in ipairs(lines) do
-    local file, title = line:match '%[%[(.-)|(.-)]%]'
-    if file and title then
-      table.insert(entries, title .. '\t' .. wiki_path .. '/note/' .. file .. '.md')
-    end
-  end
-  require('fzf-lua').fzf_exec(entries, {
-    winopts = {
-      title = ' Wiki Notes ',
-      title_pos = 'center',
-    },
-    actions = {
-      ['default'] = function(selected)
-        local path = selected[1]:match '\t(.+)$'
-        if path then
-          vim.cmd('edit ' .. vim.fn.fnameescape(path))
-        end
-      end,
-    },
-    fzf_opts = {
-      ['--delimiter'] = '\t',
-      ['--with-nth'] = '1',
-    },
-  })
-end, 'Find wiki notes')
+-- plugin:vimwiki (search with snacks.picker)
+map('n', L 'wf', pick_wiki_notes, 'Find wiki notes')
 
 map('n', L 'wg', function()
   local note_dir = vim.fn.expand(vim.g.vimwiki_list[1].path) .. '/note'
-  require('fzf-lua').live_grep {
-    winopts = {
-      title = ' Wiki Notes Grep',
-      title_pos = 'center',
-    },
-    search_paths = { note_dir },
-    rg_opts = '--column --line-number --no-heading --color=always --smart-case -g "*.md"',
+  snacks.picker.grep {
+    title = 'Wiki Notes Grep',
+    dirs = { note_dir },
+    glob = '*.md',
   }
 end, 'Grep wiki notes')
 
 -- plugin:lazygit
-map('n', L 'lg', C 'LazyGit', 'Open LazyGit', { silent = true })
+map('n', L 'lg', function()
+  snacks.lazygit()
+end, 'Open LazyGit', { silent = true })
+map('n', L 'gd', function()
+  snacks.picker.git_diff()
+end, 'Git diff')
 
 -- plugin:snacks.gh
 map('n', L 'gp', function()

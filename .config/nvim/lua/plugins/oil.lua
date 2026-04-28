@@ -19,5 +19,17 @@ return {
         border = 'rounded',
       },
     }
+
+    vim.api.nvim_create_autocmd('User', {
+      group = vim.api.nvim_create_augroup('OilSnacksRename', { clear = true }),
+      pattern = 'OilActionsPost',
+      callback = function(event)
+        for _, action in ipairs(event.data.actions or {}) do
+          if action.type == 'move' then
+            require('snacks').rename.on_rename_file(action.src_url, action.dest_url)
+          end
+        end
+      end,
+    })
   end,
 }
