@@ -2,6 +2,7 @@ return {
   config = function()
     require('render-markdown').setup {
       file_types = { 'markdown', 'vimwiki' },
+      restart_highlighter = true,
       heading = {
         position = 'inline',
         icons = { '#₁ ', '#₂ ', '#₃ ', '#₄ ', '#₅ ', '#₆ ' },
@@ -53,6 +54,9 @@ return {
         left_pad = 2,
         right_pad = 4,
         border = 'thick',
+      },
+      latex = {
+        enabled = false,
       },
     }
   end,

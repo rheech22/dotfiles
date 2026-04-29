@@ -30,10 +30,6 @@ return {
       return msg
     end
 
-    local function get_opencode_status()
-      return require('opencode').statusline()
-    end
-
     -- Custom configuration for 'vague' (Evil lualine style)
     local function build_vague_config()
       local base = Colors.palette()
@@ -130,20 +126,6 @@ return {
               cond = conditions.hide_in_width,
             },
             {
-              get_opencode_status,
-              color = function()
-                local status = require('opencode.status').status
-                local map = {
-                  idle = colors.green,
-                  responding = colors.blue,
-                  requesting_permission = colors.yellow,
-                  error = colors.red,
-                }
-                return { fg = map[status] or colors.fg }
-              end,
-              padding = { left = 1, right = 1 },
-            },
-            {
               function()
                 return '▊'
               end,
@@ -172,7 +154,7 @@ return {
             },
             { get_lsp_client, icon = ' LSP:' },
           },
-          lualine_x = { { 'filetype' }, { get_opencode_status, padding = { left = 1, right = 1 } } },
+          lualine_x = { { 'filetype' } },
           lualine_y = { 'progress' },
           lualine_z = { 'location' },
         },

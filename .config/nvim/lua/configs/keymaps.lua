@@ -269,14 +269,6 @@ map('n', L 'Fr', C 'FlutterRestart', 'Flutter Restart')
 map('n', L 'Fb', C 'FlutterPubGet', 'Flutter PubGet')
 map('n', L 'Fg', C '!dart run build_runner build --delete-conflicting-outputs', 'Flutter Code Generate')
 
--- plugin:opencode
-map({ 'n', 'x' }, '<C-y>', C "lua require('opencode').ask('@this: ', { submit = true })", 'Ask opencode')
-map({ 'n', 'x' }, '<C-x>', C "lua require('opencode').select()", 'Execute opencode action…')
-map({ 'n', 't' }, '<C-,>', C "lua require('opencode').toggle()", 'Toggle opencode')
-map({ 'n', 'x' }, 'go', function()
-  return require('opencode').operator '@this '
-end, 'Add range to opencode', { expr = true })
-
 -- plugin:flash
 map({ 'n', 'x', 'o' }, 'm', function()
   require('flash').jump()

@@ -78,7 +78,7 @@ return {
         },
       },
       image = {
-        enabled = true,
+        enabled = false,
       },
       styles = {
         terminal_right = {

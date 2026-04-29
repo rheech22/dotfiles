@@ -18,6 +18,7 @@ return {
       'python',
       'markdown',
       'markdown_inline',
+      'regex',
     }
     vim.treesitter.language.register('markdown', 'vimwiki')
   end,
