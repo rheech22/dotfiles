@@ -42,47 +42,6 @@ M.default = {
 }
 M.vague = M.default
 
--- catppuccin-latte
-M["catppuccin-latte"] = {
-	background = "#eff1f5",
-	foreground = "#4c4f69",
-	cursor_bg = "#dc8a78",
-	cursor_border = "#dc8a78",
-	selection_fg = "#4c4f69",
-	selection_bg = "#acb0be",
-	split = "#ccd0da",
-	tab_bar = {
-		background = "#eff1f5",
-
-		active_tab = {
-			bg_color = "#e6e9ef",
-			fg_color = "#1e66f5",
-			intensity = "Bold",
-		},
-
-		inactive_tab = {
-			bg_color = "#eff1f5",
-			fg_color = "#4c4f69",
-		},
-
-		inactive_tab_hover = {
-			bg_color = "#1e66f5",
-			fg_color = "#eff1f5",
-			italic = true,
-		},
-
-		new_tab = {
-			bg_color = "#eff1f5",
-			fg_color = "#1e66f5",
-		},
-
-		new_tab_hover = {
-			bg_color = "#1e66f5",
-			fg_color = "#eff1f5",
-		},
-	},
-}
-
 -- teide-darker
 M["teide-darker"] = {
 	background = "#171B20",
@@ -165,7 +124,7 @@ M["everforest"] = {
 	},
 }
 
-M.names = { "vague", "catppuccin-latte", "teide-darker", "everforest" }
+M.names = { "vague", "everforest", "teide-darker" }
 
 function M.get(name)
 	return M[name] or M.default

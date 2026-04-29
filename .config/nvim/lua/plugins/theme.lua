@@ -3,15 +3,23 @@ local M = {
     'vague',
     'everforest',
     'teide-darker',
-    'catppuccin-latte',
-    'catppuccin-frappe',
-    'catppuccin-macchiato',
-    'catppuccin-mocha',
   },
 }
 
 local theme_file = vim.fn.expand '~/.cache/theme.txt'
 local palettes = require 'utils.theme-colors'
+local supported_themes = {}
+
+for _, theme in ipairs(M.available_themes) do
+  supported_themes[theme] = true
+end
+
+local function normalize_theme(name)
+  if name and supported_themes[name] then
+    return name
+  end
+  return 'vague'
+end
 
 local function get_palette(name)
   return palettes[name] or palettes.vague
@@ -23,25 +31,25 @@ end
 
 local function apply_render_md_highlights(p)
   local hls = {
-    RenderMarkdownH1         = { fg = p.red, bold = true },
-    RenderMarkdownH2         = { fg = p.blue, bold = true },
-    RenderMarkdownH3         = { fg = p.yellow, bold = true },
-    RenderMarkdownH4         = { fg = p.green, bold = true },
-    RenderMarkdownH5         = { fg = p.purple, bold = true },
-    RenderMarkdownH6         = { fg = p.teal, bold = true },
-    RenderMarkdownH1Bg       = { bg = p.h1_bg },
-    RenderMarkdownH2Bg       = { bg = p.h2_bg },
-    RenderMarkdownH3Bg       = { bg = p.h3_bg },
-    RenderMarkdownH4Bg       = { bg = p.h4_bg },
-    RenderMarkdownH5Bg       = { bg = p.h5_bg },
-    RenderMarkdownH6Bg       = { bg = p.h6_bg },
-    RenderMarkdownCode       = { bg = p.bg_dim },
+    RenderMarkdownH1 = { fg = p.red, bold = true },
+    RenderMarkdownH2 = { fg = p.blue, bold = true },
+    RenderMarkdownH3 = { fg = p.yellow, bold = true },
+    RenderMarkdownH4 = { fg = p.green, bold = true },
+    RenderMarkdownH5 = { fg = p.purple, bold = true },
+    RenderMarkdownH6 = { fg = p.teal, bold = true },
+    RenderMarkdownH1Bg = { bg = p.h1_bg },
+    RenderMarkdownH2Bg = { bg = p.h2_bg },
+    RenderMarkdownH3Bg = { bg = p.h3_bg },
+    RenderMarkdownH4Bg = { bg = p.h4_bg },
+    RenderMarkdownH5Bg = { bg = p.h5_bg },
+    RenderMarkdownH6Bg = { bg = p.h6_bg },
+    RenderMarkdownCode = { bg = p.bg_dim },
     RenderMarkdownCodeBorder = { fg = p.surface },
     RenderMarkdownCodeInline = { bg = p.bg_line },
-    RenderMarkdownBullet     = { fg = p.lavender },
-    RenderMarkdownChecked    = { fg = p.green },
-    RenderMarkdownUnchecked  = { fg = p.comment },
-    RenderMarkdownTodo       = { fg = p.yellow },
+    RenderMarkdownBullet = { fg = p.lavender },
+    RenderMarkdownChecked = { fg = p.green },
+    RenderMarkdownUnchecked = { fg = p.comment },
+    RenderMarkdownTodo = { fg = p.yellow },
   }
   for group, opts in pairs(hls) do
     vim.api.nvim_set_hl(0, group, opts)
@@ -56,20 +64,10 @@ local function set_wezterm_theme(scheme)
 end
 
 function M.apply_theme(name)
-  if not name or name == '' then
-    name = 'vague'
-  end
+  name = normalize_theme(name)
 
   -- Theme specific configuration
-  if name:match '^catppuccin' then
-    local flavor = name:match 'latte' and 'latte'
-      or name:match 'frappe' and 'frappe'
-      or name:match 'macchiato' and 'macchiato'
-      or 'mocha'
-    vim.o.background = (flavor == 'latte') and 'light' or 'dark'
-    require('catppuccin').setup { flavour = flavor }
-    vim.cmd.colorscheme 'catppuccin'
-  elseif name == 'everforest' then
+  if name == 'everforest' then
     vim.g.everforest_background = 'medium'
     vim.o.background = 'light'
     vim.cmd.colorscheme 'everforest'
@@ -80,9 +78,6 @@ function M.apply_theme(name)
     vim.o.background = 'dark'
     require('vague').setup {}
     vim.cmd.colorscheme 'vague'
-  else
-    vim.o.background = 'dark'
-    pcall(vim.cmd.colorscheme, name)
   end
 
   local p = get_palette(name)

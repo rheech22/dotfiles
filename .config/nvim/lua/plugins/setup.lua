@@ -6,7 +6,6 @@ pack.install {
       repo = 'vague2k/vague.nvim',
       deps = {
         'serhez/teide.nvim',
-        'catppuccin/nvim',
         'sainnhe/everforest',
       },
     },

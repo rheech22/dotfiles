@@ -166,8 +166,6 @@ return {
       local config
       if scheme == 'vague' then
         config = build_vague_config()
-      elseif scheme:match '^catppuccin' then
-        config = build_auto_config 'catppuccin'
       else
         config = build_auto_config 'auto'
       end
