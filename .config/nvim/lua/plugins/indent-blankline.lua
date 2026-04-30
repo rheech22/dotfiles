@@ -50,7 +50,18 @@ return {
     end)
 
     hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-    vim.g.rainbow_delimiters = { highlight = rainbow_del_hl }
+    vim.g.rainbow_delimiters = {
+      highlight = rainbow_del_hl,
+      condition = function(bufnr)
+        local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].filetype)
+        if not lang then
+          return false
+        end
+
+        local ok, parser = pcall(vim.treesitter.get_parser, bufnr, lang)
+        return ok and parser ~= nil
+      end,
+    }
 
     require('ibl').setup {
       indent = {
