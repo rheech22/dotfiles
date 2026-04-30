@@ -44,4 +44,12 @@ function M.write(state)
   return true
 end
 
+---@param repo string
+---@return boolean
+function M.clear_repo(repo)
+  local state = M.read()
+  state[repo] = nil
+  return M.write(state)
+end
+
 return M

@@ -8,10 +8,6 @@
       "rev": "18712d9d292dd362067de74d3b54eb90ce860ba9",
       "src": "https://github.com/saghen/blink.cmp"
     },
-    "blink-copilot": {
-      "rev": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39",
-      "src": "https://github.com/fang2hou/blink-copilot"
-    },
     "conform": {
       "rev": "5420c4b5ea0aeb99c09cfbd4fd0b70d257b44f25",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -36,10 +32,6 @@
       "rev": "539e84f5a652d96917f0afc1341c20f0d59dd789",
       "src": "https://github.com/nvim-flutter/flutter-tools.nvim"
     },
-    "fzf-lua": {
-      "rev": "b1d2b0dc146cb9260209da4d7ab754adb0a2653d",
-      "src": "https://github.com/ibhagwan/fzf-lua"
-    },
     "gitsigns": {
       "rev": "718e1eda17ebab87f686af5dcc7684b204041eef",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
@@ -51,10 +43,6 @@
     "indent-blankline": {
       "rev": "005b560",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
-    },
-    "lazygit": {
-      "rev": "a04ad0dbc725134edbee3a5eea29290976695357",
-      "src": "https://github.com/kdheepak/lazygit.nvim"
     },
     "lspkind": {
       "rev": "3ddd1b4edefa425fda5a9f95a4f25578727c0bb3",
@@ -165,10 +153,6 @@
       "rev": "c2f5910074103705661e9651aa841e0d7eea9932",
       "src": "https://github.com/pmizio/typescript-tools.nvim"
     },
-    "vague": {
-      "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",
-      "src": "https://github.com/vague2k/vague.nvim"
-    },
     "vimwiki": {
       "rev": "72792615e739d0eb54a9c8f7e0a46a6e2407c9e8",
       "src": "https://github.com/vimwiki/vimwiki",
@@ -177,10 +161,6 @@
     "winsep": {
       "rev": "e555611",
       "src": "https://github.com/nvim-zh/colorful-winsep.nvim"
-    },
-    "zen-mode": {
-      "rev": "8564ce6",
-      "src": "https://github.com/folke/zen-mode.nvim"
     }
   }
 }

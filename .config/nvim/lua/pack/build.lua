@@ -2,17 +2,11 @@
 ---Handles building plugins and tracking build state
 require('pack.types')
 local git = require('pack.git')
+local paths = require 'pack.paths'
 local state_manager = require('pack.state')
 local registry = require('pack.registry')
 
 local M = {}
-
----Get plugin directory path
----@param plugin_name string
----@return string
-local function get_plugin_dir(plugin_name)
-	return vim.fn.stdpath('data') .. '/site/pack/core/opt/' .. plugin_name
-end
 
 ---Check if plugin needs to be built
 ---@param repo string plugin repository name
@@ -79,7 +73,7 @@ function M.build_all(plugins)
 
 	for _, plugin in ipairs(plugins) do
 		if plugin.build and plugin.name and registry.get(plugin.repo) == 'installed' then
-			local plugin_dir = get_plugin_dir(plugin.name)
+			local plugin_dir = paths.plugin_dir(plugin)
 
 			if not M.needs_build(plugin.repo, plugin_dir, state) then
 				goto continue

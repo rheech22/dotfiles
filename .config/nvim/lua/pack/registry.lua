@@ -33,4 +33,9 @@ function M.clear()
   registry = {}
 end
 
+---@param repo string
+function M.clear_repo(repo)
+  registry[repo] = nil
+end
+
 return M

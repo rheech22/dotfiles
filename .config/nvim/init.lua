@@ -1,4 +1,3 @@
 require 'configs.options'
-require 'lsps.setup'
-require 'plugins.setup'
+require 'pack.bootstrap'
 require 'configs.keymaps'

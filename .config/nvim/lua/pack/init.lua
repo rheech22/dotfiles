@@ -7,6 +7,12 @@ local setup = require 'pack.setup'
 
 local M = {}
 
+---@param plugin Plugin|string
+---@return boolean
+local function is_enabled(plugin)
+  return type(plugin) == 'string' or plugin.enabled ~= false
+end
+
 ---Normalize plugin entries to Plugin objects
 ---@param plugins (Plugin|string)[]
 ---@return Plugin[]
@@ -17,6 +23,12 @@ local function normalize_plugins(plugins)
     end
     return plugin
   end, plugins)
+end
+
+---@param plugins (Plugin|string)[]
+---@return (Plugin|string)[]
+local function filter_enabled(plugins)
+  return vim.tbl_filter(is_enabled, plugins)
 end
 
 ---Extract dependencies from plugins
@@ -38,12 +50,12 @@ end
 ---@param params InstallerParams
 function M.install(params)
   local dir = params.setup_dir
-  local plugins = normalize_plugins(params.plugins)
+  local plugins = normalize_plugins(filter_enabled(params.plugins))
 
   -- Process dependencies first
   local raw_deps = extract_deps(plugins)
   if #raw_deps > 0 then
-    local deps = normalize_plugins(raw_deps)
+    local deps = normalize_plugins(filter_enabled(raw_deps))
     install.install_all(deps)
     build.build_all(deps)
     setup.configure_all(dir, deps)

@@ -1,16 +1,15 @@
 ---Plugin setup/configuration module
 ---Loads and executes plugin configuration files
 require('pack.types')
+local paths = require 'pack.paths'
 local registry = require('pack.registry')
 
 local M = {}
 
----Load setup file for a plugin
----@param dir string directory containing plugin setup files
----@param plugin_name string name of the plugin (filename without .lua)
+---@param path string
 ---@return table | nil setup_table table with config function, or nil if error
-function M.load(dir, plugin_name)
-	local ok1, chunk = pcall(loadfile, dir .. plugin_name .. '.lua')
+function M.load_path(path)
+	local ok1, chunk = pcall(loadfile, path)
 	if not ok1 or not chunk then
 		return nil
 	end
@@ -19,6 +18,25 @@ function M.load(dir, plugin_name)
 		return nil
 	end
 	return setup
+end
+
+---@param dir string
+---@param plugin Plugin
+---@return table | nil
+function M.load(dir, plugin)
+	local concern_path = paths.setup_path(plugin)
+	if concern_path then
+		local concern_setup = M.load_path(concern_path)
+		if concern_setup then
+			return concern_setup
+		end
+	end
+
+	if not dir then
+		return nil
+	end
+
+	return M.load_path(dir .. plugin.name .. '.lua')
 end
 
 ---Configure all plugins by loading and executing their config functions
@@ -31,7 +49,7 @@ function M.configure_all(dir, plugins)
 		end
 
 		if registry.get(plugin.repo) == 'installed' then
-			local setup = M.load(dir, plugin.name)
+			local setup = M.load(dir, plugin)
 			if setup and setup.config then
 				local ok, err = pcall(setup.config)
 				if ok then
