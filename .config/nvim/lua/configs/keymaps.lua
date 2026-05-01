@@ -83,7 +83,6 @@ map('n', '<C-,>', platform.terminal_float, 'Toggle terminal (float)')
 map('n', ',,', platform.select_terminal, 'Select terminal')
 map('n', leader 'tv', platform.terminal_right, 'Toggle terminal (vertical)')
 map('n', leader 'th', platform.terminal_bottom, 'Toggle terminal (horizontal)')
-map('n', leader 'tT', platform.toggle_all, 'Toggle all terminals')
 map('nv', leader 'tl', platform.send_lines, 'Send lines to terminal')
 map('v', leader 'ts', platform.send_selection, 'Send selection to terminal')
 map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
@@ -91,7 +90,9 @@ map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
 vim.api.nvim_create_autocmd('TermOpen', {
   pattern = 'term://*toggleterm#*',
   callback = function()
-    local opts = { buffer = vim.api.nvim_get_current_buf() }
+    local buf = vim.api.nvim_get_current_buf()
+    local opts = { buffer = buf }
+
     vim.keymap.set('t', '<C-,>', platform.terminal_float, opts)
     vim.keymap.set('t', '<C-l>', function()
       platform.cycle_float 'next'

@@ -53,7 +53,7 @@ return {
       scroll = {
         enabled = true,
       },
-      terminal = { enabled = false },
+      terminal = { enabled = true },
       bigfile = { enabled = false },
       dashboard = { enabled = false },
       dim = { enabled = false },
@@ -78,6 +78,18 @@ return {
       },
       image = {
         enabled = false,
+      },
+      styles = {
+        terminal_right = {
+          bo = { filetype = 'snacks_terminal', buflisted = true },
+          position = 'right',
+          width = 0.4,
+        },
+        terminal_bottom = {
+          bo = { filetype = 'snacks_terminal', buflisted = true },
+          position = 'bottom',
+          height = 0.3,
+        },
       },
     }
 

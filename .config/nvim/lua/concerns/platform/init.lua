@@ -87,7 +87,7 @@ local function update_title_now()
   local label = get_term_label(float_terms[float_idx])
   vim.api.nvim_win_set_config(win, {
     title = string.format(' %d/%d · %s ', float_idx, #float_terms, label),
-    title_pos = 'right',
+    title_pos = 'left',
   })
 end
 
@@ -177,7 +177,8 @@ function M.new_float_term()
     direction = 'float',
     count = BASE_COUNT + idx,
     hidden = false,
-    on_open = function()
+    on_open = function(term)
+      vim.bo[term.bufnr].buflisted = true
       update_title_now()
     end,
     on_stdout = function()
@@ -252,11 +253,11 @@ function M.cycle_float(direction)
 end
 
 function M.terminal_right()
-  vim.cmd '1ToggleTerm direction=vertical'
+  Snacks.terminal.open(nil, { win = { style = 'terminal_right' } })
 end
 
 function M.terminal_bottom()
-  vim.cmd '2ToggleTerm direction=horizontal'
+  Snacks.terminal.open(nil, { win = { style = 'terminal_bottom' } })
 end
 
 function M.select_terminal()
@@ -311,11 +312,6 @@ function M.select_terminal()
   end)
 end
 
-function M.toggle_all()
-  vim.cmd '1ToggleTerm'
-  vim.cmd '2ToggleTerm'
-end
-
 function M.send_lines()
   require('toggleterm').send_lines_to_terminal('visual_lines', true, { args = vim.v.count })
 end
@@ -328,6 +324,17 @@ vim.api.nvim_create_autocmd('TermEnter', {
   pattern = 'term://*toggleterm#*',
   callback = function()
     vim.defer_fn(update_title, 100)
+  end,
+})
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = vim.api.nvim_create_augroup('terminal_style', { clear = true }),
+  callback = function()
+    if vim.bo.buftype == 'terminal' then
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.signcolumn = 'no'
+    end
   end,
 })
 
