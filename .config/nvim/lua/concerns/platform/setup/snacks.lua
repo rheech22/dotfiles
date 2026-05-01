@@ -80,5 +80,24 @@ return {
         enabled = false,
       },
     }
+
+    local select_mod = require 'snacks.picker.select'
+    local _select = select_mod.select
+    select_mod.select = function(items, opts, on_choice)
+      if opts and not opts.snacks then
+        opts.snacks = {
+          layout = {
+            preset = 'vscode',
+            fullscreen = false,
+            layout = {
+              row = 0.4,
+              width = 0.5,
+              border = 'rounded',
+            },
+          },
+        }
+      end
+      return _select(items, opts, on_choice)
+    end
   end,
 }

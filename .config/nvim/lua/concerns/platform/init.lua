@@ -281,16 +281,6 @@ function M.select_terminal()
     items = finder_items,
     title = 'Select terminal',
     format = 'text',
-    layout = {
-      preset = 'vscode',
-      fullscreen = false,
-      layout = {
-        row = 0.4,
-        width = 0.5,
-        min_width = 80,
-        border = 'rounded',
-      },
-    },
     confirm = function(picker, item)
       picker:close()
       if not item then

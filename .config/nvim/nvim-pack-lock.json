@@ -130,7 +130,7 @@
       "src": "https://github.com/sphamba/smear-cursor.nvim"
     },
     "snacks": {
-      "rev": "fe7cfe9800a182274d0f868a74b7263b8c0c020b",
+      "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "https://github.com/folke/snacks.nvim"
     },
     "teide.nvim": {
