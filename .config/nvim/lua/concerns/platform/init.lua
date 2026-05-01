@@ -266,52 +266,49 @@ function M.select_terminal()
     return
   end
 
-  local finder_items = {}
+  local items = {}
   for _, term in ipairs(all_terms) do
     local count = term.count or 0
     local direction = count >= BASE_COUNT and 'float' or (term.direction or 'unknown')
     local label = get_term_label(term)
-    table.insert(finder_items, {
-      text = string.format('%d %s · %s', count, direction, label),
+    table.insert(items, {
       term = term,
+      text = string.format('%d %s · %s', count, direction, label),
     })
   end
 
-  ui.pick {
-    items = finder_items,
-    title = 'Select terminal',
-    format = 'text',
-    confirm = function(picker, item)
-      picker:close()
-      if not item then
-        return
-      end
-      vim.schedule(function()
-        local term = item.term
-        local count = term.count or 0
-        if count >= BASE_COUNT then
-          for i, ft in ipairs(float_terms) do
-            if ft == term then
-              local win = get_float_win()
-              if win then
-                float_terms[float_idx].window = nil
-                vim.api.nvim_win_set_buf(win, term.bufnr)
-                term.window = win
-                float_idx = i
-                update_title_now()
-                vim.cmd 'startinsert'
-              else
-                open_float_at(i)
-              end
-              break
-            end
-          end
-        else
-          term:open()
-        end
-      end)
+  vim.ui.select(items, {
+    prompt = 'Select terminal',
+    format_item = function(item)
+      return item.text
     end,
-  }
+  }, function(choice)
+    if not choice then
+      return
+    end
+    local term = choice.term
+    local count = term.count or 0
+    if count >= BASE_COUNT then
+      for i, ft in ipairs(float_terms) do
+        if ft == term then
+          local win = get_float_win()
+          if win then
+            float_terms[float_idx].window = nil
+            vim.api.nvim_win_set_buf(win, term.bufnr)
+            term.window = win
+            float_idx = i
+            update_title_now()
+            vim.cmd 'startinsert'
+          else
+            open_float_at(i)
+          end
+          break
+        end
+      end
+    else
+      term:open()
+    end
+  end)
 end
 
 function M.toggle_all()
@@ -333,5 +330,20 @@ vim.api.nvim_create_autocmd('TermEnter', {
     vim.defer_fn(update_title, 100)
   end,
 })
+
+function M.save()
+  vim.cmd 'write'
+  vim.notify('Saved', vim.log.levels.INFO)
+end
+
+function M.source_config()
+  vim.cmd 'source $MYVIMRC'
+  vim.notify('Config reloaded', vim.log.levels.INFO)
+end
+
+function M.toggle_wrap()
+  vim.cmd 'set wrap!'
+  vim.notify('Wrap ' .. (vim.o.wrap and 'on' or 'off'), vim.log.levels.INFO)
+end
 
 return M

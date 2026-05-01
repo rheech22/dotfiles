@@ -19,6 +19,7 @@ vim.o.winborder = 'rounded'
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.showmode = false
+vim.opt.fillchars = { eob = ' ' }
 
 vim.cmd [[set noswapfile]]
 
