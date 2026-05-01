@@ -190,4 +190,5 @@ return {
     deps = { 'mason-org/mason.nvim' },
   },
   -- { name = 'smear-cursor', repo = 'sphamba/smear-cursor.nvim' },
+  { name = 'toggleterm', repo = 'akinsho/toggleterm.nvim', concern = 'platform' },
 }
