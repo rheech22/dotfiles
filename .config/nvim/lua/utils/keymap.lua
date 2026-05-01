@@ -20,6 +20,13 @@ end
 function M.map(mode, lhs, rhs, desc, opts)
   opts = opts or {}
   opts.desc = desc
+  if type(mode) == 'string' and #mode > 1 then
+    local modes = {}
+    for i = 1, #mode do
+      modes[i] = mode:sub(i, i)
+    end
+    mode = modes
+  end
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 

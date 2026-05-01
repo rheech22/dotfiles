@@ -5,7 +5,7 @@
 --max-columns=500
 --max-columns-preview
 --line-number
---binary
+--no-binary
 
 # exclude
 --glob=!.git/*

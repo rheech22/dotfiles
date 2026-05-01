@@ -1,6 +1,6 @@
 local keymap = require 'utils.keymap'
-local L = keymap.leader
-local C = keymap.cmd
+local leader = keymap.leader
+local cmd = keymap.cmd
 local map = keymap.map
 
 local appearance = require 'concerns.appearance'
@@ -15,72 +15,60 @@ local platform = require 'concerns.platform'
 local search = require 'concerns.search'
 local tasks = require 'concerns.tasks'
 
--- file & buffer
-map('n', L 'w', C 'write', 'Write buffer')
-map('n', L 'q', C 'quit', 'Quit window')
-map('n', L 'Q', C 'wqa', 'Write and quit all')
-map('n', L 'e', navigation.explorer, 'Open file explorer')
-map('n', L 'E', navigation.explorer_float, 'Open file explorer (float)')
-map({ 'n', 'v', 'x' }, L 's', C 'e #', 'Edit alternate file')
-map({ 'n', 'v', 'x' }, L 'S', C 'bot sf #', 'Split and edit alternate file')
-map('n', L 'z', navigation.zen, 'Toggle ZenMode')
-map('n', L 'fp', C 'let @+=@%', 'Copy Path')
+map('n', leader 'p', packages.open_picker, 'Manage packages')
+map('n', leader 'C', appearance.pick_colorscheme, 'Pick colorscheme')
+map('n', leader 'F', formatting.format_buffer, 'Format buffer')
 
--- picker
-map('n', L '<space>', search.buffers, 'Find buffers')
-map('n', L 'pf', search.files, 'Find files')
-map('n', L 'ph', search.help, 'Find help')
-map('n', L 'pr', search.recent, 'Find recent files')
-map('n', L 'pl', search.picker_list, 'Show picker list')
-map('n', L 'pp', packages.open_picker, 'Manage packages')
-map('n', L 'pP', packages.scaffold, 'Scaffold package')
+map('n', leader 'c', navigation.copy_path, 'Copy path')
+map('n', leader 'e', navigation.explorer, 'Open file explorer')
+map('n', leader 'k', navigation.keymaps, 'Show keymaps')
+map('nxo', 'm', navigation.flash_jump, 'Flash')
+map('nxo', 'M', navigation.flash_treesitter, 'Flash Treesitter')
+map('o', 'r', navigation.flash_remote, 'Remote Flash')
+map('xo', 'R', navigation.flash_treesitter_search, 'Treesitter Search')
+map('c', '<C-s>', navigation.flash_toggle_search, 'Toggle Flash Search')
+map('nt', '[[', navigation.prev_reference, 'Previous reference')
+map('nt', ']]', navigation.next_reference, 'Next reference')
 
-map('n', L 'g', search.grep_live, 'Grep live')
-map({ 'n', 'v' }, L 'fw', search.grep_word, 'Grep word under cursor')
-map('n', L 'fW', search.grep_cword, 'Grep WORD under cursor')
-
--- lsp
-map('n', L 'cr', language.rename_symbol, 'Rename symbol')
-map('n', L 'cR', language.rename_file, 'Rename file')
-map('n', L 'ca', language.code_action, 'Code action')
-map('n', 'gd', language.definition, 'Go to definition')
+map('n', leader '<space>', search.buffers, 'Find buffers')
+map('n', leader 'h', search.help, 'Find help')
+map('n', leader 'l', search.picker_list, 'Show picker list')
+map('n', leader 'g', search.grep_live, 'Grep live')
+map('n', leader 'f', search.files, 'Find files')
+map('nv', 'gw', search.grep_word, 'Grep word under cursor')
+map('n', 'gW', search.grep_cword, 'Grep WORD under cursor')
 map('n', 'gr', search.references, 'Go to references', { nowait = true })
-map({ 'n', 't' }, '[[', navigation.prev_reference, 'Previous reference')
-map({ 'n', 't' }, ']]', navigation.next_reference, 'Next reference')
-map('n', 'gl', language.diagnostics_float, 'Show diagnostics')
+map('n', leader 'y', search.symbols, 'LSP symbols')
+map('n', leader 'Y', search.workspace_symbols, 'LSP workspace symbols')
+
+map('n', leader 'r', language.rename_symbol, 'Rename symbol')
+map('n', leader 'R', language.rename_file, 'Rename file')
+map('n', leader 'a', language.code_action, 'Code action')
+map('n', 'gd', language.definition, 'Go to definition')
+map('n', 'dl', language.diagnostics_float, 'Show diagnostics')
 map('n', 'dn', language.diagnostic_next, 'Next diagnostic')
 map('n', 'dp', language.diagnostic_prev, 'Previous diagnostic')
-map('n', L 'ss', search.symbols, 'LSP symbols')
-map('n', L 'sS', search.workspace_symbols, 'LSP workspace symbols')
-map('n', L 'lf', formatting.format_buffer, 'Format buffer')
-map('n', '<C-l>', 'zo', 'Open the fold at the cursor.')
-map('n', '<C-h>', 'zc', 'Close the fold at the cursor.')
 
--- editing
-map('n', L 'ip', notes.paste_image, 'Paste image from clipboard')
-map('n', 'U', '<C-r>', 'Redo')
-map({ 'n', 'v' }, '<C-w>', C 'set wrap', 'Wrap')
+map('nvx', leader 'o', cmd 'source $MYVIMRC', 'Source ' .. vim.fn.expand '$MYVIMRC')
+map('nvx', leader 'O', cmd 'restart', 'Restart vim.')
+map('nvx', leader 'w', cmd 'write', 'Write buffer')
+map('nvx', leader 'q', cmd 'quit', 'Quit window')
+map('nvx', leader 'Q', cmd 'wqa', 'Write and quit all')
+map('nvx', leader 's', cmd 'e #', 'Edit alternate file')
+map('nvx', leader 'S', cmd 'topleft vs #', 'Split and edit alternate file')
 
--- navigation
-map({ 'n', 'v' }, '<C-k>', '<C-u>zz', 'Scroll up and center')
-map({ 'n', 'v' }, '<C-j>', '<C-d>zz', 'Scroll down and center')
+map('nv', 'U', '<C-r>', 'Redo')
+map('nv', '<C-w>', cmd 'set wrap', 'Wrap')
+map('nv', '<C-l>', 'zo', 'Open the fold at the cursor.')
+map('nv', '<C-h>', 'zc', 'Close the fold at the cursor.')
+map('nv', '<C-k>', '<C-u>zz', 'Scroll up and center')
+map('nv', '<C-j>', '<C-d>zz', 'Scroll down and center')
+map('n', '<C-f>', cmd 'Open .', 'Open current directory in Finder.')
 map('n', 'n', 'nzzzv', 'Next search result and center')
 map('n', 'N', 'Nzzzv', 'Previous search result and center')
 
--- config files
-map({ 'n', 'v', 'x' }, L 'xv', C 'e $MYVIMRC', 'Edit nvim config')
-map({ 'n', 'v', 'x' }, L 'xz', C 'e ~/.zshrc', 'Edit zshrc')
-map({ 'n', 'v', 'x' }, L 'xw', C 'e ~/.config/wezterm/wezterm.lua', 'Edit wezterm config')
-map('n', L 'cs', appearance.pick_colorscheme, 'Pick colorscheme')
-map({ 'n', 'v', 'x' }, L 'o', C 'source $MYVIMRC', 'Source ' .. vim.fn.expand '$MYVIMRC')
-map({ 'n', 'v', 'x' }, L 'O', C 'restart', 'Restart vim.')
-
--- system
-map('n', '<C-f>', C 'Open .', 'Open current directory in Finder.')
-
--- control panes
-map('n', 'ss', C 'split', 'Split horizontal', { noremap = true, silent = true })
-map('n', 'sv', C 'vsplit', 'Split vertical', { noremap = true, silent = true })
+map('n', 'ss', cmd 'split', 'Split horizontal', { noremap = true, silent = true })
+map('n', 'sv', cmd 'vsplit', 'Split vertical', { noremap = true, silent = true })
 map('n', 'sk', '<C-w>k', 'Focus pane above')
 map('n', 'sh', '<C-w>h', 'Focus pane left')
 map('n', 'sj', '<C-w>j', 'Focus pane below')
@@ -91,61 +79,35 @@ map('n', '<C-w><right>', '<C-w>>', 'Increase pane width')
 map('n', '<C-w><up>', '<C-w>+', 'Increase pane height')
 map('n', '<C-w><down>', '<C-w>-', 'Decrease pane height')
 
--- terminal (snacks.terminal)
-map('n', L 'tv', platform.terminal_right, 'Toggle terminal (vertical)')
-map('n', L 'th', platform.terminal_bottom, 'Toggle terminal (horizontal)')
-map('n', L 'ta', platform.attach_terminal_to_buffer, 'Attach Terminal to Current Buffer')
-map('n', L 'td', platform.detach_terminal, 'Detach Terminal from Current Buffer')
+map('n', leader 'tv', platform.terminal_right, 'Toggle terminal (vertical)')
+map('n', leader 'th', platform.terminal_bottom, 'Toggle terminal (horizontal)')
+map('n', leader 'ta', platform.attach_terminal_to_buffer, 'Attach Terminal to Current Buffer')
+map('n', leader 'td', platform.detach_terminal, 'Detach Terminal from Current Buffer')
 map('t', 'tq', '<C-\\><C-n>', 'Change to normal mode in terminal')
 
--- plugin:vimwiki
-map('n', '\\ww', '<Plug>VimwikiIndex', 'Go to WikiIndex')
-map('n', '\\wi', '<Plug>VimwikiDiaryIndex', 'Go to DiaryIndex')
-map('n', '\\w\\w', '<Plug>VimwikiMakeDiaryNote', 'Create a Diary Note')
-map('n', '\\w\\g', '<Plug>VimwikiDiaryGenerateLinks', 'Generate Links for Diary Notes')
-map('n', '\\]', '<Plug>VimwikiToggleListItem', 'Toggle List Item')
+map('n', '\\ww', notes.wiki_index, 'Go to WikiIndex')
+map('n', '\\wi', notes.diary_index, 'Go to DiaryIndex')
+map('n', '\\w\\w', notes.make_diary_note, 'Create a Diary Note')
+map('n', '\\w\\g', notes.diary_generate_links, 'Generate Links for Diary Notes')
+map('n', '\\]', notes.toggle_list_item, 'Toggle List Item')
+map('n', leader 'wf', notes.wiki_notes, 'Find wiki notes')
+map('n', leader 'wg', notes.grep_wiki_notes, 'Grep wiki notes')
+map('n', leader 'ip', notes.paste_image, 'Paste image from clipboard')
 
--- plugin:vimwiki (search with snacks.picker)
-map('n', L 'wf', notes.wiki_notes, 'Find wiki notes')
+map('n', leader 'L', git.open_lazygit, 'Open LazyGit', { silent = true })
+map('n', leader 'D', git.diff, 'Git diff')
+map('n', leader 'P', git.pull_requests, 'GitHub pull requests (open)')
+map('n', leader 'G', git.pull_requests_all, 'GitHub pull requests (all)')
 
-map('n', L 'wg', notes.grep_wiki_notes, 'Grep wiki notes')
+map('n', leader 'dc', debug.continue, 'Run/Continue')
+map('n', leader 'db', debug.toggle_breakpoint, 'Toggle Breakpoint')
+map('n', leader 'di', debug.step_into, 'Step Into')
+map('n', leader 'do', debug.step_over, 'Step Over')
+map('n', leader 'dO', debug.step_out, 'Step Out')
+map('n', leader 'dt', debug.terminate, 'Terminate')
+map('n', leader 'dv', debug.toggle_view, 'Toggle Debug View')
 
--- plugin:lazygit
-map('n', L 'lg', git.open_lazygit, 'Open LazyGit', { silent = true })
-map('n', L 'gd', git.diff, 'Git diff')
-
--- plugin:snacks.gh
-map('n', L 'gp', git.pull_requests, 'GitHub pull requests (open)')
-map('n', L 'gP', git.pull_requests_all, 'GitHub pull requests (all)')
-
--- plugin:dap
-map('n', L 'dc', debug.continue, 'Run/Continue')
-map('n', L 'db', debug.toggle_breakpoint, 'Toggle Breakpoint')
-map('n', L 'di', debug.step_into, 'Step Into')
-map('n', L 'do', debug.step_over, 'Step Over')
-map('n', L 'dO', debug.step_out, 'Step Out')
-map('n', L 'dt', debug.terminate, 'Terminate')
-
--- plugin:dap-view
-map('n', L 'dv', debug.toggle_view, 'Toggle Debug View')
-
--- plugin:flutter-tools
-map('n', L 'Fl', debug.flutter_run, 'Flutter Run')
-map('n', L 'Fq', debug.flutter_quit, 'Flutter Quit')
-map('n', L 'Fo', debug.flutter_reload, 'Flutter Reload')
-map('n', L 'Fr', debug.flutter_restart, 'Flutter Restart')
-map('n', L 'Fb', debug.flutter_pub_get, 'Flutter PubGet')
-map('n', L 'Fg', debug.flutter_codegen, 'Flutter Code Generate')
-
--- plugin:flash
-map({ 'n', 'x', 'o' }, 'm', navigation.flash_jump, 'Flash')
-map({ 'n', 'x', 'o' }, 'M', navigation.flash_treesitter, 'Flash Treesitter')
-map('o', 'r', navigation.flash_remote, 'Remote Flash')
-map({ 'x', 'o' }, 'R', navigation.flash_treesitter_search, 'Treesitter Search')
-map('c', '<C-s>', navigation.flash_toggle_search, 'Toggle Flash Search')
-
--- plugin:overseer
-map('n', L 'oo', tasks.toggle, 'Overseer Toggle')
-map('n', L 'or', tasks.run, 'Overseer Run')
-map('n', L 'ot', tasks.task_action, 'Overseer Task Action')
-map('n', L 'os', tasks.shell, 'Overseer Shell')
+map('n', leader 'oo', tasks.toggle, 'Tasks Toggle')
+map('n', leader 'or', tasks.run, 'Tasks Run')
+map('n', leader 'ot', tasks.task_action, 'Tasks Action')
+map('n', leader 'os', tasks.shell, 'Tasks Shell')

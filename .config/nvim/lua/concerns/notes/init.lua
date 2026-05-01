@@ -41,6 +41,26 @@ function M.grep_wiki_notes()
   }
 end
 
+function M.wiki_index()
+  vim.cmd.normal({ '<Plug>VimwikiIndex', bang = true })
+end
+
+function M.diary_index()
+  vim.cmd.normal({ '<Plug>VimwikiDiaryIndex', bang = true })
+end
+
+function M.make_diary_note()
+  vim.cmd.normal({ '<Plug>VimwikiMakeDiaryNote', bang = true })
+end
+
+function M.diary_generate_links()
+  vim.cmd.normal({ '<Plug>VimwikiDiaryGenerateLinks', bang = true })
+end
+
+function M.toggle_list_item()
+  vim.cmd.normal({ '<Plug>VimwikiToggleListItem', bang = true })
+end
+
 function M.paste_image()
   require('concerns.notes.img_clip').paste_image()
 end

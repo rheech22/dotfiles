@@ -8,6 +8,7 @@ function M.format_buffer()
   else
     vim.lsp.buf.format { async = true }
   end
+  vim.notify('Formatted', vim.log.levels.INFO)
 end
 
 return M

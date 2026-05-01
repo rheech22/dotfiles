@@ -40,4 +40,14 @@ function M.flash_toggle_search()
   require('flash').toggle()
 end
 
+function M.copy_path()
+  local path = vim.fn.expand('%:p')
+  vim.fn.setreg('+', path)
+  vim.notify(('Copied: %s'):format(path), vim.log.levels.INFO)
+end
+
+function M.keymaps()
+  require('concerns.navigation.keymaps').open()
+end
+
 return M
