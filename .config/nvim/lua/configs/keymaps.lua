@@ -106,13 +106,13 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
-map('n', '\\ww', notes.wiki_index, 'Go to WikiIndex')
-map('n', '\\wi', notes.diary_index, 'Go to DiaryIndex')
-map('n', '\\w\\w', notes.make_diary_note, 'Create a Diary Note')
-map('n', '\\w\\g', notes.diary_generate_links, 'Generate Links for Diary Notes')
-map('n', '\\]', notes.toggle_list_item, 'Toggle List Item')
-map('n', leader 'wf', notes.wiki_notes, 'Find wiki notes')
-map('n', leader 'wg', notes.grep_wiki_notes, 'Grep wiki notes')
+map('n', leader 'nw', notes.wiki_index, 'Go to WikiIndex')
+map('n', leader 'ni', notes.diary_index, 'Go to DiaryIndex')
+map('n', leader 'nn', notes.make_diary_note, 'Create a Diary Note')
+map('n', leader 'nd', notes.diary_generate_links, 'Generate Links for Diary Notes')
+map('n', leader 'nl', notes.toggle_list_item, 'Toggle List Item')
+map('n', leader 'nf', notes.wiki_notes, 'Find wiki notes')
+map('n', leader 'ng', notes.grep_wiki_notes, 'Grep wiki notes')
 map('n', leader 'ip', notes.paste_image, 'Paste image from clipboard')
 
 map('n', leader 'L', git.open_lazygit, 'Open LazyGit', { silent = true })

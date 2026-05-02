@@ -42,23 +42,23 @@ function M.grep_wiki_notes()
 end
 
 function M.wiki_index()
-  vim.cmd.normal({ '<Plug>VimwikiIndex', bang = true })
+  vim.cmd.VimwikiIndex()
 end
 
 function M.diary_index()
-  vim.cmd.normal({ '<Plug>VimwikiDiaryIndex', bang = true })
+  vim.cmd.VimwikiDiaryIndex()
 end
 
 function M.make_diary_note()
-  vim.cmd.normal({ '<Plug>VimwikiMakeDiaryNote', bang = true })
+  vim.cmd.VimwikiMakeDiaryNote()
 end
 
 function M.diary_generate_links()
-  vim.cmd.normal({ '<Plug>VimwikiDiaryGenerateLinks', bang = true })
+  vim.cmd.VimwikiDiaryGenerateLinks()
 end
 
 function M.toggle_list_item()
-  vim.cmd.normal({ '<Plug>VimwikiToggleListItem', bang = true })
+  vim.cmd.VimwikiToggleListItem()
 end
 
 function M.paste_image()
