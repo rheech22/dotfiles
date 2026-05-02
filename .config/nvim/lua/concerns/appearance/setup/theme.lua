@@ -73,6 +73,40 @@ local function apply_render_md_highlights(p)
   end
 end
 
+function M.apply_notify_highlights(p)
+  local hls = {
+    NotifyERROR = { fg = p.notify_err, bg = p.bg },
+    NotifyWARN = { fg = p.notify_warn, bg = p.bg },
+    NotifyINFO = { fg = p.notify_info, bg = p.bg },
+    NotifyDEBUG = { fg = p.notify_debug, bg = p.bg },
+    NotifyTRACE = { fg = p.notify_trace, bg = p.bg },
+    NotifyERRORTitle = { fg = p.notify_err, bg = p.bg },
+    NotifyWARNTitle = { fg = p.notify_warn, bg = p.bg },
+    NotifyINFOTitle = { fg = p.notify_info, bg = p.bg },
+    NotifyDEBUGTitle = { fg = p.notify_debug, bg = p.bg },
+    NotifyTRACETitle = { fg = p.notify_trace, bg = p.bg },
+    NotifyERRORIcon = { fg = p.notify_err, bg = p.bg },
+    NotifyWARNIcon = { fg = p.notify_warn, bg = p.bg },
+    NotifyINFOIcon = { fg = p.notify_info, bg = p.bg },
+    NotifyDEBUGIcon = { fg = p.notify_debug, bg = p.bg },
+    NotifyTRACEIcon = { fg = p.notify_trace, bg = p.bg },
+    NotifyERRORBorder = { fg = p.notify_err, bg = p.bg },
+    NotifyWARNBorder = { fg = p.notify_warn, bg = p.bg },
+    NotifyINFOBorder = { fg = p.notify_info, bg = p.bg },
+    NotifyDEBUGBorder = { fg = p.notify_debug, bg = p.bg },
+    NotifyTRACEBorder = { fg = p.notify_trace, bg = p.bg },
+    NotifyERRORBody = { fg = p.fg, bg = p.bg },
+    NotifyWARNBody = { fg = p.fg, bg = p.bg },
+    NotifyINFOBody = { fg = p.fg, bg = p.bg },
+    NotifyDEBUGBody = { fg = p.fg, bg = p.bg },
+    NotifyTRACEBody = { fg = p.fg, bg = p.bg },
+    NotifyBackground = { bg = p.bg },
+  }
+  for group, opts in pairs(hls) do
+    vim.api.nvim_set_hl(0, group, opts)
+  end
+end
+
 local function set_wezterm_theme(scheme)
   local b64 = vim.base64.encode(scheme)
   io.stdout:write(('\027]1337;SetUserVar=%s=%s\007'):format('nvim_theme', b64))
@@ -96,6 +130,7 @@ function M.apply_theme(name, opts)
   local p = get_palette(name)
   apply_winsep_highlight(p)
   apply_gutter_highlights(p)
+  M.apply_notify_highlights(p)
   apply_render_md_highlights(p)
 
   vim.g.applied_colorscheme = name

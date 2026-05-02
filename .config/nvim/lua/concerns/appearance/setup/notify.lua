@@ -1,17 +1,17 @@
 return {
   config = function()
     local notify = require 'notify'
-
-    local function get_bg()
-      local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = 'Normal' })
-      if ok and hl and hl.bg then
-        return string.format('#%06x', hl.bg)
-      end
-      return '#000000'
-    end
+    local palettes = require 'utils.theme-colors'
+    local theme_file = vim.fn.expand '~/.local/state/dotfiles/theme.txt'
 
     notify.setup {
-      background_colour = get_bg(),
+      background_colour = function()
+        local f = io.open(theme_file, 'r')
+        local name = f and (f:read('*all'):gsub('%s+', '')) or 'vague'
+        if f then f:close() end
+        local p = palettes[name] or palettes.vague
+        return p.bg
+      end,
       fps = 60,
       render = 'minimal',
       stages = 'fade',
@@ -21,10 +21,6 @@ return {
 
     vim.notify = notify
 
-    vim.api.nvim_create_autocmd('ColorScheme', {
-      callback = function()
-        notify.setup { background_colour = get_bg() }
-      end,
-    })
+    pcall(vim.api.nvim_del_augroup_by_name, 'NvimNotifyRefreshHighlights')
   end,
 }
