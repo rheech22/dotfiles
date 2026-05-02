@@ -1,12 +1,11 @@
 local M = {
   available_themes = {
     'vague',
-    'everforest',
-    'teide-darker',
+    'seoul256-light',
   },
 }
 
-local theme_file = vim.fn.expand '~/.cache/theme.txt'
+local theme_file = vim.fn.expand '~/.local/state/dotfiles/theme.txt'
 local palettes = require 'utils.theme-colors'
 local supported_themes = {}
 
@@ -23,6 +22,17 @@ end
 
 local function get_palette(name)
   return palettes[name] or palettes.vague
+end
+
+local function read_theme_state()
+  local f = io.open(theme_file, 'r')
+  if not f then
+    return nil
+  end
+
+  local name = f:read('*all'):gsub('%s+', '')
+  f:close()
+  return name
 end
 
 local function apply_winsep_highlight(p)
@@ -62,16 +72,14 @@ local function set_wezterm_theme(scheme)
   io.stdout:flush()
 end
 
-function M.apply_theme(name)
+---@param opts { broadcast?: boolean }|nil
+function M.apply_theme(name, opts)
   name = normalize_theme(name)
+  opts = opts or {}
 
-  if name == 'everforest' then
-    vim.g.everforest_background = 'medium'
+  if name == 'seoul256-light' then
     vim.o.background = 'light'
-    vim.cmd.colorscheme 'everforest'
-  elseif name == 'teide-darker' then
-    vim.o.background = 'dark'
-    vim.cmd.colorscheme 'teide-darker'
+    vim.cmd.colorscheme 'seoul256-light'
   elseif name == 'vague' then
     vim.o.background = 'dark'
     require('vague').setup {}
@@ -84,26 +92,18 @@ function M.apply_theme(name)
 
   vim.g.applied_colorscheme = name
 
-  if vim.g.last_synced_scheme ~= name then
+  if opts.broadcast ~= false and vim.g.last_synced_scheme ~= name then
     set_wezterm_theme(name)
     vim.g.last_synced_scheme = name
-
-    local f = io.open(theme_file, 'w')
-    if f then
-      f:write(name)
-      f:close()
-    end
   end
 end
 
 function M.sync()
-  local f = io.open(theme_file, 'r')
-  if f then
-    local name = f:read('*all'):gsub('%s+', '')
-    f:close()
-    M.apply_theme(name)
+  local name = read_theme_state()
+  if name then
+    M.apply_theme(name, { broadcast = false })
   else
-    M.apply_theme 'vague'
+    M.apply_theme('vague', { broadcast = false })
   end
 end
 
@@ -113,26 +113,20 @@ function M.config()
   vim.api.nvim_create_autocmd('Signal', {
     pattern = 'SIGUSR1',
     callback = function()
-      local f = io.open(theme_file, 'r')
-      if f then
-        local name = f:read('*all'):gsub('%s+', '')
-        f:close()
+      local name = read_theme_state()
+      if name then
+        M.apply_theme(name, { broadcast = false })
         vim.g.last_synced_scheme = name
-        M.apply_theme(name)
       end
     end,
   })
 
   vim.api.nvim_create_autocmd('FocusGained', {
     callback = function()
-      local f = io.open(theme_file, 'r')
-      if f then
-        local name = f:read('*all'):gsub('%s+', '')
-        f:close()
-        if name ~= vim.g.applied_colorscheme then
-          vim.g.last_synced_scheme = name
-          M.apply_theme(name)
-        end
+      local name = read_theme_state()
+      if name and name ~= vim.g.applied_colorscheme then
+        M.apply_theme(name, { broadcast = false })
+        vim.g.last_synced_scheme = name
       end
     end,
   })

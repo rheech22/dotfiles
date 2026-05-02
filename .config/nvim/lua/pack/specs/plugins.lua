@@ -5,8 +5,7 @@ return {
     concern = 'appearance',
     capabilities = { 'appearance' },
     deps = {
-      'serhez/teide.nvim',
-      'sainnhe/everforest',
+      'junegunn/seoul256.vim',
     },
   },
   {

@@ -125,6 +125,14 @@
       "rev": "48b4175dbca8439d30c1f52231cbe5a712c8f9d9",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
+    "seoul256": {
+      "rev": "d8499250154f0b26a398cd76769861afd8fb68fd",
+      "src": "https://github.com/junegunn/seoul256.vim"
+    },
+    "seoul256.vim": {
+      "rev": "d8499250154f0b26a398cd76769861afd8fb68fd",
+      "src": "https://github.com/junegunn/seoul256.vim"
+    },
     "smear-cursor": {
       "rev": "c85bdbb25db096fbcf616bc4e1357bd61fe2c199",
       "src": "https://github.com/sphamba/smear-cursor.nvim"

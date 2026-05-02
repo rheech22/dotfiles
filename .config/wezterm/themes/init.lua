@@ -2,6 +2,8 @@ local palettes = require("themes.palettes")
 local state = require("themes.state")
 local external_sync = require("themes.external-sync")
 local signal = require("themes.signal")
+local flow = require("themes.flow")
+local tabline = require("themes.tabline")
 
 local M = {}
 
@@ -18,5 +20,11 @@ M.sync_external_tools = external_sync.sync_external_tools
 
 M.broadcast_to_nvim = signal.broadcast_to_nvim
 M.broadcast_to_zsh = signal.broadcast_to_zsh
+
+M.resolve_startup_theme = flow.resolve_startup_theme
+M.apply_terminal = flow.apply_terminal
+M.apply_global = flow.apply_global
+
+M.tabline = tabline
 
 return M

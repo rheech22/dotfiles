@@ -7,6 +7,47 @@ local hostname = wezterm.hostname()
 local config = wezterm.config_builder()
 local act = wezterm.action
 
+-- Colors (resolve before tabline setup)
+local current_theme = themes.load_state()
+local startup_theme = themes.resolve_startup_theme(current_theme or "vague")
+config.colors = themes.get(startup_theme)
+
+-- Tabline
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+
+tabline.setup({
+	options = {
+		icons_enabled = true,
+		tabs_enabled = true,
+		theme_overrides = themes.tabline_overrides(startup_theme),
+		section_separators = {
+			left = wezterm.nerdfonts.ple_right_half_circle_thick,
+			right = wezterm.nerdfonts.ple_left_half_circle_thick,
+		},
+		component_separators = {
+			left = wezterm.nerdfonts.ple_right_half_circle_thin,
+			right = wezterm.nerdfonts.ple_left_half_circle_thin,
+		},
+		tab_separators = {
+			left = wezterm.nerdfonts.ple_right_half_circle_thick,
+			right = "",
+		},
+	},
+	sections = {
+		tabline_a = {},
+		tabline_b = {},
+		tabline_c = {},
+		tab_active = { "index", { "process", padding = { left = 0, right = 1 } } },
+		tab_inactive = { "index", { "process", padding = { left = 0, right = 1 } } },
+		tabline_x = { "ram" },
+		tabline_y = { "cpu" },
+		tabline_z = { "datetime" },
+	},
+	extensions = {},
+})
+
+themes.tabline.patch()
+
 -- Font settings
 config.font = wezterm.font("DankMono Nerd Font")
 if hostname == "ichanghyeogs-MacBook-Pro.local" then
@@ -15,22 +56,10 @@ else
 	config.font_size = 18
 end
 
--- Colors
-local current_theme = themes.load_state()
-local startup_ok, startup_theme = themes.sync_external_tools(current_theme)
-if not startup_ok then
-	startup_theme = "vague"
-end
-config.colors = themes.get(startup_theme)
-if startup_theme ~= current_theme then
-	themes.save_state(startup_theme)
-end
-
 -- Appearance
 config.underline_thickness = "200%"
 config.underline_position = "200%"
 config.window_decorations = "RESIZE | MACOS_FORCE_DISABLE_SHADOW | MACOS_FORCE_SQUARE_CORNERS"
-config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 -- config.hide_tab_bar_if_only_one_tab = true
 config.window_padding = {
@@ -114,20 +143,9 @@ config.keys = {
 }
 
 -- Nvim theme sync
-wezterm.on("user-var-changed", function(window, pane, name, value)
+wezterm.on("user-var-changed", function(window, _, name, value)
 	if name == "nvim_theme" then
-		local ok, applied = themes.sync_external_tools(value)
-		if not ok then
-			return
-		end
-
-		local overrides = window:get_config_overrides() or {}
-		overrides.colors = themes.get(applied)
-		window:set_config_overrides(overrides)
-		themes.save_state(applied)
-		themes.broadcast_to_zsh()
-		-- We don't broadcast_to_nvim here because this signal came FROM nvim.
-		-- Broadcasting would trigger the sender to reload itself unnecessarily.
+		themes.apply_global(window, value, { broadcast_zsh = true })
 	end
 end)
 

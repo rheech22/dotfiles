@@ -8,27 +8,18 @@ for _, name in ipairs(themes.names) do
 		brief = "Theme (Terminal): " .. name,
 		icon = "md_monitor",
 		action = wezterm.action_callback(function(window)
-			local overrides = window:get_config_overrides() or {}
-			overrides.colors = themes.get(name)
-			window:set_config_overrides(overrides)
+			themes.apply_terminal(window, name)
 		end),
 	})
 
 	table.insert(commands, {
 		brief = "Theme (Global): " .. name,
 		icon = "md_palette",
-		action = wezterm.action_callback(function(window)
-			local ok, applied = themes.sync_external_tools(name)
-			if not ok then
-				return
-			end
-
-			local overrides = window:get_config_overrides() or {}
-			overrides.colors = themes.get(applied)
-			window:set_config_overrides(overrides)
-			themes.save_state(applied)
-			themes.broadcast_to_nvim()
-			themes.broadcast_to_zsh()
+		action = wezterm.action_callback(function(window, _)
+			themes.apply_global(window, name, {
+				broadcast_nvim = true,
+				broadcast_zsh = true,
+			})
 		end),
 	})
 end
