@@ -84,6 +84,10 @@
       "rev": "3d25c24487876676d29d325c01ce108cbdbd0753",
       "src": "https://github.com/milanglacier/minuet-ai.nvim"
     },
+    "mole": {
+      "rev": "62af21156f102132aa3aaccf160edaf339ac29af",
+      "src": "https://github.com/zion-off/mole.nvim"
+    },
     "noice": {
       "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
       "src": "https://github.com/folke/noice.nvim"

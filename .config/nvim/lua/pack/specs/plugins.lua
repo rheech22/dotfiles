@@ -190,4 +190,12 @@ return {
   },
   -- { name = 'smear-cursor', repo = 'sphamba/smear-cursor.nvim' },
   { name = 'toggleterm', repo = 'akinsho/toggleterm.nvim', concern = 'platform' },
+  {
+    name = 'mole',
+    repo = 'zion-off/mole.nvim',
+    concern = 'notes',
+    deps = {
+      'MunifTanjim/nui.nvim',
+    },
+  },
 }
