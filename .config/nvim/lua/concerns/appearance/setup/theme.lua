@@ -39,6 +39,13 @@ local function apply_winsep_highlight(p)
   vim.api.nvim_set_hl(0, 'ColorfulWinSep', { fg = p.winsep_fg, bg = p.bg })
 end
 
+local function apply_gutter_highlights(p)
+  local groups = { 'LineNr', 'LineNrAbove', 'LineNrBelow', 'SignColumn' }
+  for _, group in ipairs(groups) do
+    vim.api.nvim_set_hl(0, group, { bg = p.bg })
+  end
+end
+
 local function apply_render_md_highlights(p)
   local hls = {
     RenderMarkdownH1 = { fg = p.red, bold = true },
@@ -88,6 +95,7 @@ function M.apply_theme(name, opts)
 
   local p = get_palette(name)
   apply_winsep_highlight(p)
+  apply_gutter_highlights(p)
   apply_render_md_highlights(p)
 
   vim.g.applied_colorscheme = name

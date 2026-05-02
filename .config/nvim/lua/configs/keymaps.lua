@@ -29,6 +29,7 @@ map('xo', 'R', navigation.flash_treesitter_search, 'Treesitter Search')
 map('c', '<C-s>', navigation.flash_toggle_search, 'Toggle Flash Search')
 map('nt', '[[', navigation.prev_reference, 'Previous reference')
 map('nt', ']]', navigation.next_reference, 'Next reference')
+map('n', leader 'z', navigation.zen, 'Toggle Zen Mode')
 
 map('n', leader '<space>', search.buffers, 'Find buffers')
 map('n', leader 'h', search.help, 'Find help')
