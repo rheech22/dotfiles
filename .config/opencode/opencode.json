@@ -47,5 +47,6 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
     }
-  }
+  },
+  "plugin": ["./plugin/dev-log/index.ts"]
 }

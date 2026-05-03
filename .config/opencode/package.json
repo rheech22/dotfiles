@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@opencode-ai/plugin": "1.14.33"
+    "@opencode-ai/plugin": "1.14.33",
+    "langsmith": "0.3.48",
+    "openai": "4.68.4"
   }
 }
-
