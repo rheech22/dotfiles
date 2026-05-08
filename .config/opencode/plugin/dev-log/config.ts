@@ -6,6 +6,7 @@ export const PENDING_DIR = join(LOG_DIR, ".pending")
 export const TRACE_LOG = join(LOG_DIR, "dev-log.trace.log")
 
 export const API_KEY = process.env.SYNTHETIC_API_KEY ?? ""
+export const CLASSIFIER_MODEL = "hf:zai-org/GLM-4.7-Flash"
 export const MODEL = "hf:deepseek-ai/DeepSeek-V3.2"
 export const MAX_MESSAGES = 60
 export const MAX_TRANSCRIPT_CHARS = 12000
