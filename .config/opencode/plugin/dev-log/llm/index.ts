@@ -36,7 +36,7 @@ export async function summarizeSession(input: {
     )
 
     await writeTrace(
-      `classification decision=${classification.decision} narrow=${classification.narrowTopic ?? ""} reason=${classification.reason ?? ""}`,
+      `classification decision=${classification.decision} narrow=${classification.narrowTopic ?? ""} docType=${classification.docType ?? ""} reason=${classification.reason ?? ""}`,
     )
     if (classification.decision === "skip") return null
 
@@ -45,6 +45,7 @@ export async function summarizeSession(input: {
         transcript: input.transcript,
         existingDocs: input.existingDocs,
         narrowTopic: classification.narrowTopic,
+        docType: classification.docType,
       },
       llmTrace ?? undefined,
     )

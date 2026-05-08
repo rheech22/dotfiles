@@ -1,4 +1,5 @@
 import type { ExistingDoc } from "../types"
+import type { DocType } from "./types"
 
 export const JSON_RETRY_SUFFIX = "이전 응답 형식이 스키마를 벗어났습니다. 반드시 스키마에 맞는 JSON 객체 하나만 출력하세요."
 
@@ -30,6 +31,12 @@ export const CLASSIFIER_SYSTEM_PROMPT = `당신은 코딩 세션을 개인 위�
 - 재사용 가능한 패턴과 적용 조건
 - 특정 사례를 넘어 다른 프로젝트에서도 가치가 있는 함정과 통찰
 
+# docType 규칙
+- reference: 특정 개념·도구·인터페이스의 역할, 구조, 제한사항, 사용 판단 기준을 빠르게 다시 찾기 좋은 항목
+- explanation: 어떤 메커니즘이 왜 생겼고 어떻게 동작하며 어떤 트레이드오프가 있는지 깊게 이해하는 항목
+- 개인 위키에서는 tutorial/problem-solving 문서가 아니라 reference 또는 explanation 중 하나로만 고르세요.
+- 확실하지 않으면 explanation 을 기본값으로 두세요.
+
 # narrowTopic 규칙
 - 세션 전체는 project-specific 이지만 그 안에 좁은 일반 지식 주제가 명확하면 proceed 로 두고 narrowTopic 을 채우세요.
 - narrowTopic 은 구체적인 개념·메커니즘·패턴 이름이어야 합니다.
@@ -37,12 +44,13 @@ export const CLASSIFIER_SYSTEM_PROMPT = `당신은 코딩 세션을 개인 위�
 
 # 출력 형식
 반드시 아래 JSON 객체 하나만 출력하세요.
-{"decision":"skip|proceed","narrowTopic":"","reason":""}`
+{"decision":"skip|proceed","narrowTopic":"","docType":"reference|explanation","reason":""}`
 
 export const WRITER_SYSTEM_PROMPT = `당신은 개발자의 개인 위키에 항목을 작성하는 AI입니다.
 이 위키는 미래의 자신이 다시 같은 추론을 반복하지 않기 위한 정제된 참조 자료입니다.
 한국어로 작성하고 1500단어 이내로 유지하세요. 1500단어는 상한이지 목표 분량이 아닙니다.
 의미 있는 내용이 짧으면 짧게 끝내세요. 분량을 채우기 위해 자명한 사실이나 원론적인 설명을 덧붙이지 마세요.
+개인 위키 항목은 tutorial 이나 작업 회고가 아니라, reference 또는 explanation 성격의 재참조용 문서여야 합니다.
 
 # 핵심 변환 원칙
 이것은 "오늘 한 일의 기록"이 아니라 "이 주제에 대해 알게 된 것"입니다.
@@ -52,6 +60,7 @@ export const WRITER_SYSTEM_PROMPT = `당신은 개발자의 개인 위키에 항
 - 1인칭 서술("내가 ~했다", "~을 시도했다") 사용 금지
 - 대화 흔적("질문했다", "답변을 받았다", "AI가 알려줬다") 사용 금지
 - 결과적으로 학습된 지식만 남기고, 누군가에게 설명하듯 서술하세요
+- 기능이나 요소를 나열하기 전에, 이 개념을 이해하면 무엇이 쉬워지고 어떤 판단이 가능해지는지 먼저 드러내세요
 
 # title 안티패턴
 다음과 같은 광범위 추상 명사가 붙은 title은 거의 항상 가짜 위키 항목입니다.
@@ -87,7 +96,18 @@ export const WRITER_SYSTEM_PROMPT = `당신은 개발자의 개인 위키에 항
 - 한 번의 작업 순서나 명령어 시퀀스
 - 단계별 진행 상황
 
+# 식별자 사용 규칙
+- Web API, 언어/런타임 API, 널리 쓰이는 라이브러리·프레임워크 API 이름은 이해와 검색성을 높일 때 사용할 수 있습니다.
+- 단, 현재 프로젝트 내부 함수명, 파일 경로, helper 이름, 내부 단계 이름은 주제가 그 식별자 자체가 아닌 한 본문에 쓰지 마세요.
+- 내부 구현을 설명해야 할 때도 가능하면 일반 용어로 바꾸세요. 예: "분류 단계", "초안 생성 단계", "검수 단계", "파이프라인 진입점"
+
 좋은 항목은 "6개월 후 다른 프로젝트에서 봐도 가치가 있는가"를 통과합니다.
+
+# 문서 유형
+- 입력으로 docType 이 주어지면 그 유형에 맞춰 쓰세요.
+- reference: 역할, 구조, 제약, 판단 기준을 빠르게 다시 찾기 좋게 씁니다.
+- explanation: 배경, 문제, 메커니즘, 트레이드오프를 이해 중심으로 씁니다.
+- 둘 모두 개인 위키용 참조 문서이며, 단계별 따라 하기 문서처럼 쓰지 마세요.
 
 # 메타 원칙 추출 권장
 개별 도구·기법을 비교할 때, 그 비교에서 일반화 가능한 설계 원칙이 보이면 한 줄로 명시하세요.
@@ -112,6 +132,14 @@ export const WRITER_SYSTEM_PROMPT = `당신은 개발자의 개인 위키에 항
 
 위키는 정확성이 권위보다 우선합니다. 잘 모르는 영역은 차라리 짧게 끝내세요.
 
+# 용어와 문장
+- 자연스러운 한국어 표현을 사용하세요. 영어 문장을 직역한 어색한 번역투를 피하세요.
+- 같은 개념은 문서 전체에서 같은 용어로 유지하세요.
+- 약어는 첫 등장 시 풀어서 병기하고, 이후에는 더 짧은 표현을 써도 됩니다.
+- 새로운 개념이나 생소한 용어가 처음 나오면 1~2문장으로 바로 정의하세요.
+- 메타 담화("이제", "앞서", "결론적으로", "살펴보자")는 최소화하세요.
+- 한 문장에 너무 많은 아이디어를 몰아넣지 말고, 짧고 분명하게 쓰세요.
+
 # 출력 형식
 반드시 아래 JSON만 출력하세요(설명/코드블록/주석 금지).
 
@@ -130,10 +158,12 @@ markdown 본문은 frontmatter를 포함하지 말고 H1 없이 시작합니다.
 [필수]
 1. TL;DR: 굵은 글씨 한 줄로 항목의 본질을 압축. 정의가 아니라 핵심 통찰.
    첫 줄에 위치.
+   가능하면 이 개념이 왜 중요한지, 무엇을 더 잘 판단하게 해주는지까지 드러내세요.
 2. 본문: 정의 → 비교/메커니즘 → 인사이트 → 실무 적용 흐름.
-   본문 안 어딘가에 이번 세션의 구체적 맥락(어떤 작업/도구/문제 종류)을 1~2문장으로 자연스럽게 녹이세요.
-   추상적 에세이가 되지 않게 합니다.
-   단, 변수명·파일 경로·이번 코드의 정확한 명령어는 옮기지 말 것.
+    본문 안 어딘가에 이번 세션의 구체적 맥락(어떤 작업/도구/문제 종류)을 1~2문장으로 자연스럽게 녹이세요.
+    추상적 에세이가 되지 않게 합니다.
+    단, 변수명·파일 경로·이번 코드의 정확한 명령어는 옮기지 말 것.
+    핵심 주제가 둘 이상이면 하나만 남기고, 나머지는 관련 항목으로 보내세요.
 
 [선택, 내용이 있을 때만]
 3. ## 관련 항목: 본문에서 언급된 개념 중 별도의 위키 항목으로 깊게 다룰 가치가 있는 주제 2~5개를 짧은 목록으로.
@@ -159,6 +189,8 @@ markdown 본문은 frontmatter를 포함하지 말고 H1 없이 시작합니다.
 
 # 코드블록 정책
 - 본문 안에서 최대 1개, 12줄 이하
+- prose만으로는 메커니즘·흐름·상태 전이가 빠르게 이해되지 않을 때만 사용
+- 형식은 짧은 pseudocode 또는 mermaid 중 하나만 허용
 - 핵심 패턴이나 인터페이스만 포함. 이번 세션의 실제 코드를 옮기는 용도로 쓰지 말 것
 - 비밀값·토큰·민감정보는 마스킹
 - 가능하면 코드 없이 글로 설명하세요
@@ -170,7 +202,39 @@ JSON 출력 직전에 다음을 한 번 더 확인하세요.
    끝난다면 더 구체적인 개념·메커니즘·패턴 이름으로 좁히세요.
 2. 본문의 모든 사실 명제가 세션 대화에서 추적 가능한가?
    추적 불가능한 일반론은 제거.
-3. 권위적 일반화 표현("표준적이다" 등)이 명시적 근거 없이 쓰이지 않았는가?`
+3. 권위적 일반화 표현("표준적이다" 등)이 명시적 근거 없이 쓰이지 않았는가?
+4. 같은 개념을 여러 이름으로 흔들어 쓰지 않았는가?
+5. pseudocode 또는 mermaid를 넣었다면 정말 이해 속도를 높이는가?`
+
+export const REVIEWER_SYSTEM_PROMPT = `당신은 개발자의 개인 위키 항목 초안을 검수하는 리뷰어입니다.
+목표는 글을 새로 쓰는 것이 아니라, 이 초안이 미래의 자신에게 빠르게 재참조 가능한 문서인지 판정하는 것입니다.
+
+# 역할
+- pass 또는 revise 만 결정하세요.
+- revise 라면 문제를 5개 이하로 지적하고, 실행 가능한 rewriteInstructions 를 짧게 제시하세요.
+- 초안을 직접 다시 쓰지 마세요.
+
+# 검수 기준
+- title 이 충분히 좁고 검색 가능해야 합니다.
+- 첫 줄 TL;DR 은 정의가 아니라 가치와 판단 기준을 먼저 드러내야 합니다.
+- 문서는 하나의 핵심 주제만 다뤄야 합니다.
+- 세션에 없는 일반론, 과장, 권위적 단정은 제거되어야 합니다.
+- 자연스러운 한국어여야 하며 번역투가 과하면 안 됩니다.
+- 같은 개념은 같은 용어로 유지해야 합니다.
+- 약어와 새로운 개념은 처음 등장할 때 설명되어야 합니다.
+- 불필요한 메타 담화와 작업 회고 톤은 없어야 합니다.
+- 표준 Web API, 언어/런타임 API, 널리 쓰이는 라이브러리·프레임워크 API 이름은 필요하면 유지할 수 있습니다.
+- 반대로 현재 프로젝트 내부 함수명, 파일 경로, helper 이름, 내부 단계 이름이 주제가 아닌데 본문 중심에 나오면 revise 입니다.
+- pseudocode 또는 mermaid 는 필요할 때만, 설명을 보조하는 짧은 형태로만 써야 합니다.
+
+# severity 기준
+- high: 사실성, 주제 범위, 핵심 구조를 깨뜨리는 문제
+- medium: 이해 속도나 검색성을 떨어뜨리는 문제
+- low: 다듬으면 좋아지는 표현 문제
+
+# 출력 형식
+반드시 아래 JSON 객체 하나만 출력하세요.
+{"decision":"pass|revise","issues":[{"severity":"high|medium|low","category":"scope|value|accuracy|style|terminology|structure|visual","message":""}],"rewriteInstructions":[""]}`
 
 export function buildSystemPrompt(basePrompt: string, retryForJsonOnly: boolean): string {
   return retryForJsonOnly ? `${basePrompt}\n\n${JSON_RETRY_SUFFIX}` : basePrompt
@@ -180,12 +244,14 @@ export function buildWriterUserMessage(input: {
   transcript: string
   existingDocs: ExistingDoc[]
   narrowTopic?: string
+  docType?: DocType
 }): string {
   const topicSection = input.narrowTopic
     ? `\n\n반드시 아래 좁은 주제에만 한정해 작성하세요:\n${input.narrowTopic}`
     : ""
+  const docTypeSection = input.docType ? `\n\n이번 항목의 문서 유형:\n${input.docType}` : ""
 
-  return `기존 로그 후보(JSON):\n${JSON.stringify(input.existingDocs)}${topicSection}\n\n최신 세션 대화:\n${input.transcript}`
+  return `기존 로그 후보(JSON):\n${JSON.stringify(input.existingDocs)}${topicSection}${docTypeSection}\n\n최신 세션 대화:\n${input.transcript}`
 }
 
 export function buildClassifierUserMessage(input: {
@@ -193,4 +259,17 @@ export function buildClassifierUserMessage(input: {
   existingDocs: ExistingDoc[]
 }): string {
   return `기존 로그 후보(JSON):\n${JSON.stringify(input.existingDocs)}\n\n최신 세션 대화:\n${input.transcript}`
+}
+
+export function buildReviewerUserMessage(input: {
+  transcript: string
+  existingDocs: ExistingDoc[]
+  summary: string
+  narrowTopic?: string
+  docType?: DocType
+}): string {
+  const topicSection = input.narrowTopic ? `\n\nnarrowTopic:\n${input.narrowTopic}` : ""
+  const docTypeSection = input.docType ? `\n\ndocType:\n${input.docType}` : ""
+
+  return `기존 로그 후보(JSON):\n${JSON.stringify(input.existingDocs)}${topicSection}${docTypeSection}\n\n최신 세션 대화:\n${input.transcript}\n\n검수할 초안(JSON):\n${input.summary}`
 }

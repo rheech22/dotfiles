@@ -5,7 +5,8 @@ import type { ExistingDoc, SummaryPayload } from "../types"
 import { withRetry } from "../utils"
 import { llmClient } from "./client"
 import { buildSystemPrompt, buildWriterUserMessage, WRITER_SYSTEM_PROMPT } from "./prompts"
-import { RESPONSE_SCHEMA, type LlmMode } from "./types"
+import { reviewSummary } from "./reviewer"
+import { RESPONSE_SCHEMA, type DocType, type LlmMode, type ReviewPayload } from "./types"
 import {
   assessProseQuality,
   buildTemplateFallback,
@@ -23,6 +24,7 @@ export async function writeSummary(input: {
   transcript: string
   existingDocs: ExistingDoc[]
   narrowTopic?: string
+  docType?: DocType
 }, traceParent?: TraceRun): Promise<SummaryPayload | null> {
   const userMessage = buildWriterUserMessage(input)
 
@@ -157,6 +159,142 @@ export async function writeSummary(input: {
     return outputs
   }
 
+  const applyQualityGate = async (summary: SummaryPayload, mode: LlmMode): Promise<SummaryPayload> => {
+    const quality = assessProseQuality(summary.markdown)
+    await writeTrace(
+      `quality_gate=${quality.pass ? "pass" : "fail"} reason=${quality.reason} ratio=${quality.ratio.toFixed(2)} headings=${quality.headingLines} paragraphs=${quality.paragraphs} words=${quality.wordCount}`,
+    )
+    if (quality.pass) return summary
+
+    const rewritePrompt = `다음 markdown은 정보는 맞지만 구조가 리스트/헤딩 위주라 읽기 흐름이 떨어집니다.
+사실 추가/삭제/변형 없이 구조만 prose-first로 재작성하세요.
+
+요구사항:
+- 본문은 H1 없이 시작
+- 기본은 단락 중심
+- 필요 없는 헤딩/불릿/표를 줄이기
+- 핵심 의미와 근거는 유지
+
+절대 금지:
+- 새 정보 추가
+- 기존 정보 삭제
+- 사실 변형
+- title 변경
+- tags 변경
+
+허용:
+- 단락 재구성
+- 헤딩/불릿의 산문 변환
+- 같은 의미의 더 자연스러운 표현
+
+반드시 JSON 객체 하나만 출력:
+{"action":"overwrite|new","targetPath":"","title":"","tags":[],"markdown":""}
+
+원본 JSON:
+${JSON.stringify(summary)}`
+
+    try {
+      const rewrite = await requestRewrite(rewritePrompt, mode)
+      await writeTrace(`llm finish_reason=${rewrite.finishReason} mode=${rewrite.mode} (quality-rewrite)`)
+      if (!rewrite.raw) return summary
+      await writeRawResponseLog(rewrite.raw)
+      const rewriteParsed = parseLlmPayload(rewrite.raw)
+      if (!rewriteParsed.payload || isSkipPayload(rewriteParsed.payload) || !isSummaryPayload(rewriteParsed.payload)) return summary
+      const rewritten = normalizeSummary(rewriteParsed.payload)
+      const rewrittenQuality = assessProseQuality(rewritten.markdown)
+      await writeTrace(
+        `quality_gate=${rewrittenQuality.pass ? "pass" : "fail"} reason=${rewrittenQuality.reason} ratio=${rewrittenQuality.ratio.toFixed(2)} headings=${rewrittenQuality.headingLines} paragraphs=${rewrittenQuality.paragraphs} words=${rewrittenQuality.wordCount} phase=quality-rewrite`,
+      )
+      return rewrittenQuality.pass ? rewritten : summary
+    } catch (error) {
+      await writeTrace(`llm quality rewrite failed err=${error instanceof Error ? error.message : "unknown"}`)
+      return summary
+    }
+  }
+
+  const buildReviewerRewritePrompt = (summary: SummaryPayload, review: ReviewPayload): string => {
+    const instructions = (review.rewriteInstructions ?? []).filter(Boolean).slice(0, 5)
+    const issues = (review.issues ?? []).slice(0, 5).map((issue) => `- [${issue.severity}/${issue.category}] ${issue.message}`)
+
+    return `다음 개인 위키 초안을 reviewer 지시에 맞게 수정하세요.
+세션에 없는 사실을 추가하지 말고, 기존 사실을 왜곡하지 마세요.
+
+수정 지시:
+${instructions.length > 0 ? instructions.map((instruction) => `- ${instruction}`).join("\n") : "- reviewer 지적 사항만 반영하세요"}
+
+검수 이슈:
+${issues.length > 0 ? issues.join("\n") : "- 없음"}
+
+절대 금지:
+- 새 사실 추가
+- 세션에 없는 비교나 일반론 추가
+- title 과 tags 를 불필요하게 바꾸기
+- 실제 세션 코드를 복사해 넣기
+
+허용:
+- title narrowing
+- TL;DR 강화
+- 용어 통일
+- 개념 첫 등장 정의 보강
+- 부적절한 pseudocode/mermaid 제거 또는 더 짧게 축약
+
+반드시 JSON 객체 하나만 출력:
+{"action":"overwrite|new","targetPath":"","title":"","tags":[],"markdown":""}
+
+원본 JSON:
+${JSON.stringify(summary)}`
+  }
+
+  const applyReviewer = async (summary: SummaryPayload, mode: LlmMode): Promise<SummaryPayload> => {
+    const review = await reviewSummary(
+      {
+        transcript: input.transcript,
+        existingDocs: input.existingDocs,
+        summary,
+        narrowTopic: input.narrowTopic,
+        docType: input.docType,
+      },
+      traceParent,
+    )
+    if (!review) return summary
+
+    await writeTrace(
+      `review decision=${review.decision} issues=${(review.issues ?? []).length} instructions=${(review.rewriteInstructions ?? []).length}`,
+    )
+    if (review.decision === "pass") return summary
+
+    try {
+      const rewrite = await requestRewrite(buildReviewerRewritePrompt(summary, review), mode)
+      await writeTrace(`llm finish_reason=${rewrite.finishReason} mode=${rewrite.mode} (review-rewrite)`)
+      if (!rewrite.raw) return summary
+      await writeRawResponseLog(rewrite.raw)
+      const rewriteParsed = parseLlmPayload(rewrite.raw)
+      if (!rewriteParsed.payload || isSkipPayload(rewriteParsed.payload) || !isSummaryPayload(rewriteParsed.payload)) return summary
+
+      const rewritten = await applyQualityGate(normalizeSummary(rewriteParsed.payload), rewrite.mode)
+      const finalReview = await reviewSummary(
+        {
+          transcript: input.transcript,
+          existingDocs: input.existingDocs,
+          summary: rewritten,
+          narrowTopic: input.narrowTopic,
+          docType: input.docType,
+        },
+        traceParent,
+      )
+
+      if (!finalReview) return rewritten
+      await writeTrace(
+        `review decision=${finalReview.decision} issues=${(finalReview.issues ?? []).length} instructions=${(finalReview.rewriteInstructions ?? []).length} phase=post-rewrite`,
+      )
+      if (finalReview.decision === "pass") return rewritten
+      return rewritten
+    } catch (error) {
+      await writeTrace(`llm review rewrite failed err=${error instanceof Error ? error.message : "unknown"}`)
+      return summary
+    }
+  }
+
   const first = await requestSummary("primary", false, 0.35)
   const raw = first.raw
   const structuredMode = first.mode
@@ -184,11 +322,8 @@ export async function writeSummary(input: {
         }
         if (isSummaryPayload(retryParsed.payload)) {
           const normalizedRetry = normalizeSummary(retryParsed.payload)
-          const retryQuality = assessProseQuality(normalizedRetry.markdown)
-          await writeTrace(
-            `quality_gate=${retryQuality.pass ? "pass" : "fail"} reason=${retryQuality.reason} ratio=${retryQuality.ratio.toFixed(2)} headings=${retryQuality.headingLines} paragraphs=${retryQuality.paragraphs} words=${retryQuality.wordCount} phase=retry`,
-          )
-          if (retryQuality.pass) return normalizedRetry
+          const qualityCheckedRetry = await applyQualityGate(normalizedRetry, retry.mode)
+          return applyReviewer(qualityCheckedRetry, retry.mode)
         }
       }
     }
@@ -224,58 +359,6 @@ export async function writeSummary(input: {
   }
 
   const normalized = normalizeSummary(payload)
-  const quality = assessProseQuality(normalized.markdown)
-  await writeTrace(
-    `quality_gate=${quality.pass ? "pass" : "fail"} reason=${quality.reason} ratio=${quality.ratio.toFixed(2)} headings=${quality.headingLines} paragraphs=${quality.paragraphs} words=${quality.wordCount} phase=initial`,
-  )
-  if (quality.pass) return normalized
-
-  const rewritePrompt = `다음 markdown은 정보는 맞지만 구조가 리스트/헤딩 위주라 읽기 흐름이 떨어집니다.
-사실 추가/삭제/변형 없이 구조만 prose-first로 재작성하세요.
-
-요구사항:
-- 본문은 H1 없이 시작
-- 기본은 단락 중심
-- 필요 없는 헤딩/불릿/표를 줄이기
-- 핵심 의미와 근거는 유지
-
-절대 금지:
-- 새 정보 추가
-- 기존 정보 삭제
-- 사실 변형
-- title 변경
-- tags 변경
-
-허용:
-- 단락 재구성
-- 헤딩/불릿의 산문 변환
-- 같은 의미의 더 자연스러운 표현
-
-반드시 JSON 객체 하나만 출력:
-{"action":"overwrite|new","targetPath":"","title":"","tags":[],"markdown":""}
-
-원본 JSON:
-${JSON.stringify(normalized)}`
-
-  try {
-    const rewrite = await requestRewrite(rewritePrompt, structuredMode)
-    await writeTrace(`llm finish_reason=${rewrite.finishReason} mode=${rewrite.mode} (rewrite)`)
-    if (rewrite.raw) {
-      await writeRawResponseLog(rewrite.raw)
-      const rewriteParsed = parseLlmPayload(rewrite.raw)
-      if (rewriteParsed.payload && !isSkipPayload(rewriteParsed.payload) && isSummaryPayload(rewriteParsed.payload)) {
-        const rewritten = normalizeSummary(rewriteParsed.payload)
-        const rewrittenQuality = assessProseQuality(rewritten.markdown)
-        await writeTrace(
-          `quality_gate=${rewrittenQuality.pass ? "pass" : "fail"} reason=${rewrittenQuality.reason} ratio=${rewrittenQuality.ratio.toFixed(2)} headings=${rewrittenQuality.headingLines} paragraphs=${rewrittenQuality.paragraphs} words=${rewrittenQuality.wordCount} phase=rewrite`,
-        )
-        if (rewrittenQuality.pass) return rewritten
-      }
-    }
-  } catch (error) {
-    await writeTrace(`llm rewrite failed err=${error instanceof Error ? error.message : "unknown"}`)
-  }
-
-  await writeTrace("llm rewrite failed: keeping initial summary")
-  return normalized
+  const qualityChecked = await applyQualityGate(normalized, structuredMode)
+  return applyReviewer(qualityChecked, structuredMode)
 }

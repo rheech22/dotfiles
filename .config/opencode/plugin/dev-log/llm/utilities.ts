@@ -1,7 +1,14 @@
 import { appendFile } from "fs/promises"
 import { LOG_DIR } from "../config"
 import type { SummaryPayload } from "../types"
-import type { ClassificationParseResult, ClassificationPayload, LlmPayload, ParseResult } from "./types"
+import type {
+  ClassificationParseResult,
+  ClassificationPayload,
+  LlmPayload,
+  ParseResult,
+  ReviewParseResult,
+  ReviewPayload,
+} from "./types"
 
 export function isSkipPayload(payload: LlmPayload): payload is { action: "skip"; reason?: string } {
   return payload.action === "skip"
@@ -19,7 +26,26 @@ export function isSummaryPayload(payload: LlmPayload): payload is SummaryPayload
 export function isClassificationPayload(payload: ClassificationPayload): payload is ClassificationPayload {
   if (payload.decision !== "skip" && payload.decision !== "proceed") return false
   if (payload.narrowTopic !== undefined && typeof payload.narrowTopic !== "string") return false
+  if (payload.docType !== undefined && payload.docType !== "reference" && payload.docType !== "explanation") return false
   if (payload.reason !== undefined && typeof payload.reason !== "string") return false
+  return true
+}
+
+export function isReviewPayload(payload: ReviewPayload): payload is ReviewPayload {
+  if (payload.decision !== "pass" && payload.decision !== "revise") return false
+  if (payload.issues !== undefined) {
+    if (!Array.isArray(payload.issues)) return false
+    for (const issue of payload.issues) {
+      if (typeof issue !== "object" || issue === null) return false
+      if (issue.severity !== "high" && issue.severity !== "medium" && issue.severity !== "low") return false
+      if (!["scope", "value", "accuracy", "style", "terminology", "structure", "visual"].includes(issue.category)) return false
+      if (typeof issue.message !== "string") return false
+    }
+  }
+  if (payload.rewriteInstructions !== undefined) {
+    if (!Array.isArray(payload.rewriteInstructions)) return false
+    if (!payload.rewriteInstructions.every((instruction: unknown) => typeof instruction === "string")) return false
+  }
   return true
 }
 
@@ -77,6 +103,31 @@ export function parseClassificationPayload(raw: string): ClassificationParseResu
     if (extracted) {
       try {
         return { payload: JSON.parse(extracted) as ClassificationPayload, mode: "sliced-json" }
+      } catch {
+        // continue
+      }
+    }
+    const message = error instanceof Error ? error.message : "unknown"
+    return { payload: null, mode: "parse-failed", error: message }
+  }
+}
+
+export function parseReviewPayload(raw: string): ReviewParseResult {
+  try {
+    return { payload: JSON.parse(raw) as ReviewPayload, mode: "json" }
+  } catch (error) {
+    const fenced = stripCodeFence(raw)
+    if (fenced !== raw) {
+      try {
+        return { payload: JSON.parse(fenced) as ReviewPayload, mode: "fenced-json" }
+      } catch {
+        // continue
+      }
+    }
+    const extracted = extractJsonObject(raw)
+    if (extracted) {
+      try {
+        return { payload: JSON.parse(extracted) as ReviewPayload, mode: "sliced-json" }
       } catch {
         // continue
       }

@@ -117,6 +117,7 @@ export async function classifySession(input: {
   )
   return {
     decision: "proceed",
+    docType: "explanation",
     reason: "classification-parse-failed",
   }
 }
