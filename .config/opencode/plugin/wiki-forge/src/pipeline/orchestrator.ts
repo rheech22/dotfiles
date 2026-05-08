@@ -1,7 +1,7 @@
 import { join, resolve } from "path"
-import { LOG_DIR } from "./config"
-import { summarizeSession } from "./llm"
-import { writeTrace } from "./logger"
+import { LOG_DIR } from "../config"
+import { summarizeSession } from "../llm"
+import { writeTrace } from "../observability/logger"
 import {
   buildFrontmatter,
   composeDocument,
@@ -9,14 +9,14 @@ import {
   readExistingDocs,
   toSlug,
   writeMarkdown,
-} from "./storage"
+} from "../storage"
 import { flushSessionPartBuffers, getSessionBuffer } from "./state"
-import { tracer } from "./tracing"
+import { tracer } from "../observability/tracing"
 import { buildTranscript, extractMessagesFromEventProperties } from "./transcript"
-import type { SessionMessage } from "./types"
-import { uploadWithPending } from "./upload"
-import { sleep } from "./utils"
-import { notifyUploadResult } from "./notify"
+import type { SessionMessage } from "../types"
+import { notifyUploadResult } from "../storage/notify"
+import { uploadWithPending } from "../storage/upload"
+import { sleep } from "../utils"
 
 function isSafeLogPath(path: string): boolean {
   const resolved = resolve(path)
@@ -48,7 +48,7 @@ export async function processSessionIdle(params: {
   const { ocClient, $, sessionId, eventProperties, eventKeys } = params
 
   const rootTrace = await tracer.startRun(
-    "dev-log.session_idle",
+    "wiki-forge.session_idle",
     "chain",
     {
       sessionId,

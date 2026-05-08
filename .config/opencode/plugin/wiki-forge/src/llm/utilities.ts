@@ -1,4 +1,5 @@
-import { appendFile } from "fs/promises"
+import { appendFile, mkdir } from "fs/promises"
+import { dirname } from "path"
 import { LOG_DIR } from "../config"
 import type { SummaryPayload } from "../types"
 import type {
@@ -232,6 +233,7 @@ export function assessProseQuality(markdown: string): {
 export async function writeRawResponseLog(raw: string): Promise<void> {
   const ts = new Date().toISOString()
   const entry = [`\n===== LLM RAW RESPONSE ${ts} =====`, raw, "===== END =====\n"].join("\n")
-  const outPath = `${LOG_DIR}/dev-log.llm-raw.log`
+  const outPath = `${LOG_DIR}/wiki-forge.llm-raw.log`
+  await mkdir(dirname(outPath), { recursive: true })
   await appendFile(outPath, entry, "utf-8")
 }

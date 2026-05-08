@@ -1,7 +1,7 @@
 import { readdir, readFile, writeFile } from "fs/promises"
 import { join } from "path"
-import { LOG_DIR } from "./config"
-import type { ExistingDoc } from "./types"
+import { LOG_DIR } from "../config"
+import type { ExistingDoc } from "../types"
 
 export async function listSessionLogs(sessionId: string): Promise<string[]> {
   try {

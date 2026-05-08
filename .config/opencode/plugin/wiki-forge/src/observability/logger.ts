@@ -1,10 +1,12 @@
-import { readFile, writeFile } from "fs/promises"
-import { TRACE_LOG } from "./config"
+import { mkdir, readFile, writeFile } from "fs/promises"
+import { dirname } from "path"
+import { TRACE_LOG } from "../config"
 
 const MAX_TRACE_LINES = 3000
 
 export async function writeTrace(message: string): Promise<void> {
   const line = `${new Date().toISOString()} ${message}\n`
+  await mkdir(dirname(TRACE_LOG), { recursive: true })
   let prev = ""
   try {
     prev = await readFile(TRACE_LOG, "utf-8")

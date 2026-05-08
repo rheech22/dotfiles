@@ -1,8 +1,8 @@
 import { classifySession } from "./classifier"
 import { hasApiKey } from "./client"
 import { writeSummary } from "./writer"
-import { tracer, type TraceRun } from "../tracing"
-import { writeTrace } from "../logger"
+import { tracer, type TraceRun } from "../observability/tracing"
+import { writeTrace } from "../observability/logger"
 import type { ExistingDoc, SummaryPayload } from "../types"
 
 export { hasApiKey }
@@ -13,7 +13,7 @@ export async function summarizeSession(input: {
   existingDocs: ExistingDoc[]
 }, traceParent?: TraceRun): Promise<SummaryPayload | null> {
   const llmTrace = await tracer.startRun(
-    "dev-log.llm.summarize",
+    "wiki-forge.llm.summarize",
     "chain",
     {
       today: input.today,

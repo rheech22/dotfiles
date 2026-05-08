@@ -1,6 +1,6 @@
 import { CLASSIFIER_MODEL } from "../config"
-import { writeTrace } from "../logger"
-import { tracer, type TraceRun } from "../tracing"
+import { writeTrace } from "../observability/logger"
+import { tracer, type TraceRun } from "../observability/tracing"
 import type { ExistingDoc } from "../types"
 import { withRetry } from "../utils"
 import { llmClient } from "./client"
@@ -13,6 +13,7 @@ export async function classifySession(input: {
   existingDocs: ExistingDoc[]
 }, traceParent?: TraceRun): Promise<ClassificationPayload> {
   const userMessage = buildClassifierUserMessage(input)
+  const maxTokens = 800
 
   const requestClassification = async (
     phase: string,
@@ -20,7 +21,7 @@ export async function classifySession(input: {
     modeOverride?: LlmMode,
   ): Promise<{ raw: string; mode: LlmMode; finishReason: string }> => {
     const reqTrace = await tracer.startRun(
-      `dev-log.llm.classify.${phase}`,
+      `wiki-forge.llm.classify.${phase}`,
       "llm",
       {
         retryForJsonOnly,
@@ -36,7 +37,7 @@ export async function classifySession(input: {
       const response = await withRetry(() =>
         llmClient.chat.completions.create({
           model: CLASSIFIER_MODEL,
-          max_tokens: 300,
+          max_tokens: maxTokens,
           messages: [
             { role: "system", content: buildSystemPrompt(CLASSIFIER_SYSTEM_PROMPT, retryForJsonOnly) },
             { role: "user", content: userMessage },
@@ -58,7 +59,7 @@ export async function classifySession(input: {
       const response = await withRetry(() =>
         llmClient.chat.completions.create({
           model: CLASSIFIER_MODEL,
-          max_tokens: 300,
+          max_tokens: maxTokens,
           messages: [
             { role: "system", content: buildSystemPrompt(CLASSIFIER_SYSTEM_PROMPT, retryForJsonOnly) },
             { role: "user", content: userMessage },
@@ -79,7 +80,7 @@ export async function classifySession(input: {
       const response = await withRetry(() =>
         llmClient.chat.completions.create({
           model: CLASSIFIER_MODEL,
-          max_tokens: 300,
+          max_tokens: maxTokens,
           messages: [
             { role: "system", content: buildSystemPrompt(CLASSIFIER_SYSTEM_PROMPT, retryForJsonOnly) },
             { role: "user", content: userMessage },
@@ -107,7 +108,8 @@ export async function classifySession(input: {
     `llm classification parse failed mode=${parsed.mode} err=${parsed.error ?? "unknown"} len=${first.raw.length} raw=${first.raw.slice(0, 220).replace(/\n/g, " ")}`,
   )
 
-  const retry = await requestClassification("retry", true, first.mode)
+  const retryMode = first.raw.trim().length === 0 || first.finishReason === "length" ? "json-object" : first.mode
+  const retry = await requestClassification("retry", true, retryMode)
   await writeTrace(`llm classification finish_reason=${retry.finishReason} mode=${retry.mode} (retry)`)
   const retryParsed = parseClassificationPayload(retry.raw)
   if (retryParsed.payload && isClassificationPayload(retryParsed.payload)) return retryParsed.payload

@@ -6,7 +6,7 @@ import { writeTrace } from "./logger"
 type KV = Record<string, unknown>
 
 const DEFAULT_LANGSMITH_ENDPOINT = "https://api.smith.langchain.com"
-const DEFAULT_LANGSMITH_PROJECT = "dev-log"
+const DEFAULT_LANGSMITH_PROJECT = "wiki-forge"
 
 export type TraceRun = {
   runId: string

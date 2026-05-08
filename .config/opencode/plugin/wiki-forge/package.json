@@ -1,0 +1,20 @@
+{
+  "name": "@demian/wiki-forge-plugin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:pipeline": "tsx scripts/run-pipeline.ts",
+    "test:pipeline:batch": "tsx scripts/run-batch.ts fixtures"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "1.14.33",
+    "langsmith": "0.3.48",
+    "openai": "4.68.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,6 +1,6 @@
-import { MAX_MESSAGES } from "./config"
-import { writeTrace } from "./logger"
-import type { MessageDeltaProperties, MessagePartUpdatedProperties, SessionMessage } from "./types"
+import { MAX_MESSAGES } from "../config"
+import { writeTrace } from "../observability/logger"
+import type { MessageDeltaProperties, MessagePartUpdatedProperties, SessionMessage } from "../types"
 
 export const inFlight = new Map<string, Promise<void>>()
 const partBuffers = new Map<string, string>()

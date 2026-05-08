@@ -1,16 +1,16 @@
 import type { Plugin } from "@opencode-ai/plugin"
 import { mkdir } from "fs/promises"
 import { API_KEY, LOG_DIR, PENDING_DIR } from "./config"
-import { writeTrace } from "./logger"
 import { hasApiKey } from "./llm"
-import { processSessionIdle } from "./orchestrator"
+import { writeTrace } from "./observability/logger"
+import { processSessionIdle } from "./pipeline/orchestrator"
+import { appendDelta, finalizePart, inFlight } from "./pipeline/state"
 import type {
   IdleEventProperties,
   MessageDeltaProperties,
   MessagePartUpdatedProperties,
   RawEvent,
 } from "./types"
-import { appendDelta, finalizePart, inFlight } from "./state"
 
 function getSessionId(properties: unknown): string | null {
   if (!properties || typeof properties !== "object") return null
@@ -18,7 +18,7 @@ function getSessionId(properties: unknown): string | null {
   return typeof sessionID === "string" && sessionID ? sessionID : null
 }
 
-export const DevLogPlugin: Plugin = async ({ client: ocClient, $ }) => {
+export const WikiForgePlugin: Plugin = async ({ client: ocClient, $ }) => {
   await mkdir(LOG_DIR, { recursive: true })
   await mkdir(PENDING_DIR, { recursive: true })
   await writeTrace("plugin initialized")

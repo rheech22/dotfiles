@@ -1,6 +1,6 @@
 import { REVIEWER_MODEL } from "../config"
-import { writeTrace } from "../logger"
-import { tracer, type TraceRun } from "../tracing"
+import { writeTrace } from "../observability/logger"
+import { tracer, type TraceRun } from "../observability/tracing"
 import type { ExistingDoc, SummaryPayload } from "../types"
 import { withRetry } from "../utils"
 import { llmClient } from "./client"
@@ -29,7 +29,7 @@ export async function reviewSummary(input: {
     modeOverride?: LlmMode,
   ): Promise<{ raw: string; mode: LlmMode; finishReason: string }> => {
     const reqTrace = await tracer.startRun(
-      `dev-log.llm.review.${phase}`,
+      `wiki-forge.llm.review.${phase}`,
       "llm",
       {
         retryForJsonOnly,

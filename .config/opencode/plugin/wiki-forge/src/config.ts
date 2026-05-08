@@ -1,9 +1,9 @@
 import { homedir } from "os"
 import { join } from "path"
 
-export const LOG_DIR = join(homedir(), "dev-logs")
+export const LOG_DIR = join(homedir(), "wiki-forge")
 export const PENDING_DIR = join(LOG_DIR, ".pending")
-export const TRACE_LOG = join(LOG_DIR, "dev-log.trace.log")
+export const TRACE_LOG = join(LOG_DIR, "wiki-forge.trace.log")
 
 export const API_KEY = process.env.SYNTHETIC_API_KEY ?? ""
 export const CLASSIFIER_MODEL = "hf:zai-org/GLM-4.7-Flash"

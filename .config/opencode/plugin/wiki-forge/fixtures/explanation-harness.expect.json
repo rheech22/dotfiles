@@ -1,0 +1,6 @@
+{
+  "expectedDecision": "proceed",
+  "expectedDocType": "explanation",
+  "mustInclude": ["부수효과", "실제 LLM 호출"],
+  "mustAvoid": ["summarizeSession", "plugin/wiki-forge", "classifier"]
+}

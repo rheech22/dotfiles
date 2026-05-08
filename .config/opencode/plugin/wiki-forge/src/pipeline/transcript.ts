@@ -1,5 +1,5 @@
-import { MAX_MESSAGES, MAX_TRANSCRIPT_CHARS } from "./config"
-import type { SessionMessage } from "./types"
+import { MAX_MESSAGES, MAX_TRANSCRIPT_CHARS } from "../config"
+import type { SessionMessage } from "../types"
 
 export function maskSecrets(input: string): string {
   return input

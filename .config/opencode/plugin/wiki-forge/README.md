@@ -1,4 +1,4 @@
-# dev-log plugin
+# Wiki Forge plugin
 
 opencode 세션을 자동으로 요약해 로컬 Markdown으로 저장하고, Google Drive(`rclone`)로 업로드하는 플러그인입니다.
 
@@ -23,20 +23,22 @@ opencode 세션을 자동으로 요약해 로컬 Markdown으로 저장하고, Go
 ## 디렉터리 구조
 
 ```txt
-plugin/dev-log/
-├─ index.ts          # plugin entry, event routing
-├─ orchestrator.ts   # session.idle 파이프라인 오케스트레이션
-├─ llm.ts            # 프롬프트/LLM 호출/파싱/품질게이트/리라이트
-├─ transcript.ts     # transcript 생성/마스킹/이벤트 fallback 추출
-├─ state.ts          # in-memory state(part/session buffer, inFlight)
-├─ storage.ts        # 파일명/frontmatter/저장 로직
-├─ upload.ts         # rclone 업로드 + pending 처리
-├─ notify.ts         # 업로드 성공/실패 시스템 알림
-├─ tracing.ts        # LangSmith tracing adapter (RunTree)
-├─ logger.ts         # 로컬 trace 로그
-├─ config.ts         # 경로/모델/상수
-├─ types.ts          # 타입 정의
-└─ utils.ts          # 공통 유틸(retry/sleep)
+plugin/wiki-forge/
+├─ index.ts              # opencode plugin entry wrapper
+├─ package.json
+├─ tsconfig.json
+├─ fixtures/             # transcript fixture와 expectation
+├─ scripts/              # 로컬 test runner CLI
+└─ src/
+   ├─ index.ts           # public API exports
+   ├─ plugin.ts          # plugin runtime entry
+   ├─ harness.ts         # 고수준 pipeline test API
+   ├─ config.ts          # 경로/모델/상수
+   ├─ types.ts           # 공용 타입
+   ├─ llm/               # 프롬프트/LLM 호출/파싱/리뷰
+   ├─ pipeline/          # session 흐름/orchestration/state/transcript
+   ├─ storage/           # 저장/업로드/알림
+   └─ observability/     # trace/logging
 ```
 
 ## 동작 흐름
@@ -45,8 +47,8 @@ plugin/dev-log/
 2. `session.idle` 발생 시 파이프라인 시작
 3. transcript 생성 -> LLM 요약 호출
 4. 품질 게이트 통과 시 문서 저장, 실패 시 리라이트/ fallback
-5. frontmatter 조립 후 `~/dev-logs/*.md` 저장
-6. `rclone copy`로 `gdrive:dev-logs/` 업로드
+5. frontmatter 조립 후 `~/wiki-forge/*.md` 저장
+6. `rclone copy`로 `gdrive:wiki-forge/` 업로드
 7. 업로드 성공/실패 시스템 알림
 
 ## 출력 포맷
@@ -68,13 +70,15 @@ source: opencode
 
 ## 설치/설정
 
+이 디렉터리는 opencode plugin으로 동작하지만, 동시에 독립적인 TypeScript package처럼 다룰 수 있도록 구성할 수 있습니다. 별도 repo로 분리할 가능성이 있다면 `plugin/wiki-forge` 안에서 의존성 설치와 테스트를 직접 돌리는 방식을 권장합니다.
+
 ### 1) opencode plugin 등록
 
 `~/.config/opencode/opencode.json`:
 
 ```json
 {
-  "plugin": ["./plugin/dev-log/index.ts"]
+  "plugin": ["./plugin/wiki-forge/index.ts"]
 }
 ```
 
@@ -92,6 +96,13 @@ source: opencode
 }
 ```
 
+로컬에서 이 플러그인만 독립적으로 다루려면 `plugin/wiki-forge/package.json` 기준으로도 설치할 수 있습니다.
+
+```bash
+cd ~/.config/opencode/plugin/wiki-forge
+npm install
+```
+
 ### 3) 필수 환경변수
 
 - `SYNTHETIC_API_KEY` (LLM 호출용)
@@ -99,7 +110,7 @@ source: opencode
 ### 4) 선택 환경변수 (LangSmith)
 
 - `LANGSMITH_API_KEY`
-- `LANGSMITH_PROJECT` (기본값: `dev-log`)
+- `LANGSMITH_PROJECT` (기본값: `wiki-forge`)
 - `LANGSMITH_ENDPOINT` (기본값: `https://api.smith.langchain.com`)
 
 `LANGSMITH_API_KEY`가 있으면 tracing이 자동 활성화됩니다.
@@ -109,7 +120,7 @@ source: opencode
 다음 remote/path를 가정합니다.
 
 - remote: `gdrive`
-- 대상: `gdrive:dev-logs/`
+- 대상: `gdrive:wiki-forge/`
 
 ## 확장 설계 로드맵 (WIP)
 
@@ -223,7 +234,7 @@ type LlmConfig = {
 
 ### 권장 마이그레이션 순서
 
-1. 설정 타입(`DevLogConfig`)과 기본값 레이어 도입
+1. 설정 타입(`WikiForgeConfig`)과 기본값 레이어 도입
 2. `upload` / `tracing`부터 adapter 분리
 3. 프롬프트 템플릿 외부화 + 언어 리소스 분리
 4. LLM provider adapter 추가
@@ -233,11 +244,25 @@ type LlmConfig = {
 
 ## 로그 파일
 
-기본 로그 디렉터리: `~/dev-logs`
+기본 로그 디렉터리: `~/wiki-forge`
 
-- `dev-log.trace.log`: 내부 처리 trace (최근 3000줄 유지)
-- `dev-log.llm-raw.log`: LLM raw 응답 기록
+- `wiki-forge.trace.log`: 내부 처리 trace (최근 3000줄 유지)
+- `wiki-forge.llm-raw.log`: LLM raw 응답 기록
 - `.pending/*.pending`: 업로드 실패 큐
+
+## 로컬 테스트 하니스
+
+`plugin/wiki-forge`는 구현 세부 단계 대신 public API인 `runTranscriptPipeline()`을 기준으로 테스트할 수 있습니다. 테스트 script는 내부 `classifier`, `writer`, `reviewer`를 직접 조합하지 않고 이 API만 호출하므로, 내부 구현이 바뀌어도 fixture와 script 사용법은 유지됩니다.
+
+```bash
+cd ~/.config/opencode/plugin/wiki-forge
+npm run test:pipeline -- fixtures/example.md --verbose
+npm run test:pipeline:batch -- fixtures --save-artifact
+```
+
+- transcript fixture: `fixtures/*.md` 또는 `fixtures/*.txt`
+- expectation file(optional): `fixtures/*.expect.json`
+- artifact는 기본적으로 `artifacts/` 아래에 저장됩니다.
 
 ## 안전 장치
 

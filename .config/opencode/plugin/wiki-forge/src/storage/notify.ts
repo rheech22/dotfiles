@@ -1,17 +1,17 @@
 import { basename } from "path"
-import { writeTrace } from "./logger"
+import { writeTrace } from "../observability/logger"
 
 type NotifyResult = "success" | "failure"
 
 function buildMessage(result: NotifyResult, outPath: string, sessionId: string): { title: string; message: string } {
   if (result === "success") {
     return {
-      title: "DEV-LOG Uploaded",
+      title: "Uploaded",
       message: basename(outPath),
     }
   }
   return {
-    title: "DEV-LOG Upload Failed",
+    title: "Upload Failed",
     message: `${sessionId.slice(0, 8)} ${basename(outPath)}`,
   }
 }

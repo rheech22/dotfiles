@@ -29,7 +29,7 @@ export type ReviewPayload = {
 export type ReviewParseResult = { payload: ReviewPayload | null; mode: string; error?: string }
 
 export const CLASSIFICATION_SCHEMA = {
-  name: "dev_log_classification",
+  name: "wiki_forge_classification",
   strict: true,
   schema: {
     type: "object",
@@ -45,7 +45,7 @@ export const CLASSIFICATION_SCHEMA = {
 } as const
 
 export const REVIEW_SCHEMA = {
-  name: "dev_log_review",
+  name: "wiki_forge_review",
   strict: true,
   schema: {
     type: "object",
@@ -72,7 +72,7 @@ export const REVIEW_SCHEMA = {
 } as const
 
 export const RESPONSE_SCHEMA = {
-  name: "dev_log_summary",
+  name: "wiki_forge_summary",
   strict: true,
   schema: {
     type: "object",
