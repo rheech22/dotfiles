@@ -4,17 +4,17 @@ local M = {}
 
 function M.wiki_notes()
   local wiki_path = vim.fn.expand(vim.g.vimwiki_list[1].path)
-  local index = wiki_path .. '/note/index.md'
+  local index = wiki_path .. '/zt/literature/index.md'
   local lines = vim.fn.readfile(index)
   local items = {}
 
   for _, line in ipairs(lines) do
     local file, title = line:match '%[%[(.-)|(.-)]%]'
     if file and title then
-      items[#items + 1] = {
-        text = title,
-        file = wiki_path .. '/note/' .. file .. '.md',
-      }
+        items[#items + 1] = {
+          text = title,
+          file = wiki_path .. '/zt/literature/' .. file .. '.md',
+        }
     end
   end
 
@@ -33,7 +33,7 @@ function M.wiki_notes()
 end
 
 function M.grep_wiki_notes()
-  local note_dir = vim.fn.expand(vim.g.vimwiki_list[1].path) .. '/note'
+  local note_dir = vim.fn.expand(vim.g.vimwiki_list[1].path) .. '/zt/literature'
   snacks.picker.grep {
     title = 'Wiki Notes Grep',
     dirs = { note_dir },

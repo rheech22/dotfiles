@@ -143,7 +143,7 @@ export const WRITER_SYSTEM_PROMPT = `당신은 개발자의 개인 위키에 항
 # 출력 형식
 반드시 아래 JSON만 출력하세요(설명/코드블록/주석 금지).
 
-{"action":"overwrite|new","targetPath":"","title":"","tags":[],"markdown":""}
+{"action":"overwrite|new","targetPath":"","title":"","filename":"","tags":[],"markdown":""}
 
 # 분기 규칙
 - 기존 로그 후보 중 같은 주제가 있으면 action=overwrite
@@ -184,6 +184,9 @@ markdown 본문은 frontmatter를 포함하지 말고 H1 없이 시작합니다.
 # title / tags 가이드
 - title: 위키 항목의 주제를 명확히 하는 명사구. "~에 대하여" 같은 모호한 표현 금지.
   필요시 한국어와 영어를 병기 가능 (예: "분산 락(Distributed Lock)").
+- filename: 저장 파일명용 식별자. 확장자 없이 영어 소문자와 kebab-case만 사용하세요.
+  예: "distributed-lock", "fencing-token-pattern"
+  title과 별개로 작성하고, 한글, 공백, 언더스코어, 대문자는 넣지 마세요.
 - tags: 2~5개. 기술 스택·도구·개념 중심. "개발", "코딩" 같은 일반 태그 금지.
   개념 태그와 도구 태그를 균형 있게 섞으세요.
 

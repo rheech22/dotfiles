@@ -188,7 +188,7 @@ export async function writeSummary(input: {
 - 같은 의미의 더 자연스러운 표현
 
 반드시 JSON 객체 하나만 출력:
-{"action":"overwrite|new","targetPath":"","title":"","tags":[],"markdown":""}
+{"action":"overwrite|new","targetPath":"","title":"","filename":"","tags":[],"markdown":""}
 
 원본 JSON:
 ${JSON.stringify(summary)}`
@@ -239,7 +239,7 @@ ${issues.length > 0 ? issues.join("\n") : "- 없음"}
 - 부적절한 pseudocode/mermaid 제거 또는 더 짧게 축약
 
 반드시 JSON 객체 하나만 출력:
-{"action":"overwrite|new","targetPath":"","title":"","tags":[],"markdown":""}
+{"action":"overwrite|new","targetPath":"","title":"","filename":"","tags":[],"markdown":""}
 
 원본 JSON:
 ${JSON.stringify(summary)}`
@@ -340,6 +340,7 @@ ${JSON.stringify(summary)}`
       action: "new",
       targetPath: "",
       title: extractTitleFromMarkdown(markdownFallback),
+      filename: "session",
       tags: ["needs-review"],
       markdown: markdownFallback,
     }

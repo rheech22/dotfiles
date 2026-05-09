@@ -1,6 +1,6 @@
 # Wiki Forge plugin
 
-opencode 세션을 자동으로 요약해 로컬 Markdown으로 저장하고, Google Drive(`rclone`)로 업로드하는 플러그인입니다.
+opencode 세션을 자동으로 요약해 로컬 Markdown으로 저장하고, 기존 개인 위키 폴더에 편입하는 플러그인입니다.
 
 핵심 목표는 다음 3가지입니다.
 
@@ -16,8 +16,7 @@ opencode 세션을 자동으로 요약해 로컬 Markdown으로 저장하고, Go
 - 품질 게이트(prose-first, 과도한 리스트/헤딩 억제)
 - 실패 시 재시도/최소 fallback 문서 생성
 - Frontmatter 자동 주입 (`created`, `updated`, `title`, `tags`, `session_id`, `source`)
-- `rclone` 업로드 + 실패 시 `.pending` 큐 저장
-- 업로드 성공/실패 시스템 알림(알림 실패는 본 로직과 완전 분리)
+- target folder의 `index.md` 자동 갱신
 - LangSmith trace 연동(옵션)
 
 ## 디렉터리 구조
@@ -37,7 +36,7 @@ plugin/wiki-forge/
    ├─ types.ts           # 공용 타입
    ├─ llm/               # 프롬프트/LLM 호출/파싱/리뷰
    ├─ pipeline/          # session 흐름/orchestration/state/transcript
-   ├─ storage/           # 저장/업로드/알림
+   ├─ storage/           # 저장/index 갱신
    └─ observability/     # trace/logging
 ```
 
@@ -47,9 +46,8 @@ plugin/wiki-forge/
 2. `session.idle` 발생 시 파이프라인 시작
 3. transcript 생성 -> LLM 요약 호출
 4. 품질 게이트 통과 시 문서 저장, 실패 시 리라이트/ fallback
-5. frontmatter 조립 후 `~/wiki-forge/*.md` 저장
-6. `rclone copy`로 `gdrive:wiki-forge/` 업로드
-7. 업로드 성공/실패 시스템 알림
+5. frontmatter 조립 후 target folder에 Markdown 저장
+6. 새 문서면 같은 폴더의 `index.md`를 갱신
 
 ## 출력 포맷
 
@@ -115,37 +113,40 @@ npm install
 
 `LANGSMITH_API_KEY`가 있으면 tracing이 자동 활성화됩니다.
 
-### 5) rclone
+### 5) 플러그인 설정 파일
 
-다음 remote/path를 가정합니다.
+plugin 루트의 `wiki-forge.config.json`으로 문서 저장 경로를 설정할 수 있습니다.
 
-- remote: `gdrive`
-- 대상: `gdrive:wiki-forge/`
+```json
+{
+  "outputDir": "/absolute/path/to/wiki-folder"
+}
+```
+
+설정 파일이 없으면 문서 저장 경로는 `~/wiki-forge`를 사용합니다.
+
+`outputDir`는 note와 `index.md` 저장 위치에 적용합니다. iCloud, Dropbox, Google Drive 같은 동기화 폴더를 지정하면 원격 통합도 같은 방식으로 처리할 수 있습니다. 내부 trace log와 raw LLM log는 계속 `~/wiki-forge` 아래에 유지됩니다.
+
+## 파일명 정책
+
+- 문서 `title`은 기존처럼 한글 위키 제목을 유지합니다.
+- 저장 파일명은 별도 `filename` 필드를 사용합니다.
+- `filename`은 확장자 없이 영어 소문자와 `kebab-case`만 허용합니다.
+- 최종 저장 이름은 `<filename>.md` 형식입니다.
+
+## Index 갱신
+
+- target folder의 `index.md`를 자동으로 찾습니다.
+- `index.md`가 없으면 최소 skeleton을 생성합니다.
+- 새 문서가 생성될 때만 `### Miscellaneous` 섹션에 `[[filename|title]]` 링크를 추가합니다.
+- 같은 `filename` 링크가 이미 있으면 중복 추가하지 않습니다.
+- 동기화 폴더에서 `(1)` 같은 duplicate 파일이 생기면 trace log에 후보 경로를 기록합니다.
 
 ## 확장 설계 로드맵 (WIP)
 
 현재 구현은 실사용 안정성에 초점을 둔 단일 기본값 중심 구조입니다. 오픈소스화를 고려하면 아래 항목들을 "주입 가능한 설정"으로 분리하는 것이 좋습니다.
 
-### 1) 업로드 방식 주입
-
-현재: `rclone copy` 고정
-
-확장 목표:
-
-- `upload.strategy = "rclone" | "script" | "none"`
-- `script` 모드에서는 사용자 스크립트 경로/인자를 받아 실행
-- 업로드 실패 시 공통 `pending` 처리 인터페이스 유지
-
-예시 설정 개념:
-
-```ts
-type UploadConfig =
-  | { strategy: "rclone"; remote: string; path: string }
-  | { strategy: "script"; command: string; args?: string[] }
-  | { strategy: "none" }
-```
-
-### 2) 다국어 출력 주입
+### 1) 다국어 출력 주입
 
 현재: 한국어 고정
 
@@ -164,7 +165,7 @@ type LanguageConfig = {
 }
 ```
 
-### 3) tracing 백엔드 주입
+### 2) tracing 백엔드 주입
 
 현재: LangSmith (`RunTree`) 고정
 
@@ -183,7 +184,7 @@ type TracingConfig = {
 }
 ```
 
-### 4) 프롬프트/품질 게이트 주입
+### 3) 프롬프트/품질 게이트 주입
 
 현재: `llm.ts` 내부 상수
 
@@ -210,7 +211,7 @@ type QualityGateConfig = {
 }
 ```
 
-### 5) LLM provider 주입
+### 4) LLM provider 주입
 
 현재: OpenAI-compatible + Synthetic endpoint 고정
 
@@ -235,7 +236,7 @@ type LlmConfig = {
 ### 권장 마이그레이션 순서
 
 1. 설정 타입(`WikiForgeConfig`)과 기본값 레이어 도입
-2. `upload` / `tracing`부터 adapter 분리
+2. `tracing`부터 adapter 분리
 3. 프롬프트 템플릿 외부화 + 언어 리소스 분리
 4. LLM provider adapter 추가
 5. 문서/예제 config/마이그레이션 가이드 제공
@@ -248,7 +249,6 @@ type LlmConfig = {
 
 - `wiki-forge.trace.log`: 내부 처리 trace (최근 3000줄 유지)
 - `wiki-forge.llm-raw.log`: LLM raw 응답 기록
-- `.pending/*.pending`: 업로드 실패 큐
 
 ## 로컬 테스트 하니스
 
@@ -267,8 +267,7 @@ npm run test:pipeline:batch -- fixtures --save-artifact
 ## 안전 장치
 
 - 모델이 반환한 `targetPath`는 신뢰하지 않고 무시
-- 저장 경로는 코드가 결정하며 `LOG_DIR` 하위 `.md`만 허용
-- 알림 실패는 주 로직에 영향 없음
+- 저장 경로는 코드가 결정하며 `OUTPUT_DIR` 하위 `.md`만 허용
 - LLM 파싱 실패 시 최소 문서 fallback(`needs-review`) 생성
 
 ## 운영 팁
@@ -285,7 +284,7 @@ npm run test:pipeline:batch -- fixtures --save-artifact
 - LangSmith `dotted_order` 관련 400 에러?
   - `RunTree` 기반 tracing이 적용되어 있어야 합니다. 구버전 코드/다중 인스턴스 혼선을 점검하세요.
 
-- Drive에 의도치 않은 파일이 업로드되면?
+- 동기화 폴더에 의도치 않은 파일이 저장되면?
   - 최신 코드에서 경로 안전 가드가 작동 중인지(`blocked: unsafe_outPath`) trace를 확인하세요.
 
 ## 라이선스 / 공개 준비 메모

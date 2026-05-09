@@ -1,6 +1,6 @@
 import type { Plugin } from "@opencode-ai/plugin"
 import { mkdir } from "fs/promises"
-import { API_KEY, LOG_DIR, PENDING_DIR } from "./config"
+import { API_KEY, OUTPUT_DIR } from "./config"
 import { hasApiKey } from "./llm"
 import { writeTrace } from "./observability/logger"
 import { processSessionIdle } from "./pipeline/orchestrator"
@@ -18,9 +18,8 @@ function getSessionId(properties: unknown): string | null {
   return typeof sessionID === "string" && sessionID ? sessionID : null
 }
 
-export const WikiForgePlugin: Plugin = async ({ client: ocClient, $ }) => {
-  await mkdir(LOG_DIR, { recursive: true })
-  await mkdir(PENDING_DIR, { recursive: true })
+export const WikiForgePlugin: Plugin = async ({ client: ocClient }) => {
+  await mkdir(OUTPUT_DIR, { recursive: true })
   await writeTrace("plugin initialized")
 
   return {
@@ -55,7 +54,6 @@ export const WikiForgePlugin: Plugin = async ({ client: ocClient, $ }) => {
         try {
           await processSessionIdle({
             ocClient,
-            $,
             sessionId,
             eventProperties: rawEvent.properties,
             eventKeys,

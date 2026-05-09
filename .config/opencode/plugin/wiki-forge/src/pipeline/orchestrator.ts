@@ -1,27 +1,28 @@
-import { join, resolve } from "path"
-import { LOG_DIR } from "../config"
+import { resolve } from "path"
+import { OUTPUT_DIR } from "../config"
 import { summarizeSession } from "../llm"
 import { writeTrace } from "../observability/logger"
 import {
   buildFrontmatter,
   composeDocument,
+  ensureIndexEntry,
+  findDuplicateDocumentPaths,
   readCreatedFromExisting,
   readExistingDocs,
-  toSlug,
+  toDocumentPath,
+  toFileSlug,
   writeMarkdown,
 } from "../storage"
 import { flushSessionPartBuffers, getSessionBuffer } from "./state"
 import { tracer } from "../observability/tracing"
 import { buildTranscript, extractMessagesFromEventProperties } from "./transcript"
-import type { SessionMessage } from "../types"
-import { notifyUploadResult } from "../storage/notify"
-import { uploadWithPending } from "../storage/upload"
+import type { ExistingDoc, SessionMessage } from "../types"
 import { sleep } from "../utils"
 
 function isSafeLogPath(path: string): boolean {
   const resolved = resolve(path)
-  const resolvedLogDir = resolve(LOG_DIR)
-  return (resolved === resolvedLogDir || resolved.startsWith(`${resolvedLogDir}/`)) && resolved.endsWith(".md")
+  const resolvedOutputDir = resolve(OUTPUT_DIR)
+  return (resolved === resolvedOutputDir || resolved.startsWith(`${resolvedOutputDir}/`)) && resolved.endsWith(".md")
 }
 
 async function fetchSessionMessagesWithBackoff(ocClient: unknown, sessionId: string): Promise<SessionMessage[]> {
@@ -40,12 +41,11 @@ async function fetchSessionMessagesWithBackoff(ocClient: unknown, sessionId: str
 
 export async function processSessionIdle(params: {
   ocClient: unknown
-  $: any
   sessionId: string
   eventProperties: unknown
   eventKeys: string[]
 }): Promise<void> {
-  const { ocClient, $, sessionId, eventProperties, eventKeys } = params
+  const { ocClient, sessionId, eventProperties, eventKeys } = params
 
   const rootTrace = await tracer.startRun(
     "wiki-forge.session_idle",
@@ -87,7 +87,7 @@ export async function processSessionIdle(params: {
     }
 
     const today = new Date().toISOString().slice(0, 10)
-    const existingDocs = await readExistingDocs(sessionId)
+    const existingDocs: ExistingDoc[] = []
     const summary = await summarizeSession({ today, transcript, existingDocs }, rootTrace ?? undefined)
     if (!summary) {
       await writeTrace(`session=${sessionId} skipped: model_signaled_skip_or_invalid_response`)
@@ -99,16 +99,15 @@ export async function processSessionIdle(params: {
       return
     }
 
-    const shortId = sessionId.slice(0, 8)
     if (summary.targetPath) {
       await writeTrace(`session=${sessionId} model_targetPath_ignored path=${summary.targetPath}`)
     }
 
-    const overwritePath = summary.action === "overwrite" ? existingDocs[0]?.path : undefined
-    const outPath =
-      summary.action === "overwrite" && overwritePath
-        ? overwritePath
-        : join(LOG_DIR, `${today}-${shortId}-${toSlug(summary.title)}.md`)
+    const shortId = sessionId.slice(0, 8)
+    const filename = toFileSlug(summary.filename || "session")
+    const matchedDocs = await readExistingDocs(filename)
+    const overwritePath = matchedDocs[0]?.path
+    const outPath = overwritePath ?? toDocumentPath(filename)
 
     if (!isSafeLogPath(outPath)) {
       await writeTrace(`session=${sessionId} blocked: unsafe_outPath=${outPath}`)
@@ -116,7 +115,7 @@ export async function processSessionIdle(params: {
     }
 
     const now = new Date()
-    const createdAt = summary.action === "overwrite"
+    const createdAt = overwritePath
       ? (await readCreatedFromExisting(outPath)) ?? now
       : now
 
@@ -132,21 +131,16 @@ export async function processSessionIdle(params: {
     await writeMarkdown(outPath, fullDocument)
     await writeTrace(`session=${sessionId} wrote=${outPath}`)
 
-    const pendingPath = await uploadWithPending($, outPath, shortId)
-    if (pendingPath) {
-      await writeTrace(`session=${sessionId} upload=failed pending=${pendingPath}`)
-      await notifyUploadResult($, "failure", outPath, sessionId)
-      await tracer.endRun(rootTrace, {
-        outputs: {
-          result: "pending",
-          outPath,
-          pendingPath,
-        },
-      })
-      return
+    const duplicatePaths = await findDuplicateDocumentPaths(outPath)
+    if (duplicatePaths.length > 0) {
+      await writeTrace(`session=${sessionId} duplicate_candidates=${duplicatePaths.join(",")}`)
     }
-    await writeTrace(`session=${sessionId} upload=ok`)
-    await notifyUploadResult($, "success", outPath, sessionId)
+
+    if (!overwritePath) {
+      await ensureIndexEntry(outPath, summary.title)
+      await writeTrace(`session=${sessionId} index=updated path=${outPath}`)
+    }
+
     await tracer.endRun(rootTrace, {
       outputs: {
         result: "ok",

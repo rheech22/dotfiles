@@ -18,6 +18,7 @@ export function isSkipPayload(payload: LlmPayload): payload is { action: "skip";
 export function isSummaryPayload(payload: LlmPayload): payload is SummaryPayload {
   if (payload.action !== "new" && payload.action !== "overwrite") return false
   if (typeof payload.title !== "string" || payload.title.trim().length === 0) return false
+  if (typeof payload.filename !== "string" || payload.filename.trim().length === 0) return false
   if (typeof payload.markdown !== "string" || payload.markdown.trim().length === 0) return false
   if (!Array.isArray(payload.tags)) return false
   if (!payload.tags.every((tag: unknown) => typeof tag === "string")) return false
@@ -164,6 +165,7 @@ export function buildTemplateFallback(raw: string): SummaryPayload {
     action: "new",
     targetPath: "",
     title: "Session Note (parse failed)",
+    filename: "session-note-parse-failed",
     tags: ["needs-review"],
     markdown: `LLM 출력 파싱에 실패해 최소 문서로 저장했습니다. 검토 후 정리하거나 삭제하세요.\n\nRaw snippet:\n\n\`\`\`text\n${snippet}\n\`\`\``,
   }
@@ -174,6 +176,7 @@ export function normalizeSummary(summary: SummaryPayload): SummaryPayload {
   return {
     ...summary,
     title: summary.title.trim(),
+    filename: summary.filename.trim(),
     tags,
     markdown: summary.markdown.trim(),
   }

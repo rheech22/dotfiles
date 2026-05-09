@@ -80,6 +80,7 @@ export const RESPONSE_SCHEMA = {
       action: { type: "string", enum: ["overwrite", "new", "skip"] },
       targetPath: { type: "string" },
       title: { type: "string" },
+      filename: { type: "string" },
       tags: { type: "array", items: { type: "string" } },
       markdown: { type: "string" },
       reason: { type: "string" },

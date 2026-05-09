@@ -1,7 +1,14 @@
 return {
   config = function()
+    local wiki_path = vim.fn.expand(
+      os.getenv 'HOME_WIKI_PATH' or '~/Library/CloudStorage/GoogleDrive-rheech22@gmail.com/My Drive/wiki'
+    )
+    local timestamp = function()
+      return os.date '%Y-%m-%d %H:%M:%S +0900'
+    end
+
     require('mole').setup {
-      session_dir = vim.fn.expand('~/Dropbox/wiki' .. '/mole'),
+      session_dir = wiki_path .. '/zt/fleeting/mole',
       capture_mode = 'snippet',
       auto_open_panel = true,
       session_name = nil,
@@ -27,11 +34,18 @@ return {
         -- info: { title, file_path, cwd, timestamp }
         header = function(info)
           return {
+            '---',
+            'created: ' .. timestamp(),
+            'updated: ' .. timestamp(),
+            'title: ' .. info.title,
+            'tags: []',
+            '---',
+            '',
             '# ' .. info.title,
             '',
             '**File:** ' .. info.file_path,
             '**Started:** ' .. info.timestamp,
-            '**Project:** ' .. info.cwd, -- used to resolve file paths when jumping to locations from a different project
+            '**Project:** ' .. info.cwd,
             '',
             '---',
           }

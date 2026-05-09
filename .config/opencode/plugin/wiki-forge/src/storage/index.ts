@@ -1,29 +1,120 @@
-import { readdir, readFile, writeFile } from "fs/promises"
-import { join } from "path"
-import { LOG_DIR } from "../config"
+import { access, readdir, readFile, rename, writeFile } from "fs/promises"
+import { basename, dirname, join } from "path"
+import { OUTPUT_DIR } from "../config"
 import type { ExistingDoc } from "../types"
 
-export async function listSessionLogs(sessionId: string): Promise<string[]> {
+const DEFAULT_INDEX = `## Literature Notes
+
+### Miscellaneous
+
+---
+
+### Meta
+- [[tag-index|태그 인덱스]]
+- [[tag-relationships|태그 관계도]]
+`
+
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+function buildIndexLink(filename: string, title: string): string {
+  return `- [[${filename}|${title}]]`
+}
+
+function insertIntoMiscellaneous(content: string, link: string): string {
+  const lines = content.split("\n")
+  const sectionIndex = lines.findIndex((line) => line.trim() === "### Miscellaneous")
+
+  if (sectionIndex >= 0) {
+    let endIndex = lines.length
+    for (let i = sectionIndex + 1; i < lines.length; i += 1) {
+      const trimmed = lines[i].trim()
+      if (trimmed.startsWith("### ") || trimmed === "---") {
+        endIndex = i
+        break
+      }
+    }
+
+    let insertAt = endIndex
+    while (insertAt > sectionIndex + 1 && lines[insertAt - 1].trim() === "") insertAt -= 1
+    lines.splice(insertAt, 0, link, "")
+    return lines.join("\n")
+  }
+
+  const dividerIndex = lines.findIndex((line) => line.trim() === "---")
+  const sectionLines = ["### Miscellaneous", "", link, ""]
+  if (dividerIndex >= 0) {
+    lines.splice(dividerIndex, 0, ...sectionLines)
+    return lines.join("\n")
+  }
+
+  const prefix = content.trimEnd()
+  return `${prefix}\n\n${sectionLines.join("\n")}`
+}
+
+export function toDocumentPath(filename: string): string {
+  return join(OUTPUT_DIR, `${filename}.md`)
+}
+
+export async function readExistingDocs(filename: string): Promise<ExistingDoc[]> {
+  const path = toDocumentPath(filename)
   try {
-    const shortId = sessionId.slice(0, 8)
-    const files = await readdir(LOG_DIR)
-    return files.filter((file) => file.endsWith(".md") && file.includes(`-${shortId}-`)).map((file) => join(LOG_DIR, file))
+    return [{ path, content: await readFile(path, "utf-8") }]
   } catch {
     return []
   }
 }
 
-export function toSlug(text: string): string {
-  return text.trim().replace(/^#+\s*/, "").replace(/[^a-zA-Z0-9가-힣]+/g, "-").slice(0, 40).replace(/^-|-$/g, "").toLowerCase() || "session"
-}
-
-export async function readExistingDocs(sessionId: string): Promise<ExistingDoc[]> {
-  const existingPaths = await listSessionLogs(sessionId)
-  return Promise.all(existingPaths.map(async (path) => ({ path, content: await readFile(path, "utf-8") })))
+export function toFileSlug(text: string): string {
+  const normalized = text
+    .trim()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 40)
+    .replace(/^-|-$/g, "")
+  return normalized || "session"
 }
 
 export async function writeMarkdown(path: string, markdown: string): Promise<void> {
-  await writeFile(path, markdown, "utf-8")
+  const tempPath = join(dirname(path), `.${basename(path)}.${process.pid}.${Date.now()}.tmp`)
+  await writeFile(tempPath, markdown, "utf-8")
+  await rename(tempPath, path)
+}
+
+export async function findDuplicateDocumentPaths(path: string): Promise<string[]> {
+  const directory = dirname(path)
+  const filename = basename(path, ".md")
+  const duplicatePattern = new RegExp(`^${escapeRegExp(filename)} \(\\d+\)\\.md$`)
+
+  try {
+    const files = await readdir(directory)
+    return files.filter((file) => duplicatePattern.test(file)).map((file) => join(directory, file))
+  } catch {
+    return []
+  }
+}
+
+export async function ensureIndexEntry(docPath: string, title: string): Promise<void> {
+  const indexPath = join(OUTPUT_DIR, "index.md")
+  const filename = basename(docPath, ".md")
+  const linkPattern = new RegExp(`\\[\\[${escapeRegExp(filename)}(?:\\|[^\\]]+)?\\]\\]`)
+
+  let content = DEFAULT_INDEX
+  try {
+    await access(indexPath)
+    content = await readFile(indexPath, "utf-8")
+  } catch {
+    // Use the minimal index skeleton when the target folder has no index yet.
+  }
+
+  if (linkPattern.test(content)) return
+  const updated = insertIntoMiscellaneous(content, buildIndexLink(filename, title))
+  await writeMarkdown(indexPath, `${updated.trimEnd()}\n`)
 }
 
 function pad(n: number): string {

@@ -6,6 +6,7 @@ export type SummaryPayload = {
   action: "overwrite" | "new"
   targetPath: string
   title: string
+  filename: string
   tags: string[]
   markdown: string
 }

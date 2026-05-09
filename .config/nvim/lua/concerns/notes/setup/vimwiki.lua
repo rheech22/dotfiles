@@ -1,22 +1,34 @@
 return {
   config = function()
     local workspace = os.getenv 'WORKSPACE' or 'home'
+    local home_wiki_path = vim.fn.expand(
+      os.getenv 'HOME_WIKI_PATH' or '~/Library/CloudStorage/GoogleDrive-rheech22@gmail.com/My Drive/wiki'
+    )
+    local work_wiki_path = vim.fn.expand(os.getenv 'WORK_WIKI_PATH' or '~/Dropbox/wiki')
+    local note_patterns = {
+      '*/zt/literature/*.md',
+      '*/zt/fleeting/*.md',
+      '*/zt/fleeting/mole/*.md',
+      '*/zt/permanent/*.md',
+      '*/blog/*.md',
+    }
+
     local workspace_config = {
       work = {
         {
-          path = '~/Dropbox/wiki',
+          path = work_wiki_path,
           ext = '.md',
           diary_rel_path = 'diary',
         },
       },
       home = {
         {
-          path = vim.fn.expand '~/Library/Mobile Documents/com~apple~CloudDocs/Notes',
+          path = home_wiki_path,
           ext = '.md',
           diary_rel_path = 'retrospectives',
         },
         {
-          path = '~/Dropbox/wiki',
+          path = work_wiki_path,
           ext = '.md',
         },
       },
@@ -32,10 +44,7 @@ return {
       local group = vim.api.nvim_create_augroup('VimwikiFrontmatter', { clear = true })
       vim.api.nvim_create_autocmd('BufNewFile', {
         group = group,
-        pattern = {
-          '*/note/*.md',
-          '*/blog/*.md',
-        },
+        pattern = note_patterns,
         callback = function()
           if vim.fn.line '$' > 1 then
             return
@@ -59,10 +68,7 @@ return {
       })
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = group,
-        pattern = {
-          '*/note/*.md',
-          '*/blog/*.md',
-        },
+        pattern = note_patterns,
         callback = function()
           if vim.g.md_modify_disabled or not vim.bo.modified then
             return
