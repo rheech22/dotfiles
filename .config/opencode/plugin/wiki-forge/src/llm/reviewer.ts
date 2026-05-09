@@ -15,6 +15,7 @@ export async function reviewSummary(input: {
   narrowTopic?: string
   docType?: DocType
 }, traceParent?: TraceRun): Promise<ReviewPayload | null> {
+  const maxTokens = 4096
   const userMessage = buildReviewerUserMessage({
     transcript: input.transcript,
     existingDocs: input.existingDocs,
@@ -45,7 +46,7 @@ export async function reviewSummary(input: {
       const response = await withRetry(() =>
         llmClient.chat.completions.create({
           model: REVIEWER_MODEL,
-          max_tokens: 700,
+          max_tokens: maxTokens,
           messages: [
             { role: "system", content: buildSystemPrompt(REVIEWER_SYSTEM_PROMPT, retryForJsonOnly) },
             { role: "user", content: userMessage },
@@ -67,7 +68,7 @@ export async function reviewSummary(input: {
       const response = await withRetry(() =>
         llmClient.chat.completions.create({
           model: REVIEWER_MODEL,
-          max_tokens: 700,
+          max_tokens: maxTokens,
           messages: [
             { role: "system", content: buildSystemPrompt(REVIEWER_SYSTEM_PROMPT, retryForJsonOnly) },
             { role: "user", content: userMessage },
@@ -88,7 +89,7 @@ export async function reviewSummary(input: {
       const response = await withRetry(() =>
         llmClient.chat.completions.create({
           model: REVIEWER_MODEL,
-          max_tokens: 700,
+          max_tokens: maxTokens,
           messages: [
             { role: "system", content: buildSystemPrompt(REVIEWER_SYSTEM_PROMPT, retryForJsonOnly) },
             { role: "user", content: userMessage },

@@ -13,7 +13,7 @@ export async function classifySession(input: {
   existingDocs: ExistingDoc[]
 }, traceParent?: TraceRun): Promise<ClassificationPayload> {
   const userMessage = buildClassifierUserMessage(input)
-  const maxTokens = 800
+  const maxTokens = 4096
 
   const requestClassification = async (
     phase: string,
