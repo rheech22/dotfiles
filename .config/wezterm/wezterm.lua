@@ -51,7 +51,7 @@ themes.tabline.patch()
 -- Font settings
 config.font = wezterm.font("DankMono Nerd Font")
 if hostname == "ichanghyeogs-MacBook-Pro.local" then
-	config.font_size = 14.5
+	config.font_size = 12
 else
 	config.font_size = 18
 end

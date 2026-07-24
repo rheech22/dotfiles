@@ -75,6 +75,9 @@ return {
           width = 130,
           height = 0,
         },
+        toggles = {
+          dim = false,
+        },
       },
       image = {
         enabled = false,

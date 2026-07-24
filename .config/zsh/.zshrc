@@ -47,6 +47,8 @@ alias dot="cd $HOME/dotfiles"
 alias zsh="source ~/.zshrc"
 alias z='__zoxide_z'
 alias zi='__zoxide_zi'
+alias j='just'
+alias gd='hunk diff'
 
 # fnm, TODO: move to local
 FNM_PATH="/usr/local/opt/fnm/bin"

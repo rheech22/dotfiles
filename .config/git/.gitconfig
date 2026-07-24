@@ -4,11 +4,11 @@
 
 [credential "https://github.com"]
 	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/opt/homebrew/bin/gh auth git-credential
 
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/opt/homebrew/bin/gh auth git-credential
 
 [core]
 	editor = nvim -c 'norm! ggA ' -c 'startinsert'
@@ -19,8 +19,47 @@
 	diffFilter = delta --color-only
 
 [delta]
-	navigate = true 
-	dark = true 
+	navigate = true
+	features = hunk-dark
+	side-by-side = false
+	line-numbers = true
+	file-decoration-style = none
+	hunk-header-decoration-style = none
+	commit-decoration-style = none
+
+[delta "hunk-dark"]
+	dark = true
+	syntax-theme = Coldark-Dark
+	file-style = bold "#b4d4cf"
+	hunk-header-style = "#aeaed1"
+	minus-style = syntax "#2a1e26"
+	minus-emph-style = syntax "#7d2a31"
+	minus-empty-line-marker-style = normal "#2a1e26"
+	plus-style = syntax "#1c2618"
+	plus-emph-style = syntax "#2f4a27"
+	plus-empty-line-marker-style = normal "#1c2618"
+	line-numbers-minus-style = "#d8647e"
+	line-numbers-plus-style = "#7fa563"
+	line-numbers-zero-style = "#8b8b8b"
+	line-numbers-left-style = "#8b8b8b"
+	line-numbers-right-style = "#8b8b8b"
+
+[delta "hunk-light"]
+	light = true
+	syntax-theme = GitHub
+	file-style = bold "#00677f"
+	hunk-header-style = "#765800"
+	minus-style = syntax "#f1dfe8"
+	minus-emph-style = syntax "#f0d8e3"
+	minus-empty-line-marker-style = normal "#f1dfe8"
+	plus-style = syntax "#e7f0dd"
+	plus-emph-style = syntax "#d5e6c6"
+	plus-empty-line-marker-style = normal "#e7f0dd"
+	line-numbers-minus-style = "#a51d60"
+	line-numbers-plus-style = "#466b47"
+	line-numbers-zero-style = "#616161"
+	line-numbers-left-style = "#616161"
+	line-numbers-right-style = "#616161"
 
 [merge]
 	conflictStyle = zdiff3
