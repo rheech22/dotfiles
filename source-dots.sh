@@ -47,6 +47,8 @@ declare -A CONFIG_ITEMS=(
   ["yazi"]="$DOTFILES_DIR/.config/yazi|$CONFIG_DIR/yazi|Yazi file manager"
   ["lazygit"]="$DOTFILES_DIR/.config/lazygit|$CONFIG_DIR/lazygit|Lazygit configuration"
   ["ripgrep"]="$DOTFILES_DIR/.config/ripgrep|$CONFIG_DIR/ripgrep|Ripgrep configuration"
+  ["whisper-voice"]="$DOTFILES_DIR/.config/whisper-voice|$CONFIG_DIR/whisper-voice|Whisper Voice routing"
+  ["hammerspoon"]="$DOTFILES_DIR/.hammerspoon|$HOME/.hammerspoon|Hammerspoon automation"
 )
 
 # Link status check function
