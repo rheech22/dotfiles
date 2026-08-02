@@ -17,13 +17,24 @@ name = "terminal"
 # dark_name = "catppuccin"
 # light_name = "catppuccin-latte"
 
-# Override individual color tokens on top of the base theme.
-# Accepts: hex (#rrggbb), named colors, rgb(r,g,b), or panel_bg = "reset"
-# [theme.custom]
-# panel_bg = "reset"
-# accent = "#f5c2e7"
-# red = "#ff6188"
-# green = "#a6e3a1"
+# Vague palette with stronger contrast for tabs, selection, and agent states.
+[theme.custom]
+panel_bg = "reset"
+accent = "#957fb8"
+surface0 = "#141415"
+surface1 = "#282830"
+surface_dim = "#141415"
+overlay0 = "#8b8b8b"
+overlay1 = "#cdcdcd"
+text = "#cdcdcd"
+subtext0 = "#8b8b8b"
+mauve = "#b8a0ff"
+green = "#98bb6c"
+yellow = "#e6c384"
+red = "#b66a52"
+blue = "#7e9cd8"
+teal = "#7aa89f"
+peach = "#e6c384"
 
 [terminal]
 # Executable used for new interactive panes.
