@@ -1,0 +1,147 @@
+{
+  "editorMode": "vim",
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "repo": "anthropics/claude-plugins-official",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash '/Users/demian/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "skipWorkflowUsageWarning": true,
+  "statusLine": {
+    "command": "bash /Users/demian/.claude/statusline-command.sh",
+    "type": "command"
+  },
+  "theme": "dark",
+  "tui": "fullscreen",
+  "verbose": true
+}

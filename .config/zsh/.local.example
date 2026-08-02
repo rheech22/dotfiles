@@ -28,6 +28,9 @@
 # Example: Workspace Name
 # export WORKSPACE="work"
 #
+# Example: Select Homebrew when both Apple Silicon and Intel prefixes exist
+# export DOTS_BREW="/opt/homebrew/bin/brew"
+#
 # Example: API Keys
 # export OPENAI_API_KEY="sk-..."
 # export ANTHROPIC_API_KEY="sk-ant-..."

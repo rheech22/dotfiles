@@ -1,0 +1,41 @@
+#!/bin/sh
+
+set -eu
+
+script=$0
+seen=
+hops=0
+while [ -L "$script" ]; do
+  hops=$((hops + 1))
+  if [ "$hops" -gt 40 ]; then
+    printf '%s\n' "dots: symlink resolution exceeded 40 hops" >&2
+    exit 1
+  fi
+  case "|$seen|" in
+    *"|$script|"*)
+      printf '%s\n' "dots: symlink cycle detected" >&2
+      exit 1
+      ;;
+  esac
+  seen=${seen:+$seen|}$script
+  target=$(readlink "$script")
+  case "$target" in
+    /*) script=$target ;;
+    *) script=$(dirname -- "$script")/$target ;;
+  esac
+done
+
+if [ ! -e "$script" ]; then
+  printf '%s\n' "dots: symlink target does not exist" >&2
+  exit 1
+fi
+
+repo=$(CDPATH= cd -- "$(dirname -- "$script")/.." && pwd -P)
+cli="$repo/tools/dots/dist/cli.js"
+
+if [ ! -f "$cli" ]; then
+  printf '%s\n' "dots: build output is missing; run bootstrap.sh from the repository root" >&2
+  exit 1
+fi
+
+exec node "$cli" "$@"

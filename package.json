@@ -1,0 +1,20 @@
+{
+  "name": "@rheech22/dotfiles",
+  "private": true,
+  "packageManager": "pnpm@10.19.0",
+  "scripts": {
+    "dots": "pnpm --filter @rheech22/dots dots",
+    "status": "pnpm --filter @rheech22/dots status",
+    "check": "pnpm --filter @rheech22/dots check",
+    "links": "pnpm --filter @rheech22/dots links",
+    "packages": "pnpm --filter @rheech22/dots packages",
+    "setup": "pnpm --filter @rheech22/dots setup",
+    "ui": "pnpm --filter @rheech22/dots ui",
+    "plan": "pnpm --filter @rheech22/dots plan",
+    "apply": "pnpm --filter @rheech22/dots apply",
+    "deps": "pnpm --filter @rheech22/dots packages",
+    "test": "pnpm --filter @rheech22/dots test",
+    "typecheck": "pnpm --filter @rheech22/dots typecheck",
+    "build": "pnpm --filter @rheech22/dots build"
+  }
+}

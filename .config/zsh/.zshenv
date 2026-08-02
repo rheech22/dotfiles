@@ -17,4 +17,6 @@ if [ -f "$HOME/.config/zsh/.zshenv.local" ]; then
 fi
 
 # cargo
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi

@@ -1,9 +1,13 @@
 # colortheme
-eval "$(starship init zsh)"
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
 export LSCOLORS="ExFxBxDxCxegedabagacad"
 
 # zoxide
-eval "$(zoxide init zsh --cmd cd)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
 
 # Re-render prompt on SIGUSR1 (triggered by theme sync)
 TRAPUSR1() {
@@ -22,17 +26,29 @@ setopt EXTENDED_HISTORY
 setopt autocd
 
 # search history via Ctrl+R
-source <(fzf --zsh)
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
 
 # node version manager
-eval "$(fnm env --use-on-cd --shell zsh)"
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd --shell zsh)"
+fi
 
 # rust
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
 
 # plugins
-source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if command -v brew >/dev/null 2>&1; then
+  _dots_brew_prefix=$(brew --prefix 2>/dev/null)
+  if [ -n "$_dots_brew_prefix" ]; then
+    [ ! -f "$_dots_brew_prefix/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ] || source "$_dots_brew_prefix/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+    [ ! -f "$_dots_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] || source "$_dots_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  fi
+  unset _dots_brew_prefix
+fi
 
 # alias
 alias v="nvim"
@@ -49,12 +65,6 @@ alias z='__zoxide_z'
 alias zi='__zoxide_zi'
 alias j='just'
 alias gd='hunk diff'
-
-# fnm, TODO: move to local
-FNM_PATH="/usr/local/opt/fnm/bin"
-if [ -d "$FNM_PATH" ]; then
-  eval "`fnm env`"
-fi
 
 # Check if .zshrc.local exists and source it
 if [ -f "$HOME/.config/zsh/.zshrc.local" ]; then
@@ -80,4 +90,3 @@ function wt() {
     cd "$dir"
   fi
 }
-

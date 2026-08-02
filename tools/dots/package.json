@@ -1,0 +1,39 @@
+{
+  "name": "@rheech22/dots",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "dots": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/cli.js",
+    "prepack": "pnpm build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "pnpm build && tsx --test test/**/*.test.ts",
+    "dots": "tsx src/cli.ts",
+    "status": "tsx src/cli.ts status",
+    "check": "tsx src/cli.ts check",
+    "links": "tsx src/cli.ts links",
+    "packages": "tsx src/cli.ts packages",
+    "setup": "tsx src/cli.ts setup",
+    "ui": "tsx src/cli.ts ui",
+    "plan": "tsx src/cli.ts links plan",
+    "apply": "tsx src/cli.ts links apply",
+    "deps": "tsx src/cli.ts packages"
+  },
+  "dependencies": {
+    "@earendil-works/pi-tui": "0.83.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}
