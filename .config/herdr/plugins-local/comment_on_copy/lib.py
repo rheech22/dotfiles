@@ -1,7 +1,7 @@
 import json, os, socket, subprocess
 
 STATE = os.environ.get("HERDR_PLUGIN_STATE_DIR") or os.path.expanduser(
-    "~/.local/state/herdr/plugins/dragnote"
+    "~/.local/state/herdr/plugins/comment_on_copy"
 )
 os.makedirs(STATE, exist_ok=True)
 PID = os.path.join(STATE, "watch.pid")
@@ -14,7 +14,7 @@ def call(method, params):
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     s.settimeout(5)
     s.connect(os.environ["HERDR_SOCKET_PATH"])
-    s.sendall((json.dumps({"id": "dragnote", "method": method, "params": params}) + "\n").encode())
+    s.sendall((json.dumps({"id": "comment_on_copy", "method": method, "params": params}) + "\n").encode())
     buf = b""
     while b"\n" not in buf:
         chunk = s.recv(65536)
@@ -134,7 +134,7 @@ def send_input(pane_id, text):
     return "error" not in reply
 
 
-MARK_TOKEN = "dragnote"
+MARK_TOKEN = "comment_on_copy"
 MARK_TEXT = "comment"
 
 
@@ -148,7 +148,7 @@ def mark(on):
         try:
             call("workspace.report_metadata", {
                 "workspace_id": space["workspace_id"],
-                "source": "dragnote",
+                "source": "comment_on_copy",
                 "tokens": {MARK_TOKEN: MARK_TEXT if on else ""},
                 # watcher가 갱신을 멈추면 표시가 저절로 사라진다
                 "ttl_ms": 15000 if on else 1,

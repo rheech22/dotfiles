@@ -1,5 +1,5 @@
-id = "dragnote"
-name = "Drag Note"
+id = "comment_on_copy"
+name = "Comment on Copy"
 version = "0.1.0"
 min_herdr_version = "0.9.0"
 description = "드래그 모드가 켜져 있는 동안 선택한 텍스트에 코멘트를 단다."

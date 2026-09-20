@@ -246,7 +246,7 @@ rows = [
 ]
 
 [ui.sidebar.spaces]
-rows = [["state_icon", "workspace", { token = "$dragnote", fg = "#e6c384" }], ["branch", "git_status"]]
+rows = [["state_icon", "workspace", { token = "$comment_on_copy", fg = "#e6c384" }], ["branch", "git_status"]]
 
 [ui.toast]
 # off = disable pop-up notifications
@@ -326,9 +326,9 @@ cjk_ime_cursor_shape = "steady_bar"
 # Matches Ghostty's default scrollback-limit behavior.
 # scrollback_limit_bytes = 10000000
 
-# --- dragnote: 드래그하면 코멘트 창이 뜨는 모드 토글 ---
+# --- comment_on_copy: 복사하면 코멘트 창이 뜨는 모드 토글 ---
 [[keys.command]]
 key = "prefix+i"
 type = "plugin_action"
-command = "dragnote.toggle"
+command = "comment_on_copy.toggle"
 description = "toggle drag-note mode"

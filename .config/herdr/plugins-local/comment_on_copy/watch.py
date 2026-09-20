@@ -21,7 +21,7 @@ def frontmost():
 
 
 def open_popup():
-    subprocess.run([HERDR, "plugin", "pane", "open", "--plugin", "dragnote",
+    subprocess.run([HERDR, "plugin", "pane", "open", "--plugin", "comment_on_copy",
                     "--entrypoint", "note", "--focus"], capture_output=True)
 
 
