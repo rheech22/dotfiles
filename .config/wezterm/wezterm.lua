@@ -59,18 +59,23 @@ end
 -- Appearance
 config.underline_thickness = "200%"
 config.underline_position = "200%"
+-- Square corners to match the border drawn around it. The border's curve is
+-- global (paneru's radius and JankyBorders' style both apply to every window),
+-- so the window is what gets squared off rather than the border.
 config.window_decorations = "RESIZE | MACOS_FORCE_DISABLE_SHADOW | MACOS_FORCE_SQUARE_CORNERS"
 config.use_fancy_tab_bar = false
 -- config.hide_tab_bar_if_only_one_tab = true
+-- Rounded corners plus a JankyBorders outline clip anything drawn at the very
+-- edge, so the cells need to start a little inside the frame.
 config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 0,
-	bottom = 0,
+	left = 6,
+	right = 6,
+	top = 6,
+	bottom = 6,
 }
 
 -- config.window_background_image = constants.bg_blurred
--- config.macos_window_background_blur = 38
+config.macos_window_background_blur = 38
 -- config.window_background_opacity = constants.opacity
 config.command_palette_font_size = 16
 config.command_palette_bg_color = "#5E4090"

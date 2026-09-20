@@ -1,0 +1,145 @@
+#!/bin/bash
+# SketchyBar — replaces the auto-hidden macOS menubar.
+#
+# Layout: windows of the current workspace on the left, workspace indicators
+# dead centre, clock on the right. `center` is anchored to the middle of the
+# display rather than packed after the left items, so a growing window list
+# never shifts it — the two can only collide if the list gets long enough to
+# reach the middle, which MAX_WINDOWS and label truncation bound.
+#
+# Bar is transparent: the chips carry their own background, so it reads as
+# floating items rather than a filled strip.
+#
+# BAR_HEIGHT is deliberately larger than paneru's `menubar_height`. Chips sit
+# vertically centred inside the bar, so setting the bar's height equal to where
+# windows start (menubar_height + paneru's top padding) splits the leftover
+# space evenly: the gap above a chip and the gap from its underside down to the
+# window come out the same. The bar is transparent, so its extra height only
+# positions the chips; `menubar_height` is what actually reserves the space.
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+BAR_HEIGHT=40   # = paneru menubar_height (32) + paneru [padding] top (8)
+# Exported: paneru_windows.sh fills these slots and must agree on the count.
+export MAX_WINDOWS=8
+
+# LG, the main display. paneru keeps a separate strip and virtual workspace per
+# display but `paneru query active` answers for whichever has focus, so a
+# second bar would highlight the wrong row. `display` is an item property —
+# setting it on --bar is accepted and ignored — and it wants a number: `main`
+# parses, reports a plausible mask, and silently breaks the whole layout.
+DISPLAY_MAIN=1
+
+# vague — neutrals from wezterm/themes/palettes.lua, accents from
+# starship/themes/vague.toml. Exported for the plugin scripts.
+export BG=0xff141415
+export SURFACE=0xff282830
+export FG=0xffcdcdcd
+export DIM=0xff8b8b8b
+export ACCENT=0xff6e94b2
+export MAUVE=0xffbb9dbd
+
+sketchybar --bar \
+	height="$BAR_HEIGHT" \
+	position=top \
+	color=0x00000000 \
+	shadow=off \
+	padding_left=10 \
+	padding_right=10
+
+# Optical nudge. The 8px above and below are measured between background
+# boxes, but the eye also counts the chip's own 1px border and the 2px border
+# paneru draws around the window underneath, so geometric centring reads as
+# slightly high. Flip the sign if it moves the wrong way.
+sketchybar --default \
+	y_offset=-1 \
+	display="$DISPLAY_MAIN" \
+	padding_left=3 \
+	padding_right=3 \
+	icon.font="MesloLGS Nerd Font:Regular:14.0" \
+	label.font="MesloLGS Nerd Font:Bold:12.0" \
+	icon.color="$FG" \
+	label.color="$FG" \
+	icon.padding_left=7 \
+	icon.padding_right=5 \
+	label.padding_left=2 \
+	label.padding_right=9
+
+# Declared before any --subscribe below: subscribing to an event that does not
+# exist yet fails silently and the item never updates.
+sketchybar --add event paneru_change
+
+##### left: windows on the current workspace #####
+# Pre-created so they keep their slot in the bar's ordering; the plugin only
+# fills them in and hides the unused ones. Nothing polls — paneru_listener.sh
+# turns paneru's event stream into `paneru_change`.
+for i in $(seq 0 $((MAX_WINDOWS - 1))); do
+	sketchybar --add item "win.$i" left \
+		--set "win.$i" \
+		drawing=off \
+		icon.drawing=off \
+		label.font="MesloLGS Nerd Font:Regular:11.0" \
+		label.padding_left=9 \
+		label.padding_right=9 \
+		background.corner_radius=7 \
+		background.height=24 \
+		background.drawing=on
+done
+
+sketchybar --add item windows_watch left \
+	--set windows_watch \
+	drawing=off \
+	script="$PLUGIN_DIR/paneru_windows.sh" \
+	--subscribe windows_watch paneru_change front_app_switched
+
+##### centre: paneru virtual workspaces #####
+# Digits are monospaced on purpose: SF Pro gives "1" a narrower advance than
+# "2", so the chips came out 26px and 29px wide and the "1" sat off-centre
+# inside its own.
+#
+# background.color is set here as well as in the plugin: the plugin only runs
+# once an event arrives, and until then an unset colour leaves the chip blank.
+for sid in 1 2; do
+	sketchybar --add item "paneru.$sid" center \
+		--set "paneru.$sid" \
+		icon="$sid" \
+		label.drawing=off \
+		icon.font="MesloLGS Nerd Font:Bold:13.0" \
+		icon.color="$DIM" \
+		icon.padding_left=11 \
+		icon.padding_right=11 \
+		background.corner_radius=7 \
+		background.height=24 \
+		background.drawing=on \
+		background.color="$SURFACE" \
+		script="$PLUGIN_DIR/paneru_workspace.sh" \
+		click_script="paneru send-cmd window virtual $sid" \
+		--subscribe "paneru.$sid" paneru_change
+done
+
+##### right: clock #####
+# A single item rather than an icon chip plus a label in a bracket: with no
+# icon there is nothing to pair, and the item draws its own background.
+sketchybar --add item clock right \
+	--set clock \
+	update_freq=30 \
+	icon.drawing=off \
+	label.padding_left=10 \
+	label.padding_right=10 \
+	background.drawing=on \
+	background.color="$SURFACE" \
+	background.height=24 \
+	background.corner_radius=7 \
+	background.border_width=1 \
+	background.border_color="$ACCENT" \
+	script="$PLUGIN_DIR/clock.sh"
+
+##### paneru event bridge #####
+# Fully detached — inheriting stdout would keep this config script alive, and
+# sketchybar lays the bar out only once the script exits. That leaves every
+# item parked at -9999 with the bar apparently missing.
+pkill -f 'paneru_listener.sh' 2>/dev/null
+nohup "$PLUGIN_DIR/paneru_listener.sh" >/dev/null 2>&1 &
+disown
+
+sketchybar --update

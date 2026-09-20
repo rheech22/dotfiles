@@ -1,0 +1,121 @@
+# paneru — sliding tiling window manager
+# https://github.com/karinushka/paneru/blob/master/CONFIGURATION.md
+#
+# paneru has no built-in keybindings: every action must be bound here.
+# Bindings avoid `cmd` because macOS reserves cmd-h (hide) and cmd-m (minimise).
+
+# row 1 = work strip, row 2 = deliberately empty (bare desktop)
+default_workspaces = 2
+
+[options]
+# Displays sit side by side physically (LG left, Studio right) but are arranged
+# diagonally in macOS: Studio above-right of LG, touching at the corner only.
+# Both spill directions — a parked virtual-workspace strip goes down-right from
+# `viewport.max - 10`, a scrolled strip goes right — then land on empty space
+# instead of the neighbouring display, which macOS would otherwise adopt the
+# window onto. `horizontal_mouse_warp` restores left/right cursor travel:
+# 1 = the right edge warps to the screen above, the left edge to the one below.
+horizontal_mouse_warp = 1
+
+focus_follows_mouse = true
+mouse_follows_focus = true
+auto_center = true
+window_resize_cycle = true
+
+# paneru leaves `sliver_width` px of the neighbouring column on screen, so a
+# full-width window always has something peeking past it on one side. 1 is the
+# floor: config.rs clamps this with .max(1), so it cannot be switched off.
+sliver_width = 1
+
+# The real menubar is auto-hidden, so macOS reports no height and paneru would
+# tile windows under SketchyBar. This reserves the space; SketchyBar's own
+# BAR_HEIGHT is larger (40) on purpose, so that its vertically centred chips
+# end up with equal gaps above and below. Changing either means redoing that
+# arithmetic: BAR_HEIGHT should equal menubar_height + the top padding below.
+menubar_height = 32
+
+[swipe]
+continuous = false
+sensitivity = 0.30
+deceleration = 6.0
+
+# Omarchy proportions: Hyprland's gaps_in = 5 lands half on each neighbour, so
+# windows sit 10px apart; gaps_out = 10 at the screen edge. paneru splits the
+# same budget between screen padding and the per-window rule at the bottom.
+# Vertical spacing comes from here; horizontal spacing comes solely from the
+# per-window rule below. Setting both for one axis double-counts: the window
+# rule widens a frame by h_pad on each side and reposition() compensates later,
+# while vertical_padding never reaches that path — so left/right stop matching.
+[padding]
+# A uniform 8px frame, matching horizontal_padding below. `top` measures from
+# the bottom of SketchyBar, since menubar_height already takes the bar's 32px
+# out of the viewport. Values are what measured equal on screen: if the Dock
+# stops auto-hiding, paneru loses that space from the viewport first and these
+# need checking again.
+top = 8
+bottom = 8
+left = 0
+right = 0
+
+# The only border source. JankyBorders was tried for its glow() and its
+# inactive-window outlines, then dropped: it draws a fixed 9pt corner radius,
+# and WezTerm paints past its own corner mask (wezterm/wezterm#6485), so that
+# curve got buried at every corner — on unfocused windows too, which is the
+# part no per-app setting could reach. `radius = "auto"` follows the system
+# curve instead, and only the focused window is drawn, so nothing mismatches.
+# The cost is glow(): paneru paints a flat colour.
+# Colour is the vague accent, matching SketchyBar and the wezterm palette.
+[decorations.active.border]
+enabled = true
+color = "#6e94b2"
+width = 2.0
+radius = "auto"
+
+[bindings]
+# focus
+window_focus_west = "alt - h"
+window_focus_east = "alt - l"
+window_focus_north = "alt - k"
+window_focus_south = "alt - j"
+window_focus_first = "alt - u"
+window_focus_last = "alt - o"
+
+# move within the strip
+window_swap_west = "alt + shift - h"
+window_swap_east = "alt + shift - l"
+window_swap_north = "alt + shift - k"
+window_swap_south = "alt + shift - j"
+
+# size
+window_resize = "alt - r"
+window_shrink = "alt + shift - r"
+window_vertical_resize = "alt - v"
+window_vertical_shrink = "alt + shift - v"
+window_fullwidth = "alt - f"
+window_equalize = "alt - e"
+window_snap = "alt - x"
+
+# virtual workspaces
+window_virtualnum_1 = "alt - 1"
+window_virtualnum_2 = "alt - 2"
+window_virtualsendnum_1 = "alt + shift - 1"
+window_virtualsendnum_2 = "alt + shift - 2"
+
+# state
+window_center = "alt - c"
+window_manage = "alt - t"
+window_stack = "alt - s"
+window_unstack = "alt + shift - s"
+window_nextdisplay = "alt - n"
+window_nextdisplaysend = "alt + shift - n"
+
+# daemon
+restart = "ctrl + alt - r"
+quit = "ctrl + alt - q"
+
+# Catch-all gap rule. paneru has no global inner gap: padding is a window rule,
+# and rules match on identity, so this is the widest net available.
+[windows.all]
+title = ".*"
+horizontal_padding = 8
+vertical_padding = 5
