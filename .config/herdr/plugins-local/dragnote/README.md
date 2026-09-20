@@ -37,6 +37,15 @@
 이름은 `claude · main`처럼 에이전트 종류와 workspace 이름으로 짓는다. 같은 조합이
 둘 이상일 때만 탭 이름이나 pane 번호를 덧붙인다.
 
+## 모드 표시
+
+모드가 켜져 있는 동안 사이드바의 workspace 행에 `comment`가 뜬다. watcher가 5초마다
+workspace metadata 토큰을 갱신하고 ttl을 15초로 잡는다. 프로세스가 비정상으로 죽어도
+표시가 저절로 사라지므로 상태 파일과 화면이 어긋나지 않는다.
+
+찍을 자리는 `config.toml`의 `[ui.sidebar.spaces]`가 정한다. 탭바 우측
+(`tab_bar_right`)은 `hide_tab_bar_when_single_tab`이 켜져 있어 쓸 수 없다.
+
 ## 어떻게 동작하나
 
 herdr는 지금 무엇이 선택돼 있는지 알려주는 수단이 없다. 이벤트도 조회도 없고,

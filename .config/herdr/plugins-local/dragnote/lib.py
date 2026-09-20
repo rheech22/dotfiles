@@ -132,3 +132,26 @@ def send_input(pane_id, text):
     """제출하지 않고 입력창에 꽂는다. send_text와 달리 개행이 Enter가 되지 않는다."""
     reply = call("pane.send_input", {"pane_id": pane_id, "text": text})
     return "error" not in reply
+
+
+MARK_TOKEN = "dragnote"
+MARK_TEXT = "comment"
+
+
+def mark(on):
+    """모드가 켜져 있다는 표시를 사이드바 workspace 행에 올린다."""
+    try:
+        spaces = call("workspace.list", {})["result"]["workspaces"]
+    except Exception:
+        return
+    for space in spaces:
+        try:
+            call("workspace.report_metadata", {
+                "workspace_id": space["workspace_id"],
+                "source": "dragnote",
+                "tokens": {MARK_TOKEN: MARK_TEXT if on else ""},
+                # watcher가 갱신을 멈추면 표시가 저절로 사라진다
+                "ttl_ms": 15000 if on else 1,
+            })
+        except Exception:
+            pass
