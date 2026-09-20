@@ -1,4 +1,5 @@
 {
+  "agentPushNotifEnabled": true,
   "editorMode": "vim",
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -13,7 +14,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -25,7 +26,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -37,7 +38,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -49,7 +50,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -61,7 +62,7 @@
       {
         "hooks": [
           {
-            "command": "bash '/Users/demian/.claude/hooks/herdr-agent-state.sh' session",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
             "timeout": 10,
             "type": "command"
           }
@@ -73,7 +74,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -84,7 +85,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -95,7 +96,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -106,7 +107,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -117,7 +118,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -128,7 +129,7 @@
       {
         "hooks": [
           {
-            "command": "if [ -f '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -r '/Users/demian/.orca/agent-hooks/claude-hook.sh' ] && [ -x '/Users/demian/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '/Users/demian/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null 2>&1 || :; fi",
+            "command": "if [ -f \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -r \"$HOME/.orca/agent-hooks/claude-hook.sh\" ] && [ -x \"$HOME/.orca/agent-hooks/claude-hook.sh\" ]; then /bin/sh \"$HOME/.orca/agent-hooks/claude-hook.sh\"; else cat >/dev/null 2>&1 || :; fi",
             "timeout": 10,
             "type": "command"
           }
@@ -138,7 +139,7 @@
   },
   "skipWorkflowUsageWarning": true,
   "statusLine": {
-    "command": "bash /Users/demian/.claude/statusline-command.sh",
+    "command": "bash \"$HOME/.claude/statusline-command.sh\"",
     "type": "command"
   },
   "theme": "dark",

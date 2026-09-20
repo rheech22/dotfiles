@@ -139,6 +139,17 @@ Use the repository's [`.local.example`](.config/zsh/.local.example) only as a te
 
 Create Git identity and overrides at `~/.gitconfig.local`; use [`.config/git/.local.example`](.config/git/.local.example) as a template. This file is also not generated or modified.
 
+Create the Collie bridge configuration at `$(herdr plugin config-dir herdr.collie)/.env`; use [`.config/herdr/collie.env.example`](.config/herdr/collie.env.example) as a template. It holds a Tailscale login and Web Push signing keys, so it stays machine-owned and is never committed. Generate its key pair per install with `collie push-keys`, then `collie restart`.
+
+### Herdr plugins
+
+`.config/herdr/config.toml` binds keys for two Herdr plugins. Herdr rewrites `~/.config/herdr/plugins.json` with absolute paths, so that file is not linked; install the plugins instead:
+
+```bash
+.config/herdr/install-plugins.sh
+```
+
+
 ### Development
 
 Bootstrap is the canonical first-run path. For development after the pinned runtime and pnpm are available:

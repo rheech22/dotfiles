@@ -71,7 +71,7 @@ peach = "#e6c384"
 # Named punctuation such as minus, comma, ampersand, plus, and backtick is also accepted.
 # Most reliable direct bindings are ctrl+letter, function keys, and explicit modified chords.
 # alt+..., cmd/super, and punctuation-with-modifiers may depend on your terminal/tmux setup.
-# prefix = "ctrl+b"
+prefix = "backtick"
 
 # Prefix-mode actions
 # help = "prefix+?"
@@ -137,6 +137,39 @@ zoom = ["prefix+z", "ctrl+alt+z"] # legacy alias: fullscreen
 # command = "lazygit"
 # width = "80%"
 # height = "80%"
+
+# --- annotate plugin (plannotator/herdr-annotate) ---
+# NOTE: upstream README suggests prefix+o for annotate.open, which collides with
+# herdr's default open_notification_target. Moved to prefix+shift+m instead.
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate text"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations as context"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+[[keys.command]]
+key = "prefix+shift+m"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents in this folder"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "annotate.last"
+description = "review the agent's last reply"
 
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
@@ -300,6 +333,7 @@ delay_seconds = 2
 # manage_ssh_config = true
 
 [experimental]
+kitty_graphics = true
 # Allow launching herdr from inside a herdr-managed pane.
 # allow_nested = false
 # Experimental local Kitty graphics rendering for attached clients.

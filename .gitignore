@@ -1,2 +1,6 @@
 **/.DS_Store
 node_modules/
+
+# Collie bridge secrets — machine-owned; use .config/herdr/collie.env.example
+.config/herdr/plugins/
+**/herdr.collie/.env
