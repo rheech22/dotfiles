@@ -31,14 +31,14 @@ def main():
                 os.remove(path)
             except OSError:
                 pass
-        notify("Drag note 끔", "드래그해도 코멘트 창이 뜨지 않습니다.")
+        notify("comment on copy: off", "Copying no longer opens the comment window.")
         return
     subprocess.Popen(
         [sys.executable, os.path.join(HERE, "watch.py")],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         start_new_session=True,
     )
-    notify("Drag note 켬", "드래그로 선택하면 코멘트 창이 뜹니다.")
+    notify("comment on copy: on", "Copy anything to open the comment window.")
 
 
 if __name__ == "__main__":

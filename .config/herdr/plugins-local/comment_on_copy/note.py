@@ -11,6 +11,7 @@ locale.setlocale(locale.LC_ALL, "")
 os.environ.setdefault("ESCDELAY", "25")
 
 QUOTE_LINES = 5
+STATUS_ATTR = {"hint": curses.A_DIM}
 
 
 def width(text):
@@ -44,10 +45,14 @@ class Note:
         self.lines = [""]
         self.row = 0
         self.col = 0
-        self.status = "코멘트를 입력하세요"
+        self.status = ("type a comment, then ^S or ^E", "hint")
         self.buttons = {}
         self.picking = False
         self.cursor = 0
+        self.caret = None
+
+    def say(self, text, kind="hint"):
+        self.status = (text, kind)
 
     def pick_target(self, focused):
         """선택이 나온 pane을 먼저 보고, 없으면 드래그 시점의 포커스 pane을 본다."""
@@ -105,13 +110,25 @@ class Note:
         body_top = quote_top + quote_show + 3
         body_show = max(1, bar - body_top - 2)
 
-        label = "드래그 코멘트"
+        self.put(scr, 0, 2, "comment", curses.A_BOLD)
+        self.put(scr, 0, 11, "to", curses.A_DIM)
+        name = self.target["name"] if self.target else "nowhere"
+        self.put(scr, 0, 14, name, curses.A_BOLD if self.target else curses.A_DIM)
+        end = 14 + width(name)
+        # 목적지를 바꾸는 조작이므로 목적지 옆에 둔다
+        if self.agents and (len(self.agents) >= 2 or not self.target):
+            pick = "[ ^L  change ]" if self.target else "[ ^L  pick ]"
+            self.put(scr, 0, end + 2, pick)
+            self.buttons["choose"] = (0, end + 2, end + 2 + width(pick))
+            end += 2 + width(pick)
         if self.source:
-            label += "   %s  row %d" % (self.source["label"], self.source["row"])
-        self.put(scr, 0, 2, label, curses.A_BOLD)
+            origin = "%s row %d" % (self.source["label"], self.source["row"])
+            start = cols - 2 - width(origin)
+            if start > end + 2:
+                self.put(scr, 0, start, origin, curses.A_DIM)
 
         more = len(quote_lines) - quote_show
-        title = "선택한 텍스트" + (" (+%d줄)" % more if more > 0 else "")
+        title = "selected" + (" +%d" % more if more > 0 else "")
         self.frame(scr, quote_top, cols, quote_show + 2, title)
         for i, line in enumerate(quote_lines[:quote_show]):
             self.put(scr, quote_top + 1 + i, 3, line, curses.A_DIM)
@@ -122,23 +139,28 @@ class Note:
             self.draw_input(scr, body_top, cols, body_show, height)
 
         self.draw_bar(scr, bar, inner)
-        self.put(scr, height - 1, 2, self.status[:inner], curses.A_DIM)
+        text, kind = self.status
+        self.put(scr, height - 1, 2, text[:inner], STATUS_ATTR.get(kind, curses.A_DIM))
+        # 커서는 맨 마지막에 놓는다. 앞에서 놓으면 이후 그리기가 끌고 간다
+        curses.curs_set(0 if self.picking else 1)
+        if self.caret:
+            y, x = self.caret
+            try:
+                scr.move(max(0, min(y, height - 1)), max(0, min(x, cols - 1)))
+            except curses.error:
+                pass
         scr.refresh()
 
     def draw_input(self, scr, top, cols, show, height):
-        self.frame(scr, top, cols, show + 2, "코멘트")
+        self.frame(scr, top, cols, show + 2, "comment")
         first = max(0, self.row - show + 1)
         for i, line in enumerate(self.lines[first : first + show]):
             self.put(scr, top + 1 + i, 3, line)
-        cy = top + 1 + (self.row - first)
-        cx = 3 + width(self.lines[self.row][: self.col])
-        try:
-            scr.move(max(0, min(cy, height - 1)), max(0, min(cx, cols - 1)))
-        except curses.error:
-            pass
+        self.caret = (top + 1 + (self.row - first),
+                      3 + width(self.lines[self.row][: self.col]))
 
     def draw_picker(self, scr, top, cols, show):
-        self.frame(scr, top, cols, show + 2, "어디로 보낼까요  ↑↓ Enter, Esc 취소")
+        self.frame(scr, top, cols, show + 2, "send to   \u2191\u2193 enter   esc cancel")
         room = max(10, cols - 40)
         for i, agent in enumerate(self.agents[:show]):
             mark = "▸" if i == self.cursor else " "
@@ -147,21 +169,18 @@ class Note:
                 mark, i + 1, agent["name"], agent["status"], title[:room])
             attr = curses.A_BOLD if i == self.cursor else 0
             self.put(scr, top + 1 + i, 3, text, attr)
-            self.buttons["pick:%d" % i] = (top + 1 + i, 3, 3 + len(text) + 2)
+            self.buttons["pick:%d" % i] = (top + 1 + i, 3, 3 + width(text) + 2)
 
     def draw_bar(self, scr, bar, inner):
-        items = [("close", "[ 닫기  Esc ]", 0), ("copy", "[ 복사  ^Y ]", 0)]
+        items = [("close", "[ esc  close ]", 0), ("copy", "[ ^Y  copy ]", 0)]
         if self.target:
-            items.append(("send", "[ 제출 → %s  ^S ]" % self.target_label(), curses.A_BOLD))
-            items.append(("send_now", "[ 즉시 제출  ^E ]", 0))
-        if len(self.agents) >= 2:
-            items.append(("choose", "[ 다른 대상  ^L ]", 0))
+            items.append(("send", "[ ^S  insert ]", 0))
+            items.append(("send_now", "[ ^E  send ]", curses.A_BOLD))
         x = 2
-        for name, text in [(n, t) for n, t, _ in items]:
-            attr = dict((n, a) for n, _, a in items)[name]
+        for name, text, attr in items:
             self.put(scr, bar, x, text, attr)
-            self.buttons[name] = (bar, x, x + len(text))
-            x += len(text) + 2
+            self.buttons[name] = (bar, x, x + width(text))
+            x += width(text) + 2
 
     def put(self, scr, y, x, text, attr=0):
         try:
@@ -186,34 +205,32 @@ class Note:
     # --- 동작 -------------------------------------------------------------
     def deliver(self, scr, agent, now=False):
         if not self.comment():
-            self.status = "코멘트가 비어 있습니다"
+            self.say("nothing yet, the comment is empty", "warn")
             return False
         if now:
             ok, why = submit(agent["pane_id"], self.result())
             # 에이전트가 승인 대기 중이면 herdr가 거절한다. 그대로 보여준다
-            self.status = "제출했습니다 → %s" % agent["name"] if ok else why
+            self.say("sent \u2192 %s" % agent["name"], "ok") if ok else self.say(why, "warn")
             if not ok:
                 self.draw(scr)
                 curses.napms(1200)
                 return False
         elif send_input(agent["pane_id"], self.result()):
-            self.status = "보냈습니다 → %s" % agent["name"]
+            self.say("inserted \u2192 %s" % agent["name"], "ok")
         else:
             pbcopy(self.result() + "\n")
-            self.status = "전송에 실패해 클립보드로 복사했습니다"
+            self.say("insert failed, copied to clipboard instead", "warn")
         self.draw(scr)
         curses.napms(700)
         return True
 
-    def copy(self, scr):
+    def copy(self):
+        """복사는 창을 닫지 않는다. 이어서 목적지를 바꿔 보낼 수 있다."""
         if not self.comment():
-            self.status = "코멘트가 비어 있습니다"
-            return False
+            self.say("nothing yet, the comment is empty", "warn")
+            return
         pbcopy(self.result() + "\n")
-        self.status = "클립보드에 복사했습니다"
-        self.draw(scr)
-        curses.napms(700)
-        return True
+        self.say("copied to clipboard", "ok")
 
 
 def read_event(scr):
@@ -248,6 +265,15 @@ def read_event(scr):
 def run(scr, note):
     if hasattr(curses, "set_escdelay"):
         curses.set_escdelay(25)
+    try:
+        curses.start_color()
+        curses.use_default_colors()
+        curses.init_pair(1, curses.COLOR_GREEN, -1)
+        curses.init_pair(2, curses.COLOR_YELLOW, -1)
+        STATUS_ATTR["ok"] = curses.color_pair(1)
+        STATUS_ATTR["warn"] = curses.color_pair(2)
+    except curses.error:
+        pass
     curses.curs_set(1)
     curses.mousemask(curses.ALL_MOUSE_EVENTS)
     scr.keypad(True)
@@ -257,6 +283,11 @@ def run(scr, note):
     saved = termios.tcgetattr(fd)
     flags = termios.tcgetattr(fd)
     flags[0] &= ~(termios.IXON | termios.IXOFF)  # ^S가 XOFF로 먹히지 않게 한다
+    # macOS는 ^Y를 VDSUSP로 쓴다. 그대로 두면 프로세스가 중단되고 앱까지 오지 않는다
+    disable = b"\xff"
+    for index, value in enumerate(flags[6]):
+        if value in (b"\x19", b"\x0f"):  # ^Y, ^O
+            flags[6][index] = disable
     termios.tcsetattr(fd, termios.TCSANOW, flags)
     try:
         loop(scr, note)
@@ -329,23 +360,23 @@ def loop(scr, note):
         if action == "cancel":
             note.picking = False
         elif action == "copy":
-            if note.copy(scr):
-                return
+            note.copy()
         elif action == "send":
             if note.target and note.deliver(scr, note.target):
                 return
         elif action == "send_now":
             if note.target and note.deliver(scr, note.target, now=True):
                 return
-        elif action == "choose" and len(note.agents) >= 2:
+        elif action == "choose" and note.agents:
             note.picking = True
             note.cursor = 0
         elif action and action.startswith("pick:"):
             index = int(action.split(":")[1])
             if 0 <= index < len(note.agents):
+                # 고르면 보내는 것이 아니라 목적지를 바꾼다
+                note.target = note.agents[index]
                 note.picking = False
-                if note.deliver(scr, note.agents[index]):
-                    return
+                note.say("target \u2192 %s" % note.target["name"], "ok")
 
 
 def main():
@@ -353,7 +384,7 @@ def main():
         with open(PAYLOAD) as f:
             payload = json.load(f)
     except (OSError, ValueError):
-        payload = {"text": "(선택한 텍스트를 읽지 못했습니다)"}
+        payload = {"text": "(could not read the copied text)"}
     note = Note(payload)
     try:
         curses.wrapper(run, note)

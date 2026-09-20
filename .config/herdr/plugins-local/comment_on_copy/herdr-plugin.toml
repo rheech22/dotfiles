@@ -2,19 +2,19 @@ id = "comment_on_copy"
 name = "Comment on Copy"
 version = "0.1.0"
 min_herdr_version = "0.9.0"
-description = "드래그 모드가 켜져 있는 동안 선택한 텍스트에 코멘트를 단다."
+description = "Comment on copied terminal text and send it to an agent."
 platforms = ["macos"]
 
 [[actions]]
 id = "toggle"
-title = "Toggle drag-note mode"
-description = "드래그하면 코멘트 창이 뜨는 모드를 켜고 끈다."
+title = "Toggle comment on copy"
+description = "While on, copying opens a comment window."
 contexts = ["global"]
 command = ["python3", "toggle.py"]
 
 [[panes]]
 id = "note"
-title = "Drag note"
+title = "comment on copy"
 placement = "popup"
 width = 88
 height = 20
