@@ -14,6 +14,10 @@ QUOTE_LINES = 5
 STATUS_ATTR = {"hint": curses.A_DIM}
 
 
+def clamp(value, top):
+    return max(0, min(value, max(0, top)))
+
+
 def width(text):
     return sum(2 if east_asian_width(ch) in "WF" else 1 for ch in text)
 
@@ -50,6 +54,10 @@ class Note:
         self.picking = False
         self.cursor = 0
         self.caret = None
+        self.quote_top = 0   # selected 영역의 첫 보이는 줄
+        self.body_top = 0    # comment 영역의 첫 보이는 줄
+        self.regions = {}    # 휠이 어느 영역 위에 있는지 판정용
+        self.follow = True   # 키 입력 뒤에는 커서를 따라가고, 휠로 굴릴 때는 두고 본다
 
     def say(self, text, kind="hint"):
         self.status = (text, kind)
@@ -104,11 +112,11 @@ class Note:
         self.buttons = {}
 
         bar = height - 2
-        quote_top = 2
+        quote_row = 2
         quote_lines = wrap(self.quote, inner - 2)
         quote_show = max(1, min(len(quote_lines), QUOTE_LINES))
-        body_top = quote_top + quote_show + 3
-        body_show = max(1, bar - body_top - 2)
+        body_row = quote_row + quote_show + 3
+        body_show = max(1, bar - body_row - 2)
 
         self.put(scr, 0, 2, "comment", curses.A_BOLD)
         self.put(scr, 0, 11, "to", curses.A_DIM)
@@ -127,23 +135,30 @@ class Note:
             if start > end + 2:
                 self.put(scr, 0, start, origin, curses.A_DIM)
 
-        more = len(quote_lines) - quote_show
-        title = "selected" + (" +%d" % more if more > 0 else "")
-        self.frame(scr, quote_top, cols, quote_show + 2, title)
-        for i, line in enumerate(quote_lines[:quote_show]):
-            self.put(scr, quote_top + 1 + i, 3, line, curses.A_DIM)
+        self.quote_top = clamp(self.quote_top, len(quote_lines) - quote_show)
+        title = "selected"
+        if len(quote_lines) > quote_show:
+            title += "  %d-%d/%d" % (self.quote_top + 1,
+                                     self.quote_top + quote_show, len(quote_lines))
+        self.frame(scr, quote_row, cols, quote_show + 2, title)
+        for i, line in enumerate(quote_lines[self.quote_top:self.quote_top + quote_show]):
+            self.put(scr, quote_row + 1 + i, 3, line, curses.A_DIM)
+        self.scrollbar(scr, quote_row, cols, quote_show, len(quote_lines), self.quote_top)
+        self.regions = {"quote": (quote_row, quote_row + quote_show + 1),
+                        "body": (body_row, body_row + body_show + 1)}
 
         if self.picking:
-            self.draw_picker(scr, body_top, cols, body_show)
+            self.caret = None
+            self.draw_picker(scr, body_row, cols, body_show)
         else:
-            self.draw_input(scr, body_top, cols, body_show, height)
+            self.draw_input(scr, body_row, cols, body_show, height)
 
         self.draw_bar(scr, bar, inner)
         text, kind = self.status
         self.put(scr, height - 1, 2, text[:inner], STATUS_ATTR.get(kind, curses.A_DIM))
         # 커서는 맨 마지막에 놓는다. 앞에서 놓으면 이후 그리기가 끌고 간다
-        curses.curs_set(0 if self.picking else 1)
-        if self.caret:
+        curses.curs_set(1 if self.caret and not self.picking else 0)
+        if self.caret and not self.picking:
             y, x = self.caret
             try:
                 scr.move(max(0, min(y, height - 1)), max(0, min(x, cols - 1)))
@@ -152,12 +167,37 @@ class Note:
         scr.refresh()
 
     def draw_input(self, scr, top, cols, show, height):
-        self.frame(scr, top, cols, show + 2, "comment")
-        first = max(0, self.row - show + 1)
-        for i, line in enumerate(self.lines[first : first + show]):
+        self.body_top = clamp(self.body_top, len(self.lines) - show)
+        if self.follow:
+            if self.row < self.body_top:
+                self.body_top = self.row
+            elif self.row >= self.body_top + show:
+                self.body_top = self.row - show + 1
+        title = "comment"
+        if len(self.lines) > show:
+            title += "  %d-%d/%d" % (self.body_top + 1,
+                                     self.body_top + show, len(self.lines))
+        self.frame(scr, top, cols, show + 2, title)
+        for i, line in enumerate(self.lines[self.body_top:self.body_top + show]):
             self.put(scr, top + 1 + i, 3, line)
-        self.caret = (top + 1 + (self.row - first),
-                      3 + width(self.lines[self.row][: self.col]))
+        self.scrollbar(scr, top, cols, show, len(self.lines), self.body_top)
+        # 스크롤로 커서 줄이 화면 밖으로 나가면 커서를 감춘다
+        if self.body_top <= self.row < self.body_top + show:
+            self.caret = (top + 1 + (self.row - self.body_top),
+                          3 + width(self.lines[self.row][: self.col]))
+        else:
+            self.caret = None
+
+    def scroll(self, y, delta):
+        """휠이 올라온 위치에 따라 해당 영역을 굴린다."""
+        for name, (start, end) in self.regions.items():
+            if start <= y <= end:
+                if name == "quote":
+                    self.quote_top += delta
+                else:
+                    self.body_top += delta
+                    self.follow = False
+                return
 
     def draw_picker(self, scr, top, cols, show):
         self.frame(scr, top, cols, show + 2, "send to   \u2191\u2193 enter   esc cancel")
@@ -187,6 +227,20 @@ class Note:
             scr.addstr(y, x, text, attr)
         except curses.error:
             pass
+
+    def scrollbar(self, scr, top, cols, show, total, offset):
+        """프레임 오른쪽 테두리를 스크롤 막대로 쓴다."""
+        if total <= show:
+            return
+        inner = max(20, cols - 4)
+        x = 2 + inner - 1
+        size = max(1, int(round(show * show / float(total))))
+        span = show - size
+        start = int(round(offset * span / float(max(1, total - show)))) if span > 0 else 0
+        for i in range(show):
+            mark = "\u2503" if start <= i < start + size else "\u2502"
+            self.put(scr, top + 1 + i, x, mark,
+                     0 if start <= i < start + size else curses.A_DIM)
 
     def frame(self, scr, top, cols, height, title):
         inner = max(20, cols - 4)
@@ -307,6 +361,9 @@ def loop(scr, note):
         action = None
         if kind == "mouse":
             button, x, y, press = key
+            if button in (64, 65) and press == "M":
+                note.scroll(y, -3 if button == 64 else 3)
+                continue
             if press == "M" and button in (0, 16):
                 action = note.hit(y, x)
                 # shift+클릭은 WezTerm이 가져가므로 ctrl+클릭을 즉시 제출로 쓴다
@@ -315,6 +372,7 @@ def loop(scr, note):
         elif kind == "seq":
             continue
         elif isinstance(key, str):
+            note.follow = True  # 키를 누르면 스크롤이 커서를 다시 따라간다
             if key in ("\x1b", "\x11", "\x17"):  # Esc, ^Q, ^W
                 action = "cancel" if note.picking else "close"
             elif key == "\x13":  # ^S
@@ -337,11 +395,16 @@ def loop(scr, note):
             elif key >= " " and not note.picking:
                 note.insert(key)
         else:
+            note.follow = True
             if note.picking:
                 if key == curses.KEY_UP:
                     note.cursor = max(0, note.cursor - 1)
                 elif key == curses.KEY_DOWN:
                     note.cursor = min(len(note.agents) - 1, note.cursor + 1)
+            elif key == curses.KEY_PPAGE:
+                note.quote_top -= 3
+            elif key == curses.KEY_NPAGE:
+                note.quote_top += 3
             elif key == curses.KEY_BACKSPACE:
                 note.backspace()
             elif key == curses.KEY_LEFT and note.col:
