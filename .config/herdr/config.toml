@@ -88,7 +88,7 @@ toggle_sidebar = "prefix+b"
 # Popup width and height accept terminal cells or percentages such as "80%".
 # On Windows, command strings run through cmd.exe /d /c.
 # TODO: 커스텀 커맨드 추가
-[[keys.command]]
+# [[keys.command]]
 # key = "prefix+g"
 # type = "popup"
 # command = "hunk diff"
