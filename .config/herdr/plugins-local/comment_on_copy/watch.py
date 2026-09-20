@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """드래그 모드가 켜져 있는 동안 클립보드를 지켜보다 코멘트 창을 띄운다."""
-import json, os, signal, subprocess, sys, time
+import hashlib, json, os, signal, subprocess, sys, time
+from collections import deque
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lib import (LOCK, PAYLOAD, PID, agents, build_context, focused_pane_id, locate,
@@ -9,7 +10,22 @@ from lib import (LOCK, PAYLOAD, PID, agents, build_context, focused_pane_id, loc
 POLL_SECONDS = 0.35
 MARK_SECONDS = 5
 HERE = os.path.dirname(os.path.abspath(__file__))
+TRACE = os.path.join(os.path.dirname(PID), "trace.log")
+SEEN_LIMIT = 60
 HERDR = os.environ.get("HERDR_BIN_PATH", "herdr")
+
+
+def trace(line):
+    """왜 띄웠고 왜 안 띄웠는지 남긴다. 오탐을 눈으로 확인하려면 이게 필요하다."""
+    try:
+        with open(TRACE, "a") as f:
+            f.write("%s %s\n" % (time.strftime("%H:%M:%S"), line))
+    except OSError:
+        pass
+
+
+def is_terminal(name):
+    return "wezterm" in (name or "").lower()
 
 
 def stamp():
@@ -22,13 +38,18 @@ def stamp():
 
 
 def frontmost():
+    """최전면 앱 이름. osascript는 한 번에 200ms 가까이 걸려 매 틱 쓰기에 무겁다."""
     try:
-        return subprocess.run(
-            ["osascript", "-e",
-             'tell application "System Events" to name of first process whose frontmost is true'],
-            capture_output=True, text=True, timeout=3).stdout.strip()
+        asn = subprocess.run(["lsappinfo", "front"], capture_output=True, text=True,
+                             timeout=2).stdout.strip()
+        if not asn:
+            return ""
+        out = subprocess.run(["lsappinfo", "info", "-only", "name", asn],
+                             capture_output=True, text=True, timeout=2).stdout
     except Exception:
         return ""
+    _, _, rest = out.partition("=")
+    return rest.strip().strip('"')
 
 
 def open_popup():
@@ -45,6 +66,10 @@ def main():
     was_open = False
     marked_at = 0.0
     source_stamp = stamp()
+    front = ""
+    # 클립보드 도구가 히스토리에서 되돌린 값을 사람이 새로 복사한 것과 구분한다
+    seen = deque(maxlen=SEEN_LIMIT)
+    seen.append(hashlib.md5(last.encode()).hexdigest())
     try:
         while True:
             time.sleep(POLL_SECONDS)
@@ -57,18 +82,33 @@ def main():
             if os.path.exists(LOCK):
                 was_open = True
                 continue
+            before, front = front, frontmost()
             current = pbpaste()
             if was_open:
-                # 코멘트 결과가 클립보드에 올라온 것이므로 다시 띄우지 않는다
+                # 코멘트 결과가 클립보드에 올라온 것이므로 다시 띄우지 않는다.
+                # 나중에 히스토리에서 되돌아와도 새 값으로 보이지 않게 기억해 둔다
                 was_open = False
                 last = current
+                seen.append(hashlib.md5(current.encode()).hexdigest())
                 continue
             if current == last or not current.strip():
                 last = current
                 continue
             last = current
-            # 터미널 바깥에서 복사한 것은 무시한다
-            if "wezterm" not in frontmost().lower():
+            # Raycast 같은 클립보드 도구는 고른 항목을 클립보드에 쓴 뒤 붙여넣는다.
+            # 그 순간의 최전면은 그 도구이므로, 복사 직전에도 터미널이 앞에 있었을
+            # 때만 사람이 복사한 것으로 본다.
+            mark_id = hashlib.md5(current.encode()).hexdigest()
+            repeat = mark_id in seen
+            seen.append(mark_id)
+            taken = is_terminal(front) and is_terminal(before) and not repeat
+            why = "열음"
+            if repeat:
+                why = "무시(이미 본 값)"
+            elif not taken:
+                why = "무시(터미널 밖)"
+            trace("before=%s front=%s %s %r" % (before or "-", front or "-", why, current[:40]))
+            if not taken:
                 continue
             # 포커스는 팝업이 뜨는 순간 팝업으로 넘어가므로 지금 찍어 둔다
             focused = focused_pane_id()
