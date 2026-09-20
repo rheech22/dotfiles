@@ -4,7 +4,7 @@ import curses, json, locale, os, sys, termios
 from unicodedata import east_asian_width
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import LOCK, PAYLOAD, pbcopy, send_input
+from lib import LOCK, PAYLOAD, pbcopy, send_input, submit
 
 locale.setlocale(locale.LC_ALL, "")
 # ncurses는 Esc를 시퀀스 시작으로 보고 기본 1초를 기다린다
@@ -153,8 +153,9 @@ class Note:
         items = [("close", "[ 닫기  Esc ]", 0), ("copy", "[ 복사  ^Y ]", 0)]
         if self.target:
             items.append(("send", "[ 제출 → %s  ^S ]" % self.target_label(), curses.A_BOLD))
+            items.append(("send_now", "[ 즉시 제출  ^E ]", 0))
         if len(self.agents) >= 2:
-            items.append(("choose", "[ 선택하여 제출  ^L ]", 0))
+            items.append(("choose", "[ 다른 대상  ^L ]", 0))
         x = 2
         for name, text in [(n, t) for n, t, _ in items]:
             attr = dict((n, a) for n, _, a in items)[name]
@@ -183,11 +184,19 @@ class Note:
         return None
 
     # --- 동작 -------------------------------------------------------------
-    def deliver(self, scr, agent):
+    def deliver(self, scr, agent, now=False):
         if not self.comment():
             self.status = "코멘트가 비어 있습니다"
             return False
-        if send_input(agent["pane_id"], self.result()):
+        if now:
+            ok, why = submit(agent["pane_id"], self.result())
+            # 에이전트가 승인 대기 중이면 herdr가 거절한다. 그대로 보여준다
+            self.status = "제출했습니다 → %s" % agent["name"] if ok else why
+            if not ok:
+                self.draw(scr)
+                curses.napms(1200)
+                return False
+        elif send_input(agent["pane_id"], self.result()):
             self.status = "보냈습니다 → %s" % agent["name"]
         else:
             pbcopy(self.result() + "\n")
@@ -267,8 +276,11 @@ def loop(scr, note):
         action = None
         if kind == "mouse":
             button, x, y, press = key
-            if button == 0 and press == "M":
+            if press == "M" and button in (0, 16):
                 action = note.hit(y, x)
+                # shift+클릭은 WezTerm이 가져가므로 ctrl+클릭을 즉시 제출로 쓴다
+                if button == 16 and action == "send":
+                    action = "send_now"
         elif kind == "seq":
             continue
         elif isinstance(key, str):
@@ -276,6 +288,8 @@ def loop(scr, note):
                 action = "cancel" if note.picking else "close"
             elif key == "\x13":  # ^S
                 action = "send"
+            elif key == "\x05":  # ^E
+                action = "send_now"
             elif key == "\x19":  # ^Y
                 action = "copy"
             elif key == "\x0c":  # ^L
@@ -319,6 +333,9 @@ def loop(scr, note):
                 return
         elif action == "send":
             if note.target and note.deliver(scr, note.target):
+                return
+        elif action == "send_now":
+            if note.target and note.deliver(scr, note.target, now=True):
                 return
         elif action == "choose" and len(note.agents) >= 2:
             note.picking = True

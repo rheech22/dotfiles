@@ -128,6 +128,14 @@ def focused_pane_id():
         return None
 
 
+def submit(pane_id, text):
+    """텍스트와 Enter를 한 덩어리로 보낸다. 에이전트가 승인 대기 중이면 herdr가 거절한다."""
+    reply = call("agent.prompt", {"target": pane_id, "text": text})
+    if "error" in reply:
+        return False, reply["error"].get("message", "제출에 실패했습니다")
+    return True, ""
+
+
 def send_input(pane_id, text):
     """제출하지 않고 입력창에 꽂는다. send_text와 달리 개행이 Enter가 되지 않는다."""
     reply = call("pane.send_input", {"pane_id": pane_id, "text": text})
