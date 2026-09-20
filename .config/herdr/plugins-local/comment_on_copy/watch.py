@@ -3,11 +3,22 @@
 import json, os, signal, subprocess, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import LOCK, PAYLOAD, PID, agents, focused_pane_id, locate, mark, notify, pbpaste
+from lib import (LOCK, PAYLOAD, PID, agents, build_context, focused_pane_id, locate,
+                 mark, notify, pbpaste)
 
 POLL_SECONDS = 0.35
 MARK_SECONDS = 5
+HERE = os.path.dirname(os.path.abspath(__file__))
 HERDR = os.environ.get("HERDR_BIN_PATH", "herdr")
+
+
+def stamp():
+    """플러그인 소스의 최신 수정 시각."""
+    newest = 0.0
+    for name in os.listdir(HERE):
+        if name.endswith(".py"):
+            newest = max(newest, os.path.getmtime(os.path.join(HERE, name)))
+    return newest
 
 
 def frontmost():
@@ -33,12 +44,16 @@ def main():
     last = pbpaste()
     was_open = False
     marked_at = 0.0
+    source_stamp = stamp()
     try:
         while True:
             time.sleep(POLL_SECONDS)
             if time.time() - marked_at > MARK_SECONDS:
                 mark(True)
                 marked_at = time.time()
+                # 코드를 고쳤는데 옛 코드가 계속 도는 일이 잦아 스스로 다시 뜬다
+                if stamp() != source_stamp and not os.path.exists(LOCK):
+                    os.execv(sys.executable, [sys.executable, os.path.abspath(__file__)])
             if os.path.exists(LOCK):
                 was_open = True
                 continue
@@ -56,11 +71,15 @@ def main():
             if "wezterm" not in frontmost().lower():
                 continue
             # 포커스는 팝업이 뜨는 순간 팝업으로 넘어가므로 지금 찍어 둔다
+            focused = focused_pane_id()
+            source = locate(current)
             payload = {
                 "text": current,
-                "source": locate(current),
-                "focused_pane_id": focused_pane_id(),
+                "source": source,
+                "focused_pane_id": focused,
                 "agents": agents(),
+                # 복사 시점의 주변 정보. 창이 뜬 뒤에 물어보면 이미 달라져 있다
+                "context": build_context(source["pane_id"] if source else focused, current, source),
             }
             with open(PAYLOAD, "w") as f:
                 json.dump(payload, f)

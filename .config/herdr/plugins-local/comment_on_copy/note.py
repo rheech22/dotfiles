@@ -14,6 +14,19 @@ QUOTE_LINES = 5
 STATUS_ATTR = {"hint": curses.A_DIM}
 
 
+def tag(name, body):
+    """태그로 닫아 두면 내용이 인용이나 코드 블록을 품어도 경계가 흔들리지 않는다.
+
+    내용 자체가 같은 태그를 품고 있으면 번호를 올려 겹치지 않는 이름을 고른다.
+    우리가 만든 결과를 다시 복사했을 때가 그렇다.
+    """
+    label, index = name, 1
+    while "<%s>" % label in body or "</%s>" % label in body:
+        index += 1
+        label = "%s-%d" % (name, index)
+    return "<%s>\n%s\n</%s>" % (label, body, label)
+
+
 def clamp(value, top):
     return max(0, min(value, max(0, top)))
 
@@ -44,6 +57,7 @@ class Note:
         self.quote = payload.get("text", "").rstrip("\n")
         self.source = payload.get("source")
         self.agents = payload.get("agents") or []
+        self.context = [tuple(row) for row in payload.get("context") or []]
         self.by_pane = {a["pane_id"]: a for a in self.agents}
         self.target = self.pick_target(payload.get("focused_pane_id"))
         self.lines = [""]
@@ -101,8 +115,13 @@ class Note:
         return "\n".join(self.lines).strip()
 
     def result(self):
-        # 태그로 닫아 두면 선택한 텍스트가 인용이나 코드 블록을 품어도 경계가 흔들리지 않는다
-        return "<selection>\n%s\n</selection>\n\n%s" % (self.quote, self.comment())
+        blocks = []
+        if self.context:
+            body = "\n".join("%s: %s" % (key, value) for key, value in self.context)
+            blocks.append(tag("context", body))
+        blocks.append(tag("selection", self.quote))
+        blocks.append(self.comment())
+        return "\n\n".join(blocks)
 
     # --- 그리기 -----------------------------------------------------------
     def draw(self, scr):
@@ -134,6 +153,10 @@ class Note:
             start = cols - 2 - width(origin)
             if start > end + 2:
                 self.put(scr, 0, start, origin, curses.A_DIM)
+
+        if self.context:
+            summary = "  \u00b7  ".join(v for k, v in self.context if k != "title")
+            self.put(scr, 1, 2, summary[:inner], curses.A_DIM)
 
         self.quote_top = clamp(self.quote_top, len(quote_lines) - quote_show)
         title = "selected"

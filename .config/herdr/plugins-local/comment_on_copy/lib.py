@@ -1,4 +1,4 @@
-import json, os, socket, subprocess
+import json, os, re, socket, subprocess
 
 STATE = os.environ.get("HERDR_PLUGIN_STATE_DIR") or os.path.expanduser(
     "~/.local/state/herdr/plugins/comment_on_copy"
@@ -163,3 +163,131 @@ def mark(on):
             })
         except Exception:
             pass
+
+
+def short(path):
+    home = os.path.expanduser("~")
+    return "~" + path[len(home):] if path.startswith(home) else path
+
+
+def git_branch(cwd):
+    if not cwd:
+        return None
+    try:
+        out = subprocess.run(["git", "-C", cwd, "rev-parse", "--abbrev-ref", "HEAD"],
+                             capture_output=True, text=True, timeout=2)
+    except Exception:
+        return None
+    return out.stdout.strip() or None
+
+
+def running(pane_id):
+    """그 pane에서 무엇이 돌고 있었는지. 에러를 뱉은 명령이 여기 남는다."""
+    try:
+        info = call("pane.process_info", {"pane_id": pane_id})["result"]["process_info"]
+    except Exception:
+        return None
+    procs = info.get("foreground_processes") or []
+    if not procs:
+        return None
+    last = procs[-1]
+    name = (last.get("name") or last.get("argv0") or "").lstrip("-")
+    args = [a for a in (last.get("argv") or [])[1:] if not a.startswith("-")]
+    if name and args:
+        return "%s %s" % (name, " ".join(args[:2]))
+    return name or None
+
+
+def files_in(text, cwd):
+    """텍스트에 나온 경로 중 실제로 있는 것만 고른다. 없으면 아무것도 붙이지 않는다."""
+    found = []
+    for token in re.findall(r"[\w./~@+-]+\.[\w]+(?::\d+)?", text):
+        path = token.split(":")[0]
+        full = os.path.expanduser(path) if path.startswith("~") else os.path.join(cwd or "", path)
+        if token not in found and os.path.exists(full):
+            found.append(token)
+    return found[:5]
+
+
+def build_context(pane_id, text, source):
+    """복사 시점의 주변 정보를 모은다. 값이 없는 항목은 넣지 않는다."""
+    rows = []
+    pane = {}
+    if pane_id:
+        try:
+            pane = call("pane.get", {"pane_id": pane_id})["result"]["pane"]
+        except Exception:
+            pane = {}
+    spaces = _labels("workspace.list", "workspaces", "workspace_id")
+    tabs = _labels("tab.list", "tabs", "tab_id")
+    cwd = pane.get("foreground_cwd") or pane.get("cwd")
+
+    if pane.get("workspace_id"):
+        rows.append(("workspace", spaces.get(pane["workspace_id"], pane["workspace_id"])))
+    if pane.get("tab_id"):
+        rows.append(("tab", tabs.get(pane["tab_id"], pane["tab_id"])))
+    if pane_id:
+        who = pane.get("agent") or running(pane_id) or "shell"
+        rows.append(("pane", "%s (%s)" % (pane_id, who)))
+    if pane.get("terminal_title_stripped"):
+        rows.append(("title", pane["terminal_title_stripped"]))
+    if cwd:
+        rows.append(("cwd", short(cwd)))
+    branch = git_branch(cwd)
+    if branch:
+        rows.append(("branch", branch))
+
+    body = text.rstrip("\n")
+    origin = find_source(body, cwd)
+    count = len(body.split("\n"))
+    shape = "%d line%s, %d chars" % (count, "" if count == 1 else "s", len(body))
+    # 파일 위치를 알아냈으면 화면 좌표까지 둘 이유가 없다
+    if source and not origin:
+        shape += ", screen row %d" % source["row"]
+    rows.append(("selection", shape))
+    if origin:
+        rows.append(("file", origin))
+    files = [f for f in files_in(body, cwd) if not origin or not f.startswith(origin.split(":")[0])]
+    if files:
+        rows.append(("files", " ".join(files)))
+    return rows
+
+
+def find_source(text, cwd):
+    """복사한 내용이 어느 파일에서 왔는지 저장소에서 찾는다.
+
+    편집기 안에서 복사하면 파일 이름이 어디에도 남지 않는다. 가장 긴 줄로
+    검색해서 한두 파일로 좁혀질 때만 결과를 쓴다.
+    """
+    if not cwd or not os.path.isdir(cwd):
+        return None
+    lines = [l.strip() for l in text.split("\n")]
+    needle = max(lines, key=len) if lines else ""
+    if len(needle) < 30:
+        return None
+    try:
+        hit = subprocess.run(
+            ["rg", "--fixed-strings", "--line-number", "--max-count", "1",
+             "--no-messages", "--", needle, cwd],
+            capture_output=True, text=True, timeout=3)
+    except Exception:
+        return None
+    rows = [r for r in hit.stdout.split("\n") if r.strip()]
+    if not rows or len(rows) > 3:
+        return None
+    path, _, rest = rows[0].partition(":")
+    line = rest.split(":")[0]
+    # 검색에 쓴 줄이 아니라 선택 범위가 시작하는 줄을 가리키게 한다
+    head = next((l for l in lines if len(l) >= 12), "")
+    if head and head != needle:
+        try:
+            first = subprocess.run(
+                ["rg", "--fixed-strings", "--line-number", "--max-count", "1",
+                 "--no-messages", "--", head, path],
+                capture_output=True, text=True, timeout=2)
+            found = first.stdout.partition(":")[0]
+            if found.strip().isdigit():
+                line = found.strip()
+        except Exception:
+            pass
+    return "%s:%s" % (os.path.relpath(path, cwd), line)
