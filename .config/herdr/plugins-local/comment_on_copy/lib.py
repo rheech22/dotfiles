@@ -306,3 +306,31 @@ def origin_of(pane_id):
     return {"pane_id": pane_id,
             "tab_id": pane.get("tab_id"),
             "workspace_id": pane.get("workspace_id")}
+
+
+def theme():
+    """herdr 설정의 [theme.custom] 팔레트. 없으면 빈 값을 준다.
+
+    config는 소켓 옆에 있다. Python 3.9에는 tomllib이 없고 필요한 것이
+    `이름 = "#rrggbb"` 뿐이라 그 형태만 읽는다.
+    """
+    socket_path = os.environ.get("HERDR_SOCKET_PATH", "")
+    config = os.path.join(os.path.dirname(socket_path), "config.toml")
+    if not socket_path or not os.path.exists(config):
+        return {}
+    colors, section = {}, None
+    try:
+        with open(config) as f:
+            for raw in f:
+                line = raw.strip()
+                if line.startswith("["):
+                    section = line.strip("[]")
+                    continue
+                if section != "theme.custom" or line.startswith("#"):
+                    continue
+                match = re.match(r'([\w_]+)\s*=\s*"(#[0-9a-fA-F]{3,6})"', line)
+                if match:
+                    colors[match.group(1)] = match.group(2)
+    except OSError:
+        return {}
+    return colors

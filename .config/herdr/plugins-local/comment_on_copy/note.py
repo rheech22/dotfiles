@@ -4,7 +4,7 @@ import curses, json, locale, os, sys, termios
 from unicodedata import east_asian_width
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lib import LOCK, PAYLOAD, pbcopy, send_input, submit
+from lib import LOCK, PAYLOAD, pbcopy, send_input, submit, theme
 
 locale.setlocale(locale.LC_ALL, "")
 # ncurses는 Esc를 시퀀스 시작으로 보고 기본 1초를 기다린다
@@ -12,6 +12,33 @@ os.environ.setdefault("ESCDELAY", "25")
 
 QUOTE_LINES = 5
 STATUS_ATTR = {"hint": curses.A_DIM}
+STYLE = {"accent": curses.A_BOLD, "faint": curses.A_DIM, "body": 0}
+
+
+def xterm256():
+    """xterm 256색 팔레트의 RGB 값."""
+    base = [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128),
+            (128, 0, 128), (0, 128, 128), (192, 192, 192), (128, 128, 128),
+            (255, 0, 0), (0, 255, 0), (255, 255, 0), (0, 0, 255), (255, 0, 255),
+            (0, 255, 255), (255, 255, 255)]
+    steps = [0, 95, 135, 175, 215, 255]
+    cube = [(steps[r], steps[g], steps[b])
+            for r in range(6) for g in range(6) for b in range(6)]
+    grays = [(8 + i * 10,) * 3 for i in range(24)]
+    return base + cube + grays
+
+
+def nearest(hex_color, palette):
+    """테마 색에 가장 가까운 팔레트 번호. 팔레트를 바꾸지 않고 고르기만 한다."""
+    value = hex_color.lstrip("#")
+    if len(value) == 3:
+        value = "".join(ch * 2 for ch in value)
+    try:
+        want = tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+    except ValueError:
+        return None
+    return min(range(len(palette)),
+               key=lambda i: sum((a - b) ** 2 for a, b in zip(palette[i], want)))
 
 
 def tag(name, body):
@@ -149,26 +176,26 @@ class Note:
         body_row = quote_row + quote_show + 3
         body_show = max(1, bar - body_row - 2)
 
-        self.put(scr, 0, 2, "comment", curses.A_BOLD)
-        self.put(scr, 0, 11, "to", curses.A_DIM)
+        self.put(scr, 0, 2, "comment", STYLE["faint"])
+        self.put(scr, 0, 11, "to", STYLE["faint"])
         name = self.target["name"] if self.target else "nowhere"
-        self.put(scr, 0, 14, name, curses.A_BOLD if self.target else curses.A_DIM)
+        self.put(scr, 0, 14, name, STYLE["accent"] if self.target else STYLE["faint"])
         end = 14 + width(name)
         # 목적지를 바꾸는 조작이므로 목적지 옆에 둔다
         if self.agents and (len(self.agents) >= 2 or not self.target):
             pick = "[ ^L  change ]" if self.target else "[ ^L  pick ]"
-            self.put(scr, 0, end + 2, pick)
+            self.put(scr, 0, end + 2, pick, STYLE["faint"])
             self.buttons["choose"] = (0, end + 2, end + 2 + width(pick))
             end += 2 + width(pick)
         if self.source:
             origin = "%s row %d" % (self.source["label"], self.source["row"])
             start = cols - 2 - width(origin)
             if start > end + 2:
-                self.put(scr, 0, start, origin, curses.A_DIM)
+                self.put(scr, 0, start, origin, STYLE["faint"])
 
         if self.context:
             summary = "  \u00b7  ".join(v for k, v in self.context if k != "title")
-            self.put(scr, 1, 2, summary[:inner], curses.A_DIM)
+            self.put(scr, 1, 2, summary[:inner], STYLE["faint"])
 
         self.quote_top = clamp(self.quote_top, len(quote_lines) - quote_show)
         title = "selected"
@@ -177,7 +204,7 @@ class Note:
                                      self.quote_top + quote_show, len(quote_lines))
         self.frame(scr, quote_row, cols, quote_show + 2, title)
         for i, line in enumerate(quote_lines[self.quote_top:self.quote_top + quote_show]):
-            self.put(scr, quote_row + 1 + i, 3, line, curses.A_DIM)
+            self.put(scr, quote_row + 1 + i, 3, line)
         self.scrollbar(scr, quote_row, cols, quote_show, len(quote_lines), self.quote_top)
         self.regions = {"quote": (quote_row, quote_row + quote_show + 1),
                         "body": (body_row, body_row + body_show + 1)}
@@ -242,15 +269,16 @@ class Note:
             title = agent["title"] or "—"
             text = "%s %d. %-22s %-9s %s" % (
                 mark, i + 1, agent["name"], agent["status"], title[:room])
-            attr = curses.A_BOLD if i == self.cursor else 0
+            attr = STYLE["accent"] if i == self.cursor else 0
             self.put(scr, top + 1 + i, 3, text, attr)
             self.buttons["pick:%d" % i] = (top + 1 + i, 3, 3 + width(text) + 2)
 
     def draw_bar(self, scr, bar, inner):
-        items = [("close", "[ esc  close ]", 0), ("copy", "[ ^Y  copy ]", 0)]
+        items = [("close", "[ esc  close ]", STYLE["faint"]),
+                 ("copy", "[ ^Y  copy ]", STYLE["faint"])]
         if self.target:
             items.append(("send", "[ ^S  insert ]", 0))
-            items.append(("send_now", "[ ^E  send ]", curses.A_BOLD))
+            items.append(("send_now", "[ ^E  send ]", STYLE["accent"]))
         x = 2
         for name, text, attr in items:
             self.put(scr, bar, x, text, attr)
@@ -273,17 +301,18 @@ class Note:
         span = show - size
         start = int(round(offset * span / float(max(1, total - show)))) if span > 0 else 0
         for i in range(show):
-            mark = "\u2503" if start <= i < start + size else "\u2502"
-            self.put(scr, top + 1 + i, x, mark,
-                     0 if start <= i < start + size else curses.A_DIM)
+            held = start <= i < start + size
+            self.put(scr, top + 1 + i, x, "\u2503" if held else "\u2502",
+                     STYLE["accent"] if held else STYLE["faint"])
 
     def frame(self, scr, top, cols, height, title):
         inner = max(20, cols - 4)
-        self.put(scr, top, 2, "┌" + title + "─" * max(0, inner - width(title) - 2) + "┐")
+        faint = STYLE["faint"]
+        self.put(scr, top, 2, "┌" + title + "─" * max(0, inner - width(title) - 2) + "┐", faint)
         for i in range(1, height - 1):
-            self.put(scr, top + i, 2, "│")
-            self.put(scr, top + i, 2 + inner - 1, "│")
-        self.put(scr, top + height - 1, 2, "└" + "─" * (inner - 2) + "┘")
+            self.put(scr, top + i, 2, "│", faint)
+            self.put(scr, top + i, 2 + inner - 1, "│", faint)
+        self.put(scr, top + height - 1, 2, "└" + "─" * (inner - 2) + "┘", faint)
 
     def hit(self, y, x):
         for name, (by, start, end) in self.buttons.items():
@@ -354,15 +383,7 @@ def read_event(scr):
 def run(scr, note):
     if hasattr(curses, "set_escdelay"):
         curses.set_escdelay(25)
-    try:
-        curses.start_color()
-        curses.use_default_colors()
-        curses.init_pair(1, curses.COLOR_GREEN, -1)
-        curses.init_pair(2, curses.COLOR_YELLOW, -1)
-        STATUS_ATTR["ok"] = curses.color_pair(1)
-        STATUS_ATTR["warn"] = curses.color_pair(2)
-    except curses.error:
-        pass
+    paint()
     curses.curs_set(1)
     curses.mousemask(curses.ALL_MOUSE_EVENTS)
     scr.keypad(True)
@@ -384,6 +405,35 @@ def run(scr, note):
         termios.tcsetattr(fd, termios.TCSANOW, saved)
         sys.stdout.write("\x1b[?1006l\x1b[?1000l")
         sys.stdout.flush()
+
+
+def paint():
+    """herdr 테마 색을 쓰고, 못 읽으면 터미널 기본 팔레트로 떨어진다."""
+    try:
+        curses.start_color()
+        curses.use_default_colors()
+    except curses.error:
+        return
+    colors = theme()
+    palette = xterm256() if curses.COLORS >= 256 else []
+    fallback = {"accent": curses.COLOR_MAGENTA, "subtext0": curses.COLOR_WHITE,
+                "green": curses.COLOR_GREEN, "yellow": curses.COLOR_YELLOW}
+    pairs = {"accent": 1, "subtext0": 2, "green": 3, "yellow": 4}
+    picked = {}
+    for name, index in pairs.items():
+        number = nearest(colors[name], palette) if colors.get(name) and palette else None
+        if number is None:
+            number = fallback[name]
+        try:
+            curses.init_pair(index, number, -1)
+            picked[name] = curses.color_pair(index)
+        except curses.error:
+            picked[name] = 0
+    STYLE["accent"] = picked.get("accent", curses.A_BOLD) | curses.A_BOLD
+    STYLE["faint"] = picked.get("subtext0", curses.A_DIM)
+    STATUS_ATTR["hint"] = STYLE["faint"]
+    STATUS_ATTR["ok"] = picked.get("green", 0)
+    STATUS_ATTR["warn"] = picked.get("yellow", 0)
 
 
 def loop(scr, note):
