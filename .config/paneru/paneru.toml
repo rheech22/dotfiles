@@ -22,7 +22,24 @@ default_workspaces = 3
 horizontal_mouse_warp = 1
 
 focus_follows_mouse = true
-mouse_follows_focus = true
+# Off: the cursor warp does not wait for the strip to finish scrolling. It
+# aims at the focused window's position *before* the scroll — off screen, for
+# the window you just moved to — and lands clamped to the display edge while
+# the window slides to the centre. Measured: focus east left the cursor 5px
+# from the right edge, focus west 4px from the left, both with the window
+# centred at 1280. With horizontal_mouse_warp's EDGE_THRESHOLD at 3px, that
+# parks the cursor two pixels from jumping to the other display, where
+# focus_follows_mouse would then hand focus to whatever sits under it.
+#
+# auto_center is not the cause: with every window at full width, centring and
+# scrolling-into-view land in the same place, and turning it off changed
+# nothing.
+#
+# The cost is narrow layouts. With several columns visible at once the cursor
+# can sit over a column other than the newly focused one, and
+# focus_follows_mouse takes focus straight back. Turning that off too is the
+# next step if that starts to bite.
+mouse_follows_focus = false
 auto_center = true
 window_resize_cycle = true
 
