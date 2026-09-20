@@ -322,3 +322,10 @@ cjk_ime_cursor_shape = "steady_bar"
 # Maximum scrollback buffer size in bytes retained per pane terminal.
 # Matches Ghostty's default scrollback-limit behavior.
 # scrollback_limit_bytes = 10000000
+
+# --- dragnote: 드래그하면 코멘트 창이 뜨는 모드 토글 ---
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "dragnote.toggle"
+description = "toggle drag-note mode"

@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""드래그 모드를 켜고 끈다. watcher가 살아 있으면 켜진 상태다."""
+import os, signal, subprocess, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from lib import LOCK, PID, notify
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def running_pid():
+    try:
+        with open(PID) as f:
+            pid = int(f.read().strip())
+    except (OSError, ValueError):
+        return None
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return None
+    return pid
+
+
+def main():
+    pid = running_pid()
+    if pid:
+        os.kill(pid, signal.SIGTERM)
+        for path in (PID, LOCK):
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+        notify("Drag note 끔", "드래그해도 코멘트 창이 뜨지 않습니다.")
+        return
+    subprocess.Popen(
+        [sys.executable, os.path.join(HERE, "watch.py")],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+    notify("Drag note 켬", "드래그로 선택하면 코멘트 창이 뜹니다.")
+
+
+if __name__ == "__main__":
+    main()

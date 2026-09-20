@@ -1,0 +1,21 @@
+id = "dragnote"
+name = "Drag Note"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "드래그 모드가 켜져 있는 동안 선택한 텍스트에 코멘트를 단다."
+platforms = ["macos"]
+
+[[actions]]
+id = "toggle"
+title = "Toggle drag-note mode"
+description = "드래그하면 코멘트 창이 뜨는 모드를 켜고 끈다."
+contexts = ["global"]
+command = ["python3", "toggle.py"]
+
+[[panes]]
+id = "note"
+title = "Drag note"
+placement = "popup"
+width = 88
+height = 20
+command = ["python3", "note.py"]

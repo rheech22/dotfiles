@@ -7,6 +7,8 @@
 #   Collie   phone bridge for Herdr panes  (github.com/AltanS/collie)
 #   Annotate comment on panes and documents (github.com/plannotator/herdr-annotate)
 #
+# dragnote is local to this repository and is linked from plugins-local/ instead.
+#
 # Collie also needs a config file it owns; see .config/herdr/collie.env.example.
 
 set -eu
@@ -18,6 +20,8 @@ command -v herdr >/dev/null 2>&1 || {
 
 herdr plugin install AltanS/collie "$@"
 herdr plugin install plannotator/herdr-annotate "$@"
+
+herdr plugin link "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/plugins-local/dragnote"
 
 herdr config check
 herdr server reload-config
