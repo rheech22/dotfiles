@@ -111,6 +111,8 @@ def agents():
         out.append({
             "pane_id": pane_id,
             "pane_no": pane_id.split(":")[-1],
+            "workspace_id": row.get("workspace_id"),
+            "tab_id": row.get("tab_id"),
             "agent": row.get("agent") or "agent",
             "workspace": spaces.get(row.get("workspace_id"), row.get("workspace_id") or "?"),
             "tab": tabs.get(row.get("tab_id"), ""),
@@ -291,3 +293,16 @@ def find_source(text, cwd):
         except Exception:
             pass
     return "%s:%s" % (os.path.relpath(path, cwd), line)
+
+
+def origin_of(pane_id):
+    """복사가 일어난 자리. 목적지를 좁힐 때 탭과 workspace 범위로 쓴다."""
+    if not pane_id:
+        return None
+    try:
+        pane = call("pane.get", {"pane_id": pane_id})["result"]["pane"]
+    except Exception:
+        return None
+    return {"pane_id": pane_id,
+            "tab_id": pane.get("tab_id"),
+            "workspace_id": pane.get("workspace_id")}

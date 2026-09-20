@@ -59,7 +59,8 @@ class Note:
         self.agents = payload.get("agents") or []
         self.context = [tuple(row) for row in payload.get("context") or []]
         self.by_pane = {a["pane_id"]: a for a in self.agents}
-        self.target = self.pick_target(payload.get("focused_pane_id"))
+        self.target = self.pick_target(payload.get("focused_pane_id"),
+                                       payload.get("origin") or {})
         self.lines = [""]
         self.row = 0
         self.col = 0
@@ -76,13 +77,24 @@ class Note:
     def say(self, text, kind="hint"):
         self.status = (text, kind)
 
-    def pick_target(self, focused):
-        """선택이 나온 pane을 먼저 보고, 없으면 드래그 시점의 포커스 pane을 본다."""
+    def pick_target(self, focused, origin):
+        """복사한 자리에서 가까운 순서로 에이전트를 찾는다.
+
+        같은 pane, 드래그 시점의 포커스, 같은 탭, 같은 workspace, 그리고 전체
+        순이다. 범위마다 후보가 하나일 때만 고른다. 둘 이상이면 사람이 고르는
+        편이 낫고, 그때 `^L`이 그 일을 한다.
+        """
         if self.source and self.source.get("pane_id") in self.by_pane:
             return self.by_pane[self.source["pane_id"]]
         if focused in self.by_pane:
             return self.by_pane[focused]
-        return None
+        for field in ("tab_id", "workspace_id"):
+            if not origin.get(field):
+                continue
+            near = [a for a in self.agents if a.get(field) == origin[field]]
+            if len(near) == 1:
+                return near[0]
+        return self.agents[0] if len(self.agents) == 1 else None
 
     def target_label(self):
         return self.target["name"]

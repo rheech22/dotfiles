@@ -5,7 +5,7 @@ from collections import deque
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lib import (LOCK, PAYLOAD, PID, agents, build_context, focused_pane_id, locate,
-                 mark, notify, pbpaste)
+                 mark, notify, origin_of, pbpaste)
 
 POLL_SECONDS = 0.35
 MARK_SECONDS = 5
@@ -119,6 +119,7 @@ def main():
                 "focused_pane_id": focused,
                 "agents": agents(),
                 # 복사 시점의 주변 정보. 창이 뜬 뒤에 물어보면 이미 달라져 있다
+                "origin": origin_of(source["pane_id"] if source else focused),
                 "context": build_context(source["pane_id"] if source else focused, current, source),
             }
             with open(PAYLOAD, "w") as f:
