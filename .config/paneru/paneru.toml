@@ -4,8 +4,12 @@
 # paneru has no built-in keybindings: every action must be bound here.
 # Bindings avoid `cmd` because macOS reserves cmd-h (hide) and cmd-m (minimise).
 
-# row 1 = work strip, row 2 = deliberately empty (bare desktop)
-default_workspaces = 2
+# Three rows per display, fixed. paneru has no command to remove a virtual
+# workspace — `reap_empty_workspaces` is all-or-nothing and would also take
+# rows left deliberately empty — so a bar button that adds them can only grow.
+# Note this applies when a space is first created, not on every restart: the
+# row count then persists as runtime state.
+default_workspaces = 3
 
 [options]
 # Displays sit side by side physically (LG left, Studio right) but are arranged
@@ -98,8 +102,10 @@ window_snap = "alt - x"
 # virtual workspaces
 window_virtualnum_1 = "alt - 1"
 window_virtualnum_2 = "alt - 2"
+window_virtualnum_3 = "alt - 3"
 window_virtualsendnum_1 = "alt + shift - 1"
 window_virtualsendnum_2 = "alt + shift - 2"
+window_virtualsendnum_3 = "alt + shift - 3"
 
 # state
 window_center = "alt - c"

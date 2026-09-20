@@ -6,7 +6,7 @@
 # the config and the plugins need lives here and is sourced by both.
 
 MAX_WINDOWS=8
-WORKSPACES=2
+WORKSPACES=3
 
 # vague — neutrals from wezterm/themes/palettes.lua, accents from
 # starship/themes/vague.toml.
@@ -38,14 +38,23 @@ paneru_display_for() {
 
 # Echoes the virtual workspace number currently shown on a paneru display.
 #
-# The `active` flag in `paneru query state` is global — it marks the row that
-# holds focus, so the other display's row always reads false. A row is the one
-# on screen for its display if it holds a window that is visible there.
+# For the display that holds focus, `paneru query active` states it outright —
+# no inference needed, and this is the display the user just acted on.
 #
-# A display with no windows leaves nothing to infer from; assume row 1.
+# For any other display there is no direct answer: the `active` flag in
+# `query state` is global, so an unfocused display's row always reads false.
+# Fall back to the row holding a window that is visible on that display.
+#
+# That inference cannot see an empty row — switching to one leaves nothing
+# visible to point at — which is why the active display is answered first.
+# An unfocused display sitting on an empty row still reports 1.
 paneru_current_row() {
 	paneru query state --json 2>/dev/null | jq -r --argjson d "$1" '
-		[ .virtual_workspaces[]
-		  | select([.windows[] | select(.display_id == $d and .visible)] | length > 0)
-		  | .number ] | first // 1'
+		if .active.display_id == $d then
+			.active.virtual_workspace_number
+		else
+			[ .virtual_workspaces[]
+			  | select([.windows[] | select(.display_id == $d and .visible)] | length > 0)
+			  | .number ] | first // 1
+		end'
 }
