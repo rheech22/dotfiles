@@ -1,10 +1,17 @@
 #!/bin/bash
-# $NAME is "paneru.<n>"; the trailing number is the workspace it stands for.
-sid="${NAME##*.}"
-current="$(paneru query active --json 2>/dev/null | jq -r '.virtual_workspace_number // empty')"
+# $NAME is "ws.<sketchybar display>.<workspace number>".
+. "$CONFIG_DIR/plugins/paneru_display.sh"
 
-if [ "$sid" = "$current" ]; then
-	sketchybar --set "$NAME" icon.color="${BG:-0xff141415}" background.color="${ACCENT:-0xff6e94b2}"
+sb_display="${NAME#ws.}"
+sb_display="${sb_display%%.*}"
+wsnum="${NAME##*.}"
+
+paneru_display="$(paneru_display_for "$sb_display")"
+[ -z "$paneru_display" ] && exit 0
+current="$(paneru_current_row "$paneru_display")"
+
+if [ "$wsnum" = "$current" ]; then
+	sketchybar --set "$NAME" icon.color="$BG" background.color="$ACCENT"
 else
-	sketchybar --set "$NAME" icon.color="${DIM:-0xff8b8b8b}" background.color="${SURFACE:-0xff282830}"
+	sketchybar --set "$NAME" icon.color="$DIM" background.color="$SURFACE"
 fi
