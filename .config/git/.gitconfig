@@ -91,3 +91,5 @@
 
 [includeIf "hasconfig:remote.*.url:https://github.com/riiid/**"]
   path = ~/.gitconfig.local
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials

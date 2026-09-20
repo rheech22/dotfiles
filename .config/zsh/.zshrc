@@ -58,7 +58,7 @@ alias gsw="gh auth switch && gh auth setup-git"
 alias ll="eza --all --show-symlinks --header --long --grid --color=always --color-scale --color-scale-mode=gradient --icons --hyperlink --time-style='+%y/%m/%d|%H:%M' --no-user --no-filesize"
 alias lg="lazygit"
 alias cc="claude"
-alias oo="opencode"
+alias oo="opencode --auto"
 alias dot="cd $HOME/dotfiles"
 alias zsh="source ~/.zshrc"
 alias z='__zoxide_z'
