@@ -87,13 +87,27 @@ toggle_sidebar = "prefix+b"
 # type = "popup" opens a session-modal terminal without changing the tab layout.
 # Popup width and height accept terminal cells or percentages such as "80%".
 # On Windows, command strings run through cmd.exe /d /c.
-# TODO: 커스텀 커맨드 추가
-# [[keys.command]]
-# key = "prefix+g"
-# type = "popup"
-# command = "hunk diff"
-# width = "80%"
-# height = "80%"
+[[keys.command]]
+key = "prefix+g"
+type = "popup"
+command = '''
+choice="$("$HERDR_BIN_PATH" tab list |
+  jq -r '.result.tabs[]
+    | select(.tab_id != env.HERDR_ACTIVE_TAB_ID)
+    | "\(.tab_id)\t\(.label)\t[\(.workspace_id)]"' |
+  fzf --prompt="Move pane to tab> ")" || exit 0
+
+tab_id="${choice%%$'\t'*}"
+[ -n "$tab_id" ] || exit 0
+
+"$HERDR_BIN_PATH" pane move "$HERDR_ACTIVE_PANE_ID" \
+  --tab "$tab_id" \
+  --split right \
+  --focus
+'''
+description = "move pane to existing tab"
+width = "70%"
+height = "60%"
 
 # --- annotate plugin (plannotator/herdr-annotate) ---
 # NOTE: upstream README suggests prefix+o for annotate.open, which collides with
@@ -237,7 +251,7 @@ hide_tab_bar_when_single_tab = true
 # accent = "cyan"
 
 # Background notification popup delivery
-agent_panel_sort = "spaces"
+agent_panel_sort = "priority"
 
 [ui.sidebar.agents]
 rows = [
@@ -332,3 +346,29 @@ key = "prefix+f"
 type = "plugin_action"
 command = "comment_on_copy.toggle"
 description = "toggle comment on copy"
+
+# BEGIN jhochenbaum.hunkdiff — managed by `setup-keys`; edit via the plugin, not by hand
+[[keys.command]]
+key = "prefix+shift+h"
+type = "plugin_action"
+command = "jhochenbaum.hunkdiff.review"
+description = "hunk: review changes"
+
+[[keys.command]]
+key = "prefix+shift+s"
+type = "plugin_action"
+command = "jhochenbaum.hunkdiff.send-review"
+description = "hunk: send review to agent"
+
+[[keys.command]]
+key = "prefix+shift+c"
+type = "plugin_action"
+command = "jhochenbaum.hunkdiff.review:commit"
+description = "hunk: review the last commit"
+
+[[keys.command]]
+key = "prefix+shift+g"
+type = "plugin_action"
+command = "jhochenbaum.hunkdiff.review:staged"
+description = "hunk: review staged changes"
+# END jhochenbaum.hunkdiff

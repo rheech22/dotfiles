@@ -69,6 +69,12 @@ export const configItems: readonly ConfigItem[] = [
     description: "Hunk diff viewer",
   },
   {
+    id: "herdr-hunkdiff",
+    source: ".config/herdr/plugins/config/jhochenbaum.hunkdiff/config.toml",
+    target: ".config/herdr/plugins/config/jhochenbaum.hunkdiff/config.toml",
+    description: "Herdr hunk-diff review plugin",
+  },
+  {
     id: "claude-settings",
     source: ".claude/settings.json",
     target: ".claude/settings.json",
