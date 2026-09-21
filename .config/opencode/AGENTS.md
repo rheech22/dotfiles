@@ -22,3 +22,8 @@
 - Do not add emojis unless explicitly requested
 - Always confirm before applying changes to persistent config files (AGENTS.md, opencode.json, etc.)
 - Prefer explicit user-triggered actions over automatic/proactive ones
+
+## CLI Tool Routing
+- Use `jq` for JSON extraction and transformation instead of parsing JSON with regex.
+- For syntax-aware structural code searches, load the `ast-grep` skill and use `ast-grep`; use Grep/`rg` for plain-text searches.
+- Use `hyperfine` only for explicit performance work. Include warmup and repeated runs, and verify correctness separately.
