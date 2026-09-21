@@ -2,8 +2,6 @@ local wezterm = require("wezterm")
 
 local commands = require("commands")
 local themes = require("themes")
-local hostname = wezterm.hostname()
-
 local config = wezterm.config_builder()
 local act = wezterm.action
 
@@ -50,11 +48,7 @@ themes.tabline.patch()
 
 -- Font settings
 config.font = wezterm.font("DankMono Nerd Font")
-if hostname == "ichanghyeogs-MacBook-Pro.local" then
-	config.font_size = 12
-else
-	config.font_size = 14.5
-end
+config.font_size = 12
 
 -- Appearance
 config.underline_thickness = "200%"
@@ -76,7 +70,7 @@ config.window_padding = {
 
 -- config.window_background_image = constants.bg_blurred
 config.macos_window_background_blur = 38
--- config.window_background_opacity = constants.opacity
+-- config.window_background_opacity = 0.5
 config.command_palette_font_size = 16
 config.command_palette_bg_color = "#5E4090"
 config.command_palette_rows = 10
