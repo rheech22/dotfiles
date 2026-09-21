@@ -1,6 +1,8 @@
 {
   "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true,
   "editorMode": "vim",
+  "model": "opus[1m]",
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {
@@ -137,6 +139,7 @@
       }
     ]
   },
+  "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "statusLine": {
     "command": "bash \"$HOME/.claude/statusline-command.sh\"",
