@@ -17,6 +17,7 @@ test("setup CLI enforces non-TTY approval, emits one JSON envelope, honors --bre
   await Promise.all([mkdir(home), mkdir(bin)]);
   const brew = join(bin, "brew");
   const badBrew = join(root, "brew");
+  const fd = join(bin, "fd");
   const brewMarker = join(root, "git-installed");
   const script = `#!/bin/sh
 if [ "$1" = list ]; then
@@ -30,7 +31,8 @@ exit 91
 `;
   await writeFile(brew, script);
   await writeFile(badBrew, "#!/bin/sh\nexit 92\n");
-  await Promise.all([chmod(brew, 0o755), chmod(badBrew, 0o755)]);
+  await writeFile(fd, "#!/bin/sh\nexit 0\n");
+  await Promise.all([chmod(brew, 0o755), chmod(badBrew, 0o755), chmod(fd, 0o755)]);
   t.after(() => rm(root, { recursive: true, force: true }));
   const env = {
     ...process.env,

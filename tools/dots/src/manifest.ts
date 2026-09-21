@@ -109,6 +109,18 @@ export const configItems: readonly ConfigItem[] = [
     description: "WezTerm terminal",
   },
   {
+    id: "paneru",
+    source: ".config/paneru",
+    target: ".config/paneru",
+    description: "Paneru window manager",
+  },
+  {
+    id: "sketchybar",
+    source: ".config/sketchybar",
+    target: ".config/sketchybar",
+    description: "SketchyBar menu bar",
+  },
+  {
     id: "yazi",
     source: ".config/yazi",
     target: ".config/yazi",

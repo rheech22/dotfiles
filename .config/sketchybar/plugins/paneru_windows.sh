@@ -33,8 +33,8 @@ while IFS=$'\t' read -r app focused floating visible; do
 	#   dim text — scrolled off screen. With sliver_width = 1 a neighbouring
 	#              window shows a single pixel, so the bar is the only place
 	#              the rest of the strip is visible at all.
-	# Otherwise full foreground, not the dim grey: MesloLGS ships only Regular
-	# and Bold, so contrast stands in for a half-step of weight.
+	# Otherwise full foreground, not the dim grey: contrast stands in for a
+	# half-step of weight.
 	if [ "$focused" = "true" ]; then
 		if [ "$floating" = "true" ]; then
 			bg="$MAUVE"

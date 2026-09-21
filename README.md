@@ -141,6 +141,29 @@ Create Git identity and overrides at `~/.gitconfig.local`; use [`.config/git/.lo
 
 Create the Collie bridge configuration at `$(herdr plugin config-dir herdr.collie)/.env`; use [`.config/herdr/collie.env.example`](.config/herdr/collie.env.example) as a template. It holds a Tailscale login and Web Push signing keys, so it stays machine-owned and is never committed. Generate its key pair per install with `collie push-keys`, then `collie restart`.
 
+For Paneru and SketchyBar, keep display ids out of tracked configuration. SketchyBar discovers its arrangement ids, CoreGraphics ids, display count, and built-in panel at startup, then writes a runtime cache under `~/Library/Caches/sketchybar/`. Select only stable UI preferences with a machine-owned file:
+
+```bash
+mkdir -p ~/.config/dotfiles
+cp ~/.config/sketchybar/machine.env.example ~/.config/dotfiles/machine.env
+```
+
+Set `DOTFILES_PROFILE` to `home`, `mobile`, or `default`; when no selector exists, `home` is used. Profiles live in `.config/sketchybar/profiles/` and must not contain display ids. SketchyBar's workspace click helper confirms Paneru has focused the clicked display before switching; if that cannot be confirmed, it safely does nothing. The common Paneru configuration intentionally remains shared across machines; macOS owns each machine's physical display arrangement. If Paneru behavior eventually needs to diverge, select a complete per-machine config with its supported `PANERU_CONFIG` environment variable instead of adding host checks to the common TOML.
+
+Install the applications before starting their services. Current Homebrew requires explicitly trusting SketchyBar's official formula:
+
+```bash
+brew install paneru
+brew tap FelixKratz/formulae
+brew trust --formula felixkratz/formulae/sketchybar
+brew install felixkratz/formulae/sketchybar
+paneru install
+paneru start
+brew services start felixkratz/formulae/sketchybar
+```
+
+The `paneru` and `sketchybar` link entries are managed by `dots setup` along with the other enabled configuration.
+
 ### Herdr plugins
 
 `.config/herdr/config.toml` binds keys for Collie, Annotate, and Comment on Copy. Herdr rewrites `~/.config/herdr/plugins.json` with absolute paths, so that file is not linked; install the plugins instead:

@@ -17,19 +17,48 @@ DIM=0xff8b8b8b
 ACCENT=0xff6e94b2
 MAUVE=0xffbb9dbd
 
-# SketchyBar numbers displays by arrangement; paneru reports the CoreGraphics
-# display id. They do not match. Re-derive with:
-#
-#   swift -e 'import CoreGraphics
-#   var n: UInt32 = 0; CGGetActiveDisplayList(0, nil, &n)
-#   var ids = [CGDirectDisplayID](repeating: 0, count: Int(n))
-#   CGGetActiveDisplayList(n, &ids, &n)
-#   for (i, id) in ids.enumerated() { print(i + 1, id) }'
-#
-# arrangement 1 = LG UltraFine = cgID 3
-# arrangement 2 = Studio Display = cgID 2
-PANERU_DISPLAY_1=3
-PANERU_DISPLAY_2=2
+# SketchyBar numbers displays by arrangement; Paneru reports CoreGraphics ids.
+# sketchybarrc refreshes this machine-owned cache once at startup. Plugins only
+# source it, avoiding repeated Swift processes and stale ids after docking.
+PANERU_DISPLAY_CACHE_DIR="$HOME/Library/Caches/sketchybar"
+PANERU_DISPLAY_MAP_FILE="$PANERU_DISPLAY_CACHE_DIR/paneru-display-map.sh"
+
+paneru_refresh_display_map() {
+	displays="$(sketchybar --query displays 2>/dev/null)" || return 1
+	[ -n "$displays" ] || return 1
+	builtin_id="$(/usr/bin/swift -e 'import CoreGraphics
+var count: UInt32 = 0
+CGGetActiveDisplayList(0, nil, &count)
+var ids = [CGDirectDisplayID](repeating: 0, count: Int(count))
+CGGetActiveDisplayList(count, &ids, &count)
+if let id = ids.first(where: { CGDisplayIsBuiltin($0) != 0 }) { print(id) }' 2>/dev/null)" || builtin_id=""
+
+	mkdir -p "$PANERU_DISPLAY_CACHE_DIR" || return 1
+	tmp_map="$(mktemp "$PANERU_DISPLAY_CACHE_DIR/paneru-display-map.XXXXXX")" || return 1
+	if ! {
+		printf "PANERU_SKETCHYBAR_DISPLAYS='%s'\n" "$(printf '%s\n' "$displays" | jq -r '[.[]."arrangement-id"] | map(tostring) | join(" ")')"
+		printf '%s\n' "$displays" | jq -r '.[] | "PANERU_DISPLAY_\(."arrangement-id")=\(.DirectDisplayID)"'
+		printf 'PANERU_BUILTIN_DISPLAY=%s\n' "$(printf '%s\n' "$displays" | jq -r --arg id "$builtin_id" '[.[] | select((.DirectDisplayID | tostring) == $id) | ."arrangement-id"] | first // ""')"
+	} >"$tmp_map"; then
+		rm -f "$tmp_map"
+		return 1
+	fi
+	chmod 600 "$tmp_map"
+	mv "$tmp_map" "$PANERU_DISPLAY_MAP_FILE" || return 1
+	. "$PANERU_DISPLAY_MAP_FILE"
+}
+
+if [ -r "$PANERU_DISPLAY_MAP_FILE" ]; then
+	. "$PANERU_DISPLAY_MAP_FILE"
+fi
+
+paneru_sketchybar_displays() {
+	printf '%s' "${PANERU_SKETCHYBAR_DISPLAYS:-}"
+}
+
+paneru_builtin_sketchybar_display() {
+	printf '%s' "${PANERU_BUILTIN_DISPLAY:-}"
+}
 
 # Echoes the paneru display id for a SketchyBar display number.
 paneru_display_for() {

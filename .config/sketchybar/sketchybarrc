@@ -26,11 +26,33 @@
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
 BAR_HEIGHT=40   # = paneru menubar_height (32) + paneru [padding] top (8)
-DISPLAYS="1 2"
+BUILTIN_WORKSPACE_POSITION=e
+EXTERNAL_WORKSPACE_POSITION=center
+
+# Select only stable UI preferences by machine. Display ids and the built-in
+# panel are discovered below; profiles never hard-code either one.
+DOTFILES_PROFILE="${DOTFILES_PROFILE:-home}"
+MACHINE_CONFIG="${DOTFILES_MACHINE_CONFIG:-$HOME/.config/dotfiles/machine.env}"
+if [ -r "$MACHINE_CONFIG" ]; then
+	. "$MACHINE_CONFIG"
+fi
+case "$DOTFILES_PROFILE" in
+	*[!A-Za-z0-9._-]* | '') DOTFILES_PROFILE=home ;;
+esac
+PROFILE_FILE="$CONFIG_DIR/profiles/$DOTFILES_PROFILE.sh"
+if [ -r "$PROFILE_FILE" ]; then
+	. "$PROFILE_FILE"
+fi
 
 # Constants and the display map live with the plugins: sketchybar spawns those
 # itself and passes only CONFIG_DIR, so an `export` here would not reach them.
 . "$PLUGIN_DIR/paneru_display.sh"
+if ! paneru_refresh_display_map; then
+	echo "sketchybar: could not discover the display map" >&2
+	exit 1
+fi
+DISPLAYS="$(paneru_sketchybar_displays)"
+BUILTIN_DISPLAY="$(paneru_builtin_sketchybar_display)"
 
 sketchybar --bar \
 	height="$BAR_HEIGHT" \
@@ -44,8 +66,8 @@ sketchybar --default \
 	y_offset=-1 \
 	padding_left=3 \
 	padding_right=3 \
-	icon.font="MesloLGS Nerd Font:Regular:14.0" \
-	label.font="MesloLGS Nerd Font:Bold:12.0" \
+	icon.font="DankMono Nerd Font:Regular:14.0" \
+	label.font="DankMono Nerd Font:Bold:12.0" \
 	icon.color="$FG" \
 	label.color="$FG" \
 	icon.padding_left=7 \
@@ -68,7 +90,7 @@ for d in $DISPLAYS; do
 			display="$d" \
 			drawing=off \
 			icon.drawing=off \
-			label.font="MesloLGS Nerd Font:Regular:11.0" \
+			label.font="DankMono Nerd Font:Regular:11.0" \
 			label.padding_left=9 \
 			label.padding_right=9 \
 			background.corner_radius=7 \
@@ -85,6 +107,9 @@ for d in $DISPLAYS; do
 		--subscribe "windows_watch.$d" paneru_change front_app_switched
 
 	##### centre: that display's virtual workspaces #####
+	# Paneru's command interface cannot target a display directly. The click
+	# helper first synchronizes focus with this item's display and only switches
+	# after Paneru confirms the target, preventing cross-display commands.
 	# Digits are monospaced on purpose: SF Pro gives "1" a narrower advance
 	# than "2", so the chips came out different widths and the "1" sat
 	# off-centre inside its own.
@@ -92,13 +117,17 @@ for d in $DISPLAYS; do
 	# background.color is set here as well as in the plugin: the plugin only
 	# runs once an event arrives, and until then an unset colour leaves the
 	# chip blank.
+	# The built-in panel's physical notch covers true center items. Its anchor is
+	# profile-controlled; external displays keep their ordinary center anchor.
+	workspace_position="$EXTERNAL_WORKSPACE_POSITION"
+	[ -n "$BUILTIN_DISPLAY" ] && [ "$d" = "$BUILTIN_DISPLAY" ] && workspace_position="$BUILTIN_WORKSPACE_POSITION"
 	for n in $(seq 1 "$WORKSPACES"); do
-		sketchybar --add item "ws.$d.$n" center \
+		sketchybar --add item "ws.$d.$n" "$workspace_position" \
 			--set "ws.$d.$n" \
 			display="$d" \
 			icon="$n" \
 			label.drawing=off \
-			icon.font="MesloLGS Nerd Font:Bold:13.0" \
+			icon.font="DankMono Nerd Font:Bold:13.0" \
 			icon.color="$DIM" \
 			icon.padding_left=11 \
 			icon.padding_right=11 \
@@ -106,9 +135,7 @@ for d in $DISPLAYS; do
 			background.height=24 \
 			background.drawing=on \
 			background.color="$SURFACE" \
-			script="$PLUGIN_DIR/paneru_workspace.sh" \
-			click_script="paneru send-cmd window virtual $n" \
-			--subscribe "ws.$d.$n" paneru_change
+			click_script=":"
 	done
 
 	##### right: clock #####
@@ -130,12 +157,31 @@ for d in $DISPLAYS; do
 		script="$PLUGIN_DIR/clock.sh"
 done
 
+# One state query updates every workspace button. Per-button subscriptions race
+# each other and can briefly disagree about which display currently has focus.
+sketchybar --add item workspaces_watch left \
+	--set workspaces_watch drawing=off script="$PLUGIN_DIR/paneru_workspace.sh" \
+	--subscribe workspaces_watch paneru_change front_app_switched
+
 ##### paneru event bridge #####
 # Fully detached — inheriting stdout would keep this config script alive, and
 # sketchybar lays the bar out only once the script exits. That leaves every
-# item parked at -9999 with the bar apparently missing.
-pkill -f 'paneru_listener.sh' 2>/dev/null
+# item parked at -9999 with the bar apparently missing. Keep the exact parent
+# PID instead of matching process command lines: a broad pkill can terminate
+# unrelated shells that merely mention paneru_listener.sh.
+LISTENER_PID_FILE="${TMPDIR:-/tmp}/sketchybar-paneru-listener.pid"
+if [ -r "$LISTENER_PID_FILE" ]; then
+	old_listener_pid="$(cat "$LISTENER_PID_FILE")"
+	case "$old_listener_pid" in
+		'' | *[!0-9]*) ;;
+		*)
+			pkill -TERM -P "$old_listener_pid" 2>/dev/null
+			kill "$old_listener_pid" 2>/dev/null
+			;;
+	esac
+fi
 nohup "$PLUGIN_DIR/paneru_listener.sh" >/dev/null 2>&1 &
+echo "$!" >"$LISTENER_PID_FILE"
 disown
 
 sketchybar --update
