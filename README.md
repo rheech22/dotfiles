@@ -143,11 +143,32 @@ Create the Collie bridge configuration at `$(herdr plugin config-dir herdr.colli
 
 ### Herdr plugins
 
-`.config/herdr/config.toml` binds keys for two Herdr plugins. Herdr rewrites `~/.config/herdr/plugins.json` with absolute paths, so that file is not linked; install the plugins instead:
+`.config/herdr/config.toml` binds keys for Collie, Annotate, and Comment on Copy. Herdr rewrites `~/.config/herdr/plugins.json` with absolute paths, so that file is not linked; install the plugins instead:
 
 ```bash
 .config/herdr/install-plugins.sh
 ```
+
+Comment on Copy is maintained as an independent Git project at
+`~/Projects/herdr-comment-on-copy`; its source is no longer part of dotfiles.
+Clone that project before running the installer.
+The TypeScript plugin requires Bun 1.3.0 or newer; the installer also installs its
+dependencies from the committed lockfile.
+
+For a different checkout location:
+
+```bash
+COMMENT_ON_COPY_PLUGIN_DIR=/path/to/herdr-comment-on-copy .config/herdr/install-plugins.sh
+```
+
+To relink only Comment on Copy during development:
+
+```bash
+herdr plugin link "$HOME/Projects/herdr-comment-on-copy"
+```
+
+The plugin keeps the `comment_on_copy` ID, `prefix+i` binding, and sidebar token.
+Its own README covers installation, development, and marketplace publication.
 
 
 ### Development
