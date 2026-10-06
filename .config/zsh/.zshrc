@@ -65,6 +65,7 @@ alias z='__zoxide_z'
 alias zi='__zoxide_zi'
 alias j='just'
 alias gd='hunk diff'
+alias p='pnpm'
 
 # Check if .zshrc.local exists and source it
 if [ -f "$HOME/.config/zsh/.zshrc.local" ]; then
