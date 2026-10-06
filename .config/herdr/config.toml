@@ -67,7 +67,7 @@ focus_pane_right = "prefix+l"
 split_vertical = "prefix+v"
 split_horizontal = "prefix+minus"
 
-close_pane = "prefix+x"
+close_pane = ["prefix+x", "alt+q"]
 zoom = "prefix+z" # legacy alias: fullscreen
 # resize_mode = "prefix+r"
 toggle_sidebar = "prefix+b"
