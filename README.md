@@ -125,6 +125,18 @@ Package status distinguishes resources managed by the selected Homebrew from com
 
 Dependency plans include Homebrew's expanded `--dry-run` preview. Installation disables Homebrew auto-update, implicit target upgrades, cleanup, installed-dependent checks, and secondary prompts. Homebrew may still require transitive dependency installs or upgrades; these are shown in the reviewed preview before confirmation. Dots never invokes uninstall, upgrade, cleanup, or rollback commands directly. A failed package stops the remaining installation and preserves already completed installs.
 
+### Agent Harness
+
+Global instructions, skills, rules and slash commands for Claude Code and Codex come from a separate repository, [`rheech22/harness`](https://github.com/rheech22/harness), not from this one. Dots does not link them because its link sources must live inside this repository. Clone the harness and let its own script place the links:
+
+```bash
+git clone https://github.com/rheech22/harness.git ~/harness
+node ~/harness/scripts/link.mjs --profile common,writing            # plan
+node ~/harness/scripts/link.mjs --profile common,writing --apply    # apply
+```
+
+The harness owns `~/.claude/CLAUDE.md`, `~/.claude/skills`, `~/.claude/rules`, `~/.claude/commands`, `~/.codex/AGENTS.md`, `~/.codex/rules/harness.rules`, `~/.codex/hooks.json` and `~/.agents/skills`. Dots keeps `~/.claude/settings.json`, the status line and hooks. The two must not claim the same path.
+
 ### Machine-Specific files
 
 Machine-local files are owned by the machine. Dots does not generate, read for planning, modify, back up, or link them.
