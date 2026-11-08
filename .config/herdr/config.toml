@@ -346,7 +346,7 @@ cjk_ime_cursor_shape = "steady_bar"
 
 # --- comment_on_copy: 복사하면 코멘트 창이 뜨는 모드 토글 ---
 [[keys.command]]
-key = "prefix+f"
+key = "alt+1"
 type = "plugin_action"
 command = "comment_on_copy.toggle"
 description = "toggle comment on copy"
