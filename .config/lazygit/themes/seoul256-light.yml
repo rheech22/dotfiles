@@ -19,8 +19,8 @@ gui:
       - '#616161'
     searchingActiveBorderColor:
       - '#9A7200'
-  authorColors:
-    '*': '#98BCBD'
+    authorColors:
+      '*': '#98BCBD'
 git:
-  paging:
-    pager: delta --light --features=hunk-light --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+  diffRenderers:
+    - command: delta --light --features=hunk-light --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
