@@ -135,7 +135,7 @@ node ~/harness/scripts/link.mjs --profile common,writing            # plan
 node ~/harness/scripts/link.mjs --profile common,writing --apply    # apply
 ```
 
-The harness owns `~/.claude/CLAUDE.md`, `~/.claude/skills`, `~/.claude/rules`, `~/.claude/commands`, `~/.codex/AGENTS.md`, `~/.codex/rules/harness.rules`, `~/.codex/hooks.json` and `~/.agents/skills`. Dots keeps `~/.claude/settings.json`, the status line and hooks. The two must not claim the same path.
+The harness owns `~/.claude/CLAUDE.md`, `~/.claude/skills`, `~/.claude/rules`, `~/.claude/commands`, `~/.codex/AGENTS.md`, `~/.codex/rules/harness.rules`, `~/.codex/hooks.json` and `~/.agents/skills`. Dots manages `~/.claude/settings.json`; custom instructions, status line and hook files are not distributed by Dots. The two must not claim the same path.
 
 ### Machine-Specific files
 
