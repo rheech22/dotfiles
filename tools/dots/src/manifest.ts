@@ -69,19 +69,6 @@ export const configItems: readonly ConfigItem[] = [
     description: "Hunk diff viewer",
   },
   {
-    id: "claude-settings",
-    source: ".claude/settings.json",
-    target: ".claude/settings.json",
-    description: "Claude Code global settings",
-    groups: ["claude"],
-  },
-  {
-    id: "opencode",
-    source: ".config/opencode",
-    target: ".config/opencode",
-    description: "OpenCode AI assistant",
-  },
-  {
     id: "wezterm",
     source: ".config/wezterm",
     target: ".config/wezterm",
@@ -158,5 +145,4 @@ export const dependencies: readonly Dependency[] = [
   { id: "herdr", command: "herdr", description: "Agent terminal", required: false },
   { id: "nvim", command: "nvim", description: "Text editor", required: false },
   { id: "yazi", command: "yazi", description: "File manager", required: false },
-  { id: "opencode", command: "opencode", description: "AI coding agent", required: false },
 ];

@@ -1,6 +1,0 @@
-{
-  "expectedDecision": "proceed",
-  "expectedDocType": "reference",
-  "mustInclude": ["AbortController", "fetch"],
-  "mustAvoid": ["summarizeSession", "plugin/wiki-forge"]
-}

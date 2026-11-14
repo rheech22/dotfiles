@@ -50,7 +50,7 @@ The configuration expects:
 - Git: GitHub CLI, Lazygit, `git-delta`, Hunk
 - Yazi: `fd`, ripgrep, `fzf`, zoxide
 - Terminal: WezTerm and DankMono Nerd Font
-- Automation and AI: Hammerspoon, Herdr, OpenCode
+- Automation and AI: Hammerspoon, Herdr
 - Development: Node.js, pnpm
 
 Some Yazi previewers require optional tools such as FFmpeg, 7-Zip, jq, Poppler, resvg, ImageMagick, ExifTool, mpv, and MediaInfo.
@@ -130,12 +130,16 @@ Dependency plans include Homebrew's expanded `--dry-run` preview. Installation d
 Global instructions, skills, rules and slash commands for Claude Code and Codex come from a separate repository, [`rheech22/harness`](https://github.com/rheech22/harness), not from this one. Dots does not link them because its link sources must live inside this repository. Clone the harness and let its own script place the links:
 
 ```bash
-git clone https://github.com/rheech22/harness.git ~/harness
-node ~/harness/scripts/link.mjs --profile common,writing            # plan
-node ~/harness/scripts/link.mjs --profile common,writing --apply    # apply
+git clone https://github.com/rheech22/harness.git
+cd harness
+node scripts/build.mjs
+node scripts/link.mjs --profile common,writing                    # plan
+node scripts/link.mjs --profile common,writing --apply            # apply
+node scripts/configure.mjs --runtime claude,codex                 # plan
+node scripts/configure.mjs --runtime claude,codex --apply         # apply
 ```
 
-The harness owns `~/.claude/CLAUDE.md`, `~/.claude/skills`, `~/.claude/rules`, `~/.claude/commands`, `~/.codex/AGENTS.md`, `~/.codex/rules/harness.rules`, `~/.codex/hooks.json` and `~/.agents/skills`. Dots manages `~/.claude/settings.json`; custom instructions, status line and hook files are not distributed by Dots. The two must not claim the same path.
+The harness owns `~/.claude/CLAUDE.md`, `~/.claude/skills`, `~/.claude/rules`, `~/.claude/commands`, `~/.codex/AGENTS.md`, `~/.codex/rules/harness.rules`, `~/.codex/hooks.json` and `~/.agents/skills`. The harness also manages declared Claude settings in `~/.claude/settings.json`. Dots does not distribute agent configuration files. The two must not claim the same path.
 
 ### Machine-Specific files
 
@@ -250,6 +254,5 @@ pnpm test
 - yazi `2.5.31`
 - rustc `1.94.0-nightly`
 - eslintd `14.3.0`
-- opencode `latest`
 - zoxide `0.9.9`
 - eza `0.23.4`
