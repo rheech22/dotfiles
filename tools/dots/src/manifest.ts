@@ -82,27 +82,6 @@ export const configItems: readonly ConfigItem[] = [
     groups: ["claude"],
   },
   {
-    id: "claude-instructions",
-    source: ".claude/CLAUDE.md",
-    target: ".claude/CLAUDE.md",
-    description: "Claude Code global instructions",
-    groups: ["claude"],
-  },
-  {
-    id: "claude-statusline",
-    source: ".claude/statusline-command.sh",
-    target: ".claude/statusline-command.sh",
-    description: "Claude Code status line",
-    groups: ["claude"],
-  },
-  {
-    id: "claude-hooks",
-    source: ".claude/hooks",
-    target: ".claude/hooks",
-    description: "Claude Code global hooks",
-    groups: ["claude"],
-  },
-  {
     id: "opencode",
     source: ".config/opencode",
     target: ".config/opencode",
